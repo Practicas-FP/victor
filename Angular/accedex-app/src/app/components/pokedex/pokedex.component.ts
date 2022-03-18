@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-pokedex',
@@ -8,7 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class PokedexComponent implements OnInit {
 
-  constructor(private api: ApiService) { }
+  constructor() { }
 
   ngOnInit() {
   }
