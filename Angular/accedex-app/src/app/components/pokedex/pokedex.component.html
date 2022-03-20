@@ -1,3 +1,39 @@
-<p>
-  pokedex works!
-</p>
+<div class="page-products">
+  <div class="container my-5">
+      <div class="row pt-5">
+      <h1>Accedex</h1>
+      </div>
+
+      <div class="container my-5">
+          <div *ngIf="pokemons.length; else noPokemonData" class="row">
+                <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-5">
+                    <div class="card product">
+                        <a href=""><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{pokemon.id}}.png" class="card-img-top" alt="Imágen de producto" height="250" style="object-fit: cover"></a>
+                        <div class="card-body">
+                        <a href=""><h4 class="text-dark">{{ pokemon.name }}</h4></a>
+                        <p class="text-primary m-0 pb-3">Precio€</p>
+                            <div class="row">
+                                <div class="col">
+                                    <a href="" class="text-primary">Nombre proveedor</a>
+                                </div>
+                                <div class="col text-right">
+                                    <span class="card-text m-0 text-danger">estock</span>
+                                </div>
+                            </div>
+
+                            <a href="" class="btn btn-block btn-danger mt-3">Ver producto</a>
+
+                        </div>
+                    </div>
+                </div>
+          </div>
+
+          <ng-template #noPokemonData>
+            <div class="row">
+              <div class="alert alert-danger w-100" role="alert">No hay ningún pokémon</div>
+            </div>
+          </ng-template>
+      </div>
+      <!-- TODO aquí iran las diferentes paginas -->
+  </div>
+</div>
