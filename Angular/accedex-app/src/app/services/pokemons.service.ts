@@ -7,9 +7,6 @@ import { PokemonList } from '../models/pokemon-list.model';
 })
 export class PokemonsService {
 
-  // para poner la foto a partir de la peticion esta
-  // raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
-
   //private pokemon: Pokemon;
   private pokemons: PokemonList[] = [];
   private nextPage: string = '';

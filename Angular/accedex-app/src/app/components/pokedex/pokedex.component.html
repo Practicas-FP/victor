@@ -1,35 +1,25 @@
 <div class="page-products">
     <div class="container my-5">
-        <div class="row pt-5">
+        <div class="row">
             <h1>Accedex</h1>
         </div>
 
         <div class="container my-5">
             <div *ngIf="pokemons.length; else noPokemonData" class="row">
-                <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-5">
-                    <div class="card product">
-                        <a href=""><img
-                                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{pokemon.id}}.png"
-                                class="card-img-top" alt="Imágen de producto" height="250"
-                                style="object-fit: cover"></a>
-                        <div class="card-body">
-                            <a href="">
-                                <h4 class="text-dark">{{ pokemon.name }}</h4>
-                            </a>
-                            <p class="text-primary m-0 pb-3">Precio€</p>
-                            <div class="row">
-                                <div class="col">
-                                    <a href="" class="text-primary">Nombre proveedor</a>
-                                </div>
-                                <div class="col text-right">
-                                    <span class="card-text m-0 text-danger">estock</span>
-                                </div>
+                <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2">
+                    <a href="">
+                        <div class="card">
+                            <img class="card_bg" src="../../../assets/images/pokeball-background.png"
+                                alt="pokeball-card" />
+                            <div>
+                                <h2 class="color-white card_info_h2 mt-3">{{pokemon.name}}</h2>
                             </div>
-
-                            <a href="" class="btn btn-block btn-danger mt-3">Ver producto</a>
-
+                            <div class="card_img">
+                                <img
+                                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.id }}.png">
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 

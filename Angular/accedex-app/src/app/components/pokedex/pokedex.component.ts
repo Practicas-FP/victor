@@ -16,6 +16,8 @@ export class PokedexComponent implements OnInit {
   ngOnInit() {
     this.pokemonsAPI.getPokemons();
     this.pokemons = this.pokemonsAPI.getListPokemons();
+
+    this.pokemonsAPI.getPokemonById(1);
   }
 
 }
