@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Pokemon, PokemonClient } from 'pokenode-ts';
-import { PokemonList } from '../models/pokemon-list.model';
+import { PokemonClient } from 'pokenode-ts';
+import { Pokemon } from '../models/pokemon.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { PokemonList } from '../models/pokemon-list.model';
 export class PokemonsService {
 
   //private pokemon: Pokemon;
-  private pokemons: PokemonList[] = [];
+  private pokemons: Pokemon[] = [];
   private nextPage: string = '';
   private previousPage: string = '';
 
@@ -34,11 +34,7 @@ export class PokemonsService {
 
           // Crear el array de pokemons
           if (data.results) {
-            data.results.forEach(pokemon => this.pokemons.push(new PokemonList(
-              parseInt(pokemon.url.split('/')[6]),
-              'Name invent',
-              pokemon.url
-            )));
+            data.results.forEach(pokemon => this.getPokemonById(parseInt(pokemon.url.split('/')[6])));
           }
         })
         .catch((error) => console.error(error));
@@ -51,7 +47,15 @@ export class PokemonsService {
 
       await api
         .getPokemonById(id)
-        .then((data) => console.log(data)) // ver si crear un nuevo objeto pokemon o usar el que viene en la libreria
+        .then((data) =>
+          this.pokemons.push(new Pokemon(
+            data.id,
+            data.name,
+            data.sprites.front_default,
+            [
+              data.types[0].type.name
+            ]
+          )))
         .catch((error) => console.error(error));
     })();
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonList } from 'src/app/models/pokemon-list.model';
+import { Pokemon } from 'src/app/models/pokemon.model';
 import { PokemonsService } from 'src/app/services/pokemons.service';
 
 @Component({
@@ -9,15 +9,13 @@ import { PokemonsService } from 'src/app/services/pokemons.service';
 })
 export class PokedexComponent implements OnInit {
 
-  pokemons: PokemonList[] = [];
+  pokemons: Pokemon[] = [];
 
   constructor(private pokemonsAPI: PokemonsService) { }
 
   ngOnInit() {
     this.pokemonsAPI.getPokemons();
     this.pokemons = this.pokemonsAPI.getListPokemons();
-
-    this.pokemonsAPI.getPokemonById(1);
   }
 
 }

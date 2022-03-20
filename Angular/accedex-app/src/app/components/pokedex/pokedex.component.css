@@ -9,7 +9,7 @@
     margin-bottom: 10px;
     overflow: hidden;
 }
-    
+
 
 .card_bg {
     position: absolute;
@@ -36,3 +36,9 @@
     -webkit-text-stroke-width: .50px;
     -webkit-text-stroke-color: black;
 }
+
+.card_info_span {
+    border-radius: 40px;
+    text-align: center;
+    margin-top: 5px;
+} 

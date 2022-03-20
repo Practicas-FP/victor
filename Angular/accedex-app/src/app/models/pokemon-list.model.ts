@@ -1,8 +1,8 @@
 export class PokemonList {
 
-  id: number;
-  name: string;
-  url: string;
+  private id: number;
+  private name: string;
+  private url: string;
 
   constructor(id: number, name: string, url: string) {
     this.id = id;
@@ -10,15 +10,15 @@ export class PokemonList {
     this.url = url;
   }
 
-  getId() {
+  public getId() {
     return this.id;
   }
 
-  getName() {
+  public getName() {
     return this.name;
   }
 
-  getUrl() {
+  public getUrl() {
     return this.url;
   }
 }

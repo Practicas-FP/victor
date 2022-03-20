@@ -7,19 +7,19 @@
         <div class="container my-5">
             <div *ngIf="pokemons.length; else noPokemonData" class="row">
                 <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2">
-                    <a href="">
+                    <!--a href=""-->
                         <div class="card">
                             <img class="card_bg" src="../../../assets/images/pokeball-background.png"
                                 alt="pokeball-card" />
                             <div>
-                                <h2 class="color-white card_info_h2 mt-3">{{pokemon.name}}</h2>
+                                <h2 class="color-white card_info_h2 mt-3">{{pokemon.getName()}}</h2>
+                                <span class="color-white card_info_span">{{ pokemon.getTypes()[0] }}</span>
                             </div>
                             <div class="card_img">
-                                <img
-                                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ pokemon.id }}.png">
+                                <img src="{{ pokemon.getUrl() }}">
                             </div>
                         </div>
-                    </a>
+                    <!--/a-->
                 </div>
             </div>
 
