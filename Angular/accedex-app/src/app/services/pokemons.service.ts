@@ -11,6 +11,9 @@ export class PokemonsService {
   private pokemons: Pokemon[] = [];
   private nextPage: string = '';
   private previousPage: string = '';
+  private nextOffset: number = 0;
+  private previousOffset: number = 0;
+  private limit: number = 12
 
   getPokemon(index: number) {
     //return this.pokemons.indexOf(index);
@@ -20,17 +23,34 @@ export class PokemonsService {
     return this.pokemons;
   }
 
+  getNextOffset() {
+    return this.nextOffset;
+  }
+
+  getPreviousOffset() {
+    return this.previousOffset;
+  }
+
   constructor() { }
 
-  getPokemons() {
+  getPokemons(offset: number) {
+    this.pokemons = [];
+
     (async () => {
       const api = new PokemonClient();
 
       await api
-        .listPokemons(0, 12)
+        .listPokemons(offset, this.limit)
         .then((data) => {
-          if (data.next) this.nextPage = data.next;
-          if (data.previous) this.previousPage = data.previous;
+          if (data.next) {
+            this.nextPage = data.next;
+            this.nextOffset = parseInt(data.next.substring(data.next.search('=') + 1, data.next.search('&')));
+          }
+
+          if (data.previous) {
+            this.previousPage = data.previous;
+            this.previousOffset =  parseInt(data.previous.substring(data.previous.search('=') + 1, data.previous.search('&')));
+          }
 
           // Crear el array de pokemons
           if (data.results) {

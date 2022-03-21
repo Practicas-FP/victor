@@ -1,34 +1,42 @@
-<div class="page-products">
-    <div class="container my-5">
-        <div class="row">
-            <h1>Accedex</h1>
-        </div>
-
-        <div class="container my-5">
-            <div *ngIf="pokemons.length; else noPokemonData" class="row">
-                <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2">
-                    <!--a href=""-->
-                        <div class="card">
-                            <img class="card_bg" src="../../../assets/images/pokeball-background.png"
-                                alt="pokeball-card" />
-                            <div>
-                                <h2 class="color-white card_info_h2 mt-3">{{pokemon.getName()}}</h2>
-                                <span class="color-white card_info_span">{{ pokemon.getTypes()[0] }}</span>
-                            </div>
-                            <div class="card_img">
-                                <img src="{{ pokemon.getUrl() }}">
-                            </div>
-                        </div>
-                    <!--/a-->
-                </div>
-            </div>
-
-            <ng-template #noPokemonData>
-                <div class="row">
-                    <div class="alert alert-danger w-100" role="alert">No hay ningún pokémon</div>
-                </div>
-            </ng-template>
-        </div>
-        <!-- TODO aquí iran las diferentes paginas -->
+<div class="page-pokedex">
+  <div class="container my-5">
+    <div class="row">
+      <h1>Accedex</h1>
     </div>
+
+    <div class="row py-3">
+      <div class="col">
+        <button (click)="previousPage()"  class="btn btn-primary"><i class="bi bi-arrow-left"></i>Back</button>
+      </div>
+      <div class="col">
+        <button (click)="nextPage()" class="btn btn-primary"><i class="bi bi-arrow-right"></i>Next</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div *ngIf="pokemons.length; else noPokemonData" class="row">
+        <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2">
+          <!--a href=""-->
+          <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
+            <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
+            <div>
+              <h2 class="color-white card_info_h2 mt-3">#{{ pokemon.getId() + ' ' + pokemon.getName() }}</h2>
+              <span class="color-white card_info_span">{{ pokemon.getTypes()[0] }}</span>
+            </div>
+            <div class="card_img">
+              <img src="{{ pokemon.getUrl() }}">
+            </div>
+          </div>
+          <!--/a-->
+        </div>
+      </div>
+
+      <ng-template #noPokemonData>
+        <div class="row">
+          <div class="alert alert-danger w-100" role="alert">No hay ningún pokémon</div>
+        </div>
+      </ng-template>
+    </div>
+    <!-- TODO aquí iran las diferentes paginas -->
+  </div>
 </div>

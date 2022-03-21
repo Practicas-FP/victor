@@ -14,8 +14,22 @@ export class PokedexComponent implements OnInit {
   constructor(private pokemonsAPI: PokemonsService) { }
 
   ngOnInit() {
-    this.pokemonsAPI.getPokemons();
+    this.pokemonsAPI.getPokemons(0);
     this.pokemons = this.pokemonsAPI.getListPokemons();
+  }
+
+  nextPage() {
+    this.pokemonsAPI.getPokemons(this.pokemonsAPI.getNextOffset());
+    this.pokemons = this.pokemonsAPI.getListPokemons();
+  }
+
+  previousPage() {
+    this.pokemonsAPI.getPokemons(this.pokemonsAPI.getPreviousOffset());
+    this.pokemons = this.pokemonsAPI.getListPokemons();
+  }
+
+  getNumbers() {
+    return this.pokemonsAPI.getPreviousOffset() + ' - ' + this.pokemonsAPI.getNextOffset();
   }
 
 }
