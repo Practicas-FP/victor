@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Pokemon } from 'src/app/models/pokemon.model';
+import { PokemonsService } from 'src/app/services/pokemons.service';
 
 @Component({
   selector: 'app-pokemon',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PokemonComponent implements OnInit {
 
-  constructor() { }
+  private id: number;
+  pokemons: Pokemon[] = [];
+
+  constructor(private pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.id = this.route.snapshot.params['id'];
+
+    this.pokemonsAPI.getMoreDataPokemonById(this.id);
+    this.pokemons = this.pokemonsAPI.getListPokemons();
+
+    console.log(this.pokemons)
   }
 
 }

@@ -15,8 +15,7 @@
 
     <div class="container">
       <div *ngIf="pokemons.length; else noPokemonData" class="row">
-        <div *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2">
-          <!--a href=""-->
+        <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2 hand_above">
           <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
             <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
             <div>
@@ -27,7 +26,6 @@
               <img src="{{ pokemon.getUrl() }}">
             </div>
           </div>
-          <!--/a-->
         </div>
       </div>
 

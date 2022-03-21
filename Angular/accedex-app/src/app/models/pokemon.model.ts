@@ -1,3 +1,5 @@
+import { PokemonStat } from "./pokemon-stat.model";
+
 export class Pokemon {
 
   private id: number;
@@ -5,13 +7,31 @@ export class Pokemon {
   private url: string | null;
   private types: string[] = [];
   private color: string;
+  private abilities: string[] = [];
+  private height: number;
+  private weight: number;
+  private stats: PokemonStat[] = [];
+  private moves: string[] = [];
 
-  constructor(id: number, name: string, url: string | null, types: any[]) {
+  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[]) {
     this.id = id;
     this.name = name;
     this.url = url;
     types.forEach(type => this.types.push(type.type.name));
     this.color = this.setColor(this.types[0]);
+
+    // More data
+    if (moreData) {
+      abilities.forEach(ability => this.abilities.push(ability.ability.name));
+      this.height = height;
+      this.height = weight;
+      stats.forEach(stat => this.stats.push(new PokemonStat(
+        stat.base_stat,
+        stat.stat.name
+      )));
+      moves.forEach(move => this.moves.push(move.move.name));
+      // se podría poner tipo un carrusel de imágenes
+    }
   }
 
   public getId() {
@@ -32,6 +52,10 @@ export class Pokemon {
 
   public getColor() {
     return this.color;
+  }
+
+  public getStats() {
+    return this.stats;
   }
 
   private setColor(color: string): string {

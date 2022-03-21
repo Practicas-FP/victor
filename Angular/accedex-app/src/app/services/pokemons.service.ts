@@ -7,14 +7,18 @@ import { Pokemon } from '../models/pokemon.model';
 })
 export class PokemonsService {
 
-  //private pokemon: Pokemon;
+  private pokemon: Pokemon;
   private pokemons: Pokemon[] = [];
   private nextOffset: number = 0;
   private previousOffset: number = 0;
   private limit: number = 12
 
-  getPokemon(index: number) {
-    //return this.pokemons.indexOf(index);
+  findPokemonById(index: number) {
+    return this.pokemons.find(pokemon => pokemon.getId() === index);
+  }
+
+  getPokemon() {
+    return this.pokemon;
   }
 
   getListPokemons() {
@@ -64,9 +68,41 @@ export class PokemonsService {
             data.id,
             data.name,
             data.sprites.front_default,
-            data.types
+            data.types,
+            false,
+            [],
+            0,
+            0,
+            [],
+            []
           )))
         .catch((error) => console.error(error));
+    })();
+  }
+
+  getMoreDataPokemonById(id: number) {
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getPokemonById(id)
+        .then((data) => {
+          this.pokemons.push(
+            new Pokemon(
+              data.id,
+              data.name,
+              data.sprites.front_default,
+              data.types,
+              true,
+              data.abilities,
+              data.height,
+              data.weight,
+              data.stats,
+              data.moves
+            )
+          );
+        })
+        .catch((error) => console.error(error))
     })();
   }
 
