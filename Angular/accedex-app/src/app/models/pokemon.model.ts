@@ -3,15 +3,15 @@ export class Pokemon {
   private id: number;
   private name: string;
   private url: string | null;
-  private types: string[];
+  private types: string[] = [];
   private color: string;
 
-  constructor(id: number, name: string, url: string | null, types: string[]) {
+  constructor(id: number, name: string, url: string | null, types: any[]) {
     this.id = id;
     this.name = name;
     this.url = url;
-    this.types = types;
-    this.color = this.setColor(types[0]);
+    types.forEach(type => this.types.push(type.type.name));
+    this.color = this.setColor(this.types[0]);
   }
 
   public getId() {

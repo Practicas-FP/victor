@@ -9,8 +9,6 @@ export class PokemonsService {
 
   //private pokemon: Pokemon;
   private pokemons: Pokemon[] = [];
-  private nextPage: string = '';
-  private previousPage: string = '';
   private nextOffset: number = 0;
   private previousOffset: number = 0;
   private limit: number = 12
@@ -42,20 +40,14 @@ export class PokemonsService {
       await api
         .listPokemons(offset, this.limit)
         .then((data) => {
-          if (data.next) {
-            this.nextPage = data.next;
+          if (data.next)
             this.nextOffset = parseInt(data.next.substring(data.next.search('=') + 1, data.next.search('&')));
-          }
 
-          if (data.previous) {
-            this.previousPage = data.previous;
-            this.previousOffset =  parseInt(data.previous.substring(data.previous.search('=') + 1, data.previous.search('&')));
-          }
+          if (data.previous)
+            this.previousOffset = parseInt(data.previous.substring(data.previous.search('=') + 1, data.previous.search('&')));
 
-          // Crear el array de pokemons
-          if (data.results) {
+          if (data.results)
             data.results.forEach(pokemon => this.getPokemonById(parseInt(pokemon.url.split('/')[6])));
-          }
         })
         .catch((error) => console.error(error));
     })();
@@ -72,9 +64,7 @@ export class PokemonsService {
             data.id,
             data.name,
             data.sprites.front_default,
-            [
-              data.types[0].type.name
-            ]
+            data.types
           )))
         .catch((error) => console.error(error));
     })();

@@ -28,7 +28,7 @@ export class PokedexComponent implements OnInit {
     this.pokemons = this.pokemonsAPI.getListPokemons();
   }
 
-  getNumbers() {
+  getNumbers() { // no sirve
     return this.pokemonsAPI.getPreviousOffset() + ' - ' + this.pokemonsAPI.getNextOffset();
   }
 
