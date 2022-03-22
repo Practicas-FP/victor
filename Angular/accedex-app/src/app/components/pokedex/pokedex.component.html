@@ -4,21 +4,20 @@
       <h1>Accedex</h1>
     </div>
 
-    <div class="row py-3">
-      <div class="col">
-        <button (click)="previousPage()"  class="btn btn-primary"><i class="bi bi-arrow-left"></i>Back</button>
+    <div class="d-flex py-3">
+      <div class="p-2">
+        <button (click)="previousPage()" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Back</button>
       </div>
-      <div class="col">
 
-      </div>
-      <div class="col">
-        <button (click)="nextPage()" class="btn btn-primary"><i class="bi bi-arrow-right"></i>Next</button>
+      <div class="p-2">
+        <button (click)="nextPage()" class="btn btn-primary">Next <i class="bi bi-arrow-right"></i></button>
       </div>
     </div>
 
     <div class="container">
       <div *ngIf="pokemons.length; else noPokemonData" class="row">
-        <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemons" class="col-12 col-md-6 col-lg-4 mb-2 hand_above">
+        <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemons"
+          class="col-12 col-md-6 col-lg-4 mb-2 hand_above">
           <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
             <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
             <div>
