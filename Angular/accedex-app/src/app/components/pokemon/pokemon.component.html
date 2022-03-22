@@ -8,11 +8,14 @@
       <div class="row py-4">
         <div class="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center">
           <span class="mr-3 text-center">
-              <mdb-carousel [isControls]="false" [animation]="'slide'" width="300" height="300">
-                <mdb-carousel-item *ngFor="let image of pokemons[0].getSprintes()">
-                  <img class="d-block w-100" src="{{ image }}" alt="First slide">
-                </mdb-carousel-item>
-              </mdb-carousel>
+            <mdb-carousel [isControls]="false" [animation]="'slide'" width="300" height="300">
+              <mdb-carousel-item>
+                <img class="d-block w-100" src="{{ pokemons[0].getUrl() }}" alt="First slide">
+              </mdb-carousel-item>
+              <mdb-carousel-item *ngFor="let image of pokemons[0].getSprintes()">
+                <img class="d-block w-100" src="{{ image }}" alt="First slide">
+              </mdb-carousel-item>
+            </mdb-carousel>
             <h2 class="mt-4 pb-3 text-capitalize"><b>{{ pokemons[0].getName() }}</b></h2>
           </span>
         </div>
@@ -44,7 +47,8 @@
 
     <div class="row pt-4 justify-content-center">
       <h2>Moves</h2>
-      <span *ngFor="let move of pokemons[0].getMoves()" class="color-white info_move me-2 mt-2 bg-primary">{{ move }}</span>
+      <span *ngFor="let move of pokemons[0].getMoves()" class="color-white info_move me-2 mt-2 bg-primary">{{ move
+        }}</span>
     </div>
   </div>
 
