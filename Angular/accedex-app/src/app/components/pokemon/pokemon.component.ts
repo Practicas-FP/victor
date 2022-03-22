@@ -17,6 +17,8 @@ export class PokemonComponent implements OnInit {
   constructor(private pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.pokemonsAPI.clearPokemons();
+
     if (isNaN(this.route.snapshot.params['id'])) {
       this.name = this.route.snapshot.params['id'];
 
@@ -27,7 +29,6 @@ export class PokemonComponent implements OnInit {
       this.pokemonsAPI.getMoreDataPokemonById(this.id);
     }
 
-    this.pokemonsAPI.clearPokemons();
     this.pokemons = this.pokemonsAPI.getListPokemons();
   }
 

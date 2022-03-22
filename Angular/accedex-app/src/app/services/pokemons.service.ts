@@ -57,7 +57,12 @@ export class PokemonsService {
           if (data.results)
             data.results.forEach(pokemon => this.getPokemonById(parseInt(pokemon.url.split('/')[6])));
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
+        .finally(() => {
+          this.pokemons.sort(function(a, b) {
+            return a.getId() - b.getId();
+          });
+        });
     })();
   }
 
@@ -92,21 +97,7 @@ export class PokemonsService {
       await api
         .getPokemonById(id)
         .then((data) => {
-          this.pokemons.push(
-            new Pokemon(
-              data.id,
-              data.name,
-              data.sprites.front_default,
-              data.types,
-              true,
-              data.abilities,
-              data.height,
-              data.weight,
-              data.stats,
-              data.moves,
-              data.sprites
-            )
-          );
+          this.pokemons.push(this.getJSONDataPokemo(data));
         })
         .catch((error) => console.error(error))
     })();
