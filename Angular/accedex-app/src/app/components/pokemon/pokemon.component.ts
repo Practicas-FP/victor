@@ -13,6 +13,7 @@ export class PokemonComponent implements OnInit {
   private id: number;
   private name: string;
   pokemons: Pokemon[] = [];
+  disabledPrevious: boolean = false;
 
   constructor(private pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute) { }
 
@@ -30,6 +31,7 @@ export class PokemonComponent implements OnInit {
     }
 
     this.pokemons = this.pokemonsAPI.getListPokemons();
-  }
 
+    //this.pokemons[0].getId() > 1 ? this.disabledPrevious = false : this.disabledPrevious = true;
+  }
 }
