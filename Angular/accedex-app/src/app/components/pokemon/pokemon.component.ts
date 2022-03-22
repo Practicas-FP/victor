@@ -19,6 +19,8 @@ export class PokemonComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
 
     this.pokemonsAPI.getMoreDataPokemonById(this.id);
+
+    this.pokemonsAPI.clearPokemons();
     this.pokemons = this.pokemonsAPI.getListPokemons();
 
     console.log(this.pokemons)

@@ -1,3 +1,4 @@
+import { PokemonSprites } from "pokenode-ts";
 import { PokemonStat } from "./pokemon-stat.model";
 
 export class Pokemon {
@@ -12,8 +13,9 @@ export class Pokemon {
   private weight: number;
   private stats: PokemonStat[] = [];
   private moves: string[] = [];
+  private sprintes: string[] = [];
 
-  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[]) {
+  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -23,14 +25,27 @@ export class Pokemon {
     // More data
     if (moreData) {
       abilities.forEach(ability => this.abilities.push(ability.ability.name));
+
       this.height = height;
-      this.height = weight;
+      this.weight = weight;
+
       stats.forEach(stat => this.stats.push(new PokemonStat(
         stat.base_stat,
         stat.stat.name
       )));
+
       moves.forEach(move => this.moves.push(move.move.name));
-      // se podría poner tipo un carrusel de imágenes
+
+      if (sprites) {
+        if (sprites.back_default) this.sprintes.push(sprites.back_default);
+        if (sprites.back_female) this.sprintes.push(sprites.back_female);
+        if (sprites.back_shiny) this.sprintes.push(sprites.back_shiny);
+        if (sprites.back_shiny_female) this.sprintes.push(sprites.back_shiny_female);
+        if (sprites.front_default) this.sprintes.push(sprites.front_default);
+        if (sprites.front_female) this.sprintes.push(sprites.front_female);
+        if (sprites.front_shiny) this.sprintes.push(sprites.front_shiny);
+        if (sprites.front_shiny_female) this.sprintes.push(sprites.front_shiny_female);
+      }
     }
   }
 
@@ -56,6 +71,26 @@ export class Pokemon {
 
   public getStats() {
     return this.stats;
+  }
+
+  public getHeight() {
+    return this.height;
+  }
+
+  public getWeight() {
+    return this.weight;
+  }
+
+  public getAbilities() {
+    return this.abilities;
+  }
+
+  public getMoves() {
+    return this.moves;
+  }
+
+  public getColorByType(type: string) {
+    return this.setColor(type);
   }
 
   private setColor(color: string): string {

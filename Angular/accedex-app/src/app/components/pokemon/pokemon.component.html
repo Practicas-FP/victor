@@ -10,17 +10,19 @@
           <span class="mr-3 text-center">
             <img src="{{ pokemons[0].getUrl() }}" alt="Image pokemon" width="300" height="300"
               style="object-fit: cover">
-            <h2 class="mt-4 pb-3"><b>{{ pokemons[0].getName() }}</b></h2>
+            <h2 class="mt-4 pb-3 text-capitalize"><b>{{ pokemons[0].getName() }}</b></h2>
           </span>
         </div>
 
         <div class="col-12 col-lg-8" style="height: 100%">
           <div class="pl-4 bg-white rounded box-shadow p-5">
-            <p><b>Nombre:</b> </p>
-            <p><b>Apellidos:</b> </p>
-            <p><b>Email:</b> </p>
-            <p><b>Dirección:</b> </p>
-            <p><b>Tipo de usuario:</b> </p>
+            <p>
+              <span *ngFor="let type of pokemons[0].getTypes()"
+                style="background-color: {{ pokemons[0].getColorByType(type) }} ;" class="color-white info_span">{{ type
+                }}</span>
+            </p>
+            <p><b>Height: </b> {{ pokemons[0].getHeight() + ' | '}} <b>Weight:</b> {{ pokemons[0].getWeight() }} </p>
+            <p><b>Abilities:</b> {{ pokemons[0].getAbilities() }}</p>
           </div>
         </div>
       </div>
@@ -30,15 +32,15 @@
         <div class="progress mt-3" style="height: 25px;" *ngFor="let stat of pokemons[0].getStats()">
           <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{ stat.getBaseStat() }}%"
             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-            <span class="text-uppercase">{{stat.getName()}}</span>
+            <span class="text-uppercase">{{stat.getName() + ' : ' }} <b>{{ stat.getBaseStat() }}</b></span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row pt-4">
+    <div class="row pt-4 justify-content-center">
       <h2>Moves</h2>
-
+      <span *ngFor="let move of pokemons[0].getMoves()" class="color-white info_move me-2 mt-2 bg-primary">{{ move }}</span>
     </div>
   </div>
 

@@ -51,7 +51,8 @@
   flex-direction: column;
   color: white;
   text-transform: capitalize;
-
+  align-items: center;
+  justify-content: center;
 
   border-radius: 40px;
   text-align: center;

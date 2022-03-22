@@ -33,10 +33,14 @@ export class PokemonsService {
     return this.previousOffset;
   }
 
+  clearPokemons() {
+    this.pokemons = [];
+  }
+
   constructor() { }
 
   getPokemons(offset: number) {
-    this.pokemons = [];
+    this.clearPokemons();
 
     (async () => {
       const api = new PokemonClient();
@@ -74,7 +78,8 @@ export class PokemonsService {
             0,
             0,
             [],
-            []
+            [],
+            null
           )))
         .catch((error) => console.error(error));
     })();
@@ -98,7 +103,8 @@ export class PokemonsService {
               data.height,
               data.weight,
               data.stats,
-              data.moves
+              data.moves,
+              data.sprites
             )
           );
         })
