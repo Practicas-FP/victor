@@ -84,7 +84,8 @@ export class PokemonsService {
             0,
             [],
             [],
-            null
+            null,
+            0
           )))
         .catch((error) => console.error(error));
     })();
@@ -126,7 +127,8 @@ export class PokemonsService {
       data.weight,
       data.stats,
       data.moves,
-      data.sprites
+      data.sprites,
+      data.base_experience
     );
   }
 }

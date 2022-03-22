@@ -14,8 +14,9 @@ export class Pokemon {
   private stats: PokemonStat[] = [];
   private moves: string[] = [];
   private sprintes: string[] = [];
+  private baseExperience: number;
 
-  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null) {
+  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null, baseExperience: number) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -28,6 +29,7 @@ export class Pokemon {
 
       this.height = height;
       this.weight = weight;
+      this.baseExperience = baseExperience;
 
       stats.forEach(stat => this.stats.push(new PokemonStat(
         stat.base_stat,
@@ -87,6 +89,10 @@ export class Pokemon {
 
   public getMoves() {
     return this.moves;
+  }
+
+  public getBaseExperience() {
+    return this.baseExperience;
   }
 
   public getColorByType(type: string) {
