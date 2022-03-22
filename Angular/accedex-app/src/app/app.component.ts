@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PokemonsService } from './services/pokemons.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'accedex-app';
+
+  title = 'Accedex';
+  pokemonSearch: string;
+
+  constructor() { }
+
 }

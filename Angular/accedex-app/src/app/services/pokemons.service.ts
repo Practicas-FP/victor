@@ -118,8 +118,24 @@ export class PokemonsService {
 
       await api
         .getPokemonByName(name)
-        .then((data) => console.log(data))
+        .then((data) => this.pokemons.push(this.getJSONDataPokemo(data)))
         .catch((error) => console.error(error));
     })();
+  }
+
+  private getJSONDataPokemo(data: any): Pokemon {
+    return new Pokemon(
+      data.id,
+      data.name,
+      data.sprites.front_default,
+      data.types,
+      true,
+      data.abilities,
+      data.height,
+      data.weight,
+      data.stats,
+      data.moves,
+      data.sprites
+    );
   }
 }

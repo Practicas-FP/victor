@@ -11,19 +11,24 @@ import { PokemonsService } from 'src/app/services/pokemons.service';
 export class PokemonComponent implements OnInit {
 
   private id: number;
+  private name: string;
   pokemons: Pokemon[] = [];
 
   constructor(private pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
+    if (isNaN(this.route.snapshot.params['id'])) {
+      this.name = this.route.snapshot.params['id'];
 
-    this.pokemonsAPI.getMoreDataPokemonById(this.id);
+      this.pokemonsAPI.getPokemonByName(this.name.toLocaleLowerCase());
+    } else {
+      this.id = this.route.snapshot.params['id'];
+
+      this.pokemonsAPI.getMoreDataPokemonById(this.id);
+    }
 
     this.pokemonsAPI.clearPokemons();
     this.pokemons = this.pokemonsAPI.getListPokemons();
-
-    console.log(this.pokemons)
   }
 
 }
