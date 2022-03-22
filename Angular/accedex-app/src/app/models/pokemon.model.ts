@@ -95,6 +95,10 @@ export class Pokemon {
     return this.baseExperience;
   }
 
+  public getSprintes() {
+    return this.sprintes;
+  }
+
   public getColorByType(type: string) {
     return this.setColor(type);
   }
