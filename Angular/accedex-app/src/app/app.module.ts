@@ -13,7 +13,8 @@ import { AlertComponent } from './components/alert/alert.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  //{ path: '', component: HomeComponent },
+  { path: '', component: PokedexComponent },
   { path: 'pokedex', component: PokedexComponent },
   { path: 'pokemon/:id', component: PokemonComponent },
   { path: '**', component: NotFoundComponent }

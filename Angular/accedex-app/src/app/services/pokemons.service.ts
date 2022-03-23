@@ -9,7 +9,7 @@ import { Pokemon } from '../models/pokemon.model';
 export class PokemonsService {
 
   pokemon: Pokemon;
-  private pokemons: Pokemon[] = [];
+  pokemons: Pokemon[] = [];
   private nextOffset: number = 0;
   private previousOffset: number = 0;
   private limit: number = 12
@@ -18,14 +18,6 @@ export class PokemonsService {
 
   findPokemonById(index: number) {
     return this.pokemons.find(pokemon => pokemon.getId() === index);
-  }
-
-  getPokemon() {
-    return this.pokemon;
-  }
-
-  getListPokemons() {
-    return this.pokemons;
   }
 
   getNextOffset() {
@@ -170,7 +162,6 @@ export class PokemonsService {
       data.base_experience
     );
 
-    // pedir los nuevos datos de los typos
     data.types.forEach((type: any) => {
       this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
     });
