@@ -12,6 +12,8 @@ export class PokemonsService {
   private nextOffset: number = 0;
   private previousOffset: number = 0;
   private limit: number = 12
+  loadingData: boolean = true;
+  noDataFound: boolean = false;
 
   findPokemonById(index: number) {
     return this.pokemons.find(pokemon => pokemon.getId() === index);
@@ -45,6 +47,8 @@ export class PokemonsService {
     (async () => {
       const api = new PokemonClient();
 
+      this.loadingData = true;
+
       await api
         .listPokemons(offset, this.limit)
         .then((data) => {
@@ -57,9 +61,14 @@ export class PokemonsService {
           if (data.results)
             data.results.forEach(pokemon => this.getPokemonById(parseInt(pokemon.url.split('/')[6])));
         })
-        .catch((error) => console.error(error))
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
         .finally(() => {
-          this.pokemons.sort(function(a, b) {
+          this.loadingData = false;
+
+          this.pokemons.sort(function (a, b) {
             return a.getId() - b.getId();
           });
         });
@@ -87,7 +96,11 @@ export class PokemonsService {
             null,
             0
           )))
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
+        .finally(() => this.loadingData = false);
     })();
   }
 
@@ -100,7 +113,11 @@ export class PokemonsService {
         .then((data) => {
           this.pokemons.push(this.getJSONDataPokemo(data));
         })
-        .catch((error) => console.error(error))
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
+        .finally(() => this.loadingData = false)
     })();
   }
 
@@ -111,7 +128,11 @@ export class PokemonsService {
       await api
         .getPokemonByName(name)
         .then((data) => this.pokemons.push(this.getJSONDataPokemo(data)))
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
+        .finally(() => this.loadingData = false);
     })();
   }
 

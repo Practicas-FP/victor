@@ -9,6 +9,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FormsModule } from '@angular/forms';
 import { PokedexComponent } from './components/pokedex/pokedex.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { AlertComponent } from './components/alert/alert.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,13 +25,22 @@ const routes: Routes = [
     HomeComponent,
     PokemonComponent,
     NotFoundComponent,
-    PokedexComponent
+    PokedexComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(routes),
-    MDBBootstrapModule.forRoot()
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
+    MDBBootstrapModule.forRoot(),
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
