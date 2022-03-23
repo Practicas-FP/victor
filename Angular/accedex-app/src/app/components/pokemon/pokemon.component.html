@@ -53,18 +53,20 @@
             <div class="pl-4 bg-white rounded box-shadow p-5">
               <p class="font-weight-bold">Types: </p>
 
-              <div class="accordion accordion-flush">
+              <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item" *ngFor="let type of pokemonsAPI.pokemon.getTypesDamage()">
-                  <h2 class="accordion-header" id="flush-headingOne">
+                  <h2 class="accordion-header" id="flush-heading{{type.getName()}}">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      [attr.data-bs-target]="'#flush-collapse'+type.getName()" aria-expanded="false"
+                      aria-controls="flush-collapse{{type.getName()}">
                       <span style="background-color: {{ pokemonsAPI.pokemon.getColorByType(type.getName()) }} ;"
                         class="color-white info_span p-1 px-5">
                         {{type.getName()}}
                       </span>
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
+                  <div id="flush-collapse{{type.getName()}}" class="accordion-collapse collapse"
+                    [attr.aria-labelledby]="'flush-heading'+type.getName()" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
                       <p>
                         <span class="font-weight-bold">Double Damage From </span>
