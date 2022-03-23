@@ -50,13 +50,34 @@
 
           <div class="col-12 col-lg-8" style="height: 100%">
             <div class="pl-4 bg-white rounded box-shadow p-5">
-              <p>
+              <!--p>
                 <span *ngFor="let type of pokemons[0].getTypes()"
                   style="background-color: {{ pokemons[0].getColorByType(type) }} ;" class="color-white info_span">{{
                   type
                   }}</span>
-              </p>
-              <p><span class="font-weight-bold">Height: </span> {{ pokemons[0].getHeight() + ' | '}} <span
+              </p-->
+
+              <p class="font-weight-bold">Types: </p>
+              <div class="accordion accordion-flush">
+                <div class="accordion-item" *ngFor="let type of pokemons[0].getTypes()">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      <span style="background-color: {{ pokemons[0].getColorByType(type) }} ;"
+                        class="color-white info_span p-1 px-5">
+                        {{type}}
+                      </span>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
+                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate
+                      the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                  </div>
+                </div>
+              </div>
+
+
+              <p class="mt-2"><span class="font-weight-bold">Height: </span> {{ pokemons[0].getHeight() + ' | '}} <span
                   class="font-weight-bold">Weight:</span> {{ pokemons[0].getWeight() }} </p>
               <p><span class="font-weight-bold">Abilities:</span> {{ pokemons[0].getAbilities() }}</p>
               <p><span class="font-weight-bold">Base experience:</span> {{ pokemons[0].getBaseExperience() }}</p>

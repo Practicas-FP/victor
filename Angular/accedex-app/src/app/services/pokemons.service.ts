@@ -7,7 +7,7 @@ import { Pokemon } from '../models/pokemon.model';
 })
 export class PokemonsService {
 
-  private pokemon: Pokemon;
+  pokemon: Pokemon;
   private pokemons: Pokemon[] = [];
   private nextOffset: number = 0;
   private previousOffset: number = 0;
@@ -133,6 +133,17 @@ export class PokemonsService {
           console.error(error);
         })
         .finally(() => this.loadingData = false);
+    })();
+  }
+
+  getTypeDamageFromAndTo(id: number) {
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getTypeById(id)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
     })();
   }
 
