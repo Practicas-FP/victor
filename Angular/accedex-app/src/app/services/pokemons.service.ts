@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PokemonClient } from 'pokenode-ts';
+import { PokemonType } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
 
 @Injectable({
@@ -110,9 +111,7 @@ export class PokemonsService {
 
       await api
         .getPokemonById(id)
-        .then((data) => {
-          this.pokemons.push(this.getJSONDataPokemo(data));
-        })
+        .then((data) => this.getJSONDataPokemo(data))
         .catch((error) => {
           this.noDataFound = true;
           console.error(error);
@@ -127,7 +126,7 @@ export class PokemonsService {
 
       await api
         .getPokemonByName(name)
-        .then((data) => this.pokemons.push(this.getJSONDataPokemo(data)))
+        .then((data) => this.getJSONDataPokemo(data))
         .catch((error) => {
           this.noDataFound = true;
           console.error(error);
@@ -142,13 +141,21 @@ export class PokemonsService {
 
       await api
         .getTypeById(id)
-        .then((data) => console.log(data))
+        .then((data) => this.pokemon.setTypeDamage(new PokemonType(
+          data.name,
+          data.damage_relations.double_damage_from,
+          data.damage_relations.double_damage_to,
+          data.damage_relations.half_damage_from,
+          data.damage_relations.half_damage_to,
+          data.damage_relations.no_damage_from,
+          data.damage_relations.no_damage_to
+        )))
         .catch((error) => console.log(error));
     })();
   }
 
-  private getJSONDataPokemo(data: any): Pokemon {
-    return new Pokemon(
+  private getJSONDataPokemo(data: any) {
+    this.pokemon = new Pokemon(
       data.id,
       data.name,
       data.sprites.front_default,
@@ -162,5 +169,10 @@ export class PokemonsService {
       data.sprites,
       data.base_experience
     );
+
+    // pedir los nuevos datos de los typos
+    data.types.forEach((type: any) => {
+      this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
+    });
   }
 }

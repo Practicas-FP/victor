@@ -1,5 +1,6 @@
 import { PokemonSprites } from "pokenode-ts";
 import { PokemonStat } from "./pokemon-stat.model";
+import { PokemonType } from "./pokemon-type.model";
 
 export class Pokemon {
 
@@ -15,6 +16,7 @@ export class Pokemon {
   private moves: string[] = [];
   private sprintes: string[] = [];
   private baseExperience: number;
+  private typesDamage: PokemonType[] = [];
 
   constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null, baseExperience: number) {
     this.id = id;
@@ -97,6 +99,14 @@ export class Pokemon {
 
   public getSprintes() {
     return this.sprintes;
+  }
+
+  public setTypeDamage(typesDamage: PokemonType) {
+    this.typesDamage.push(typesDamage);
+  }
+
+  public getTypesDamage() {
+    return this.typesDamage;
   }
 
   public getColorByType(type: string) {

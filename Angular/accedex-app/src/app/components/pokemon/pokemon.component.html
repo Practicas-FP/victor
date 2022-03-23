@@ -17,7 +17,7 @@
       </div>
 
       <div class="row">
-        <h1><span class="font-weight-bold">#{{ pokemons[0].getId() }}</span></h1>
+        <h1><span class="font-weight-bold">#{{ pokemonsAPI.pokemon.getId() }}</span></h1>
       </div>
 
       <div class="d-flex py-3">
@@ -37,59 +37,91 @@
             <span class="mr-3 text-center">
               <mdb-carousel [class]="'alert-dark'" [isControls]="true" [animation]="'slide'" width="300" height="300">
                 <mdb-carousel-item>
-                  <img class="d-block w-100" src="{{ pokemons[0].getUrl() }}" alt="First slide">
+                  <img class="d-block w-100" src="{{ pokemonsAPI.pokemon.getUrl() }}" alt="First slide">
                 </mdb-carousel-item>
-                <mdb-carousel-item *ngFor="let image of pokemons[0].getSprintes()">
+                <mdb-carousel-item *ngFor="let image of pokemonsAPI.pokemon.getSprintes()">
                   <img class="d-block w-100" src="{{ image }}" alt="First slide">
                 </mdb-carousel-item>
               </mdb-carousel>
-              <h2 class="mt-4 pb-3 text-capitalize"><span class="font-weight-bold">{{ pokemons[0].getName() }}</span>
+              <h2 class="mt-4 pb-3 text-capitalize"><span class="font-weight-bold">{{ pokemonsAPI.pokemon.getName()
+                  }}</span>
               </h2>
             </span>
           </div>
 
           <div class="col-12 col-lg-8" style="height: 100%">
             <div class="pl-4 bg-white rounded box-shadow p-5">
-              <!--p>
-                <span *ngFor="let type of pokemons[0].getTypes()"
-                  style="background-color: {{ pokemons[0].getColorByType(type) }} ;" class="color-white info_span">{{
-                  type
-                  }}</span>
-              </p-->
-
               <p class="font-weight-bold">Types: </p>
+
               <div class="accordion accordion-flush">
-                <div class="accordion-item" *ngFor="let type of pokemons[0].getTypes()">
+                <div class="accordion-item" *ngFor="let type of pokemonsAPI.pokemon.getTypesDamage()">
                   <h2 class="accordion-header" id="flush-headingOne">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      <span style="background-color: {{ pokemons[0].getColorByType(type) }} ;"
+                      <span style="background-color: {{ pokemonsAPI.pokemon.getColorByType(type.getName()) }} ;"
                         class="color-white info_span p-1 px-5">
-                        {{type}}
+                        {{type.getName()}}
                       </span>
                     </button>
                   </h2>
                   <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate
-                      the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                    <div class="accordion-body">
+                      <p>
+                        <span class="font-weight-bold">Double Damage From </span>
+                        <span *ngFor="let damage of type.getDoubleDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Double Damage To </span>
+                        <span *ngFor="let damage of type.getDoubleDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Half Damage From </span>
+                        <span *ngFor="let damage of type.getHalfDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Half Damage To </span>
+                        <span *ngFor="let damage of type.getHalfDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">No Damage From </span>
+                        <span *ngFor="let damage of type.getNoDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">No Damage To </span>
+                        <span *ngFor="let damage of type.getNoDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-
-              <p class="mt-2"><span class="font-weight-bold">Height: </span> {{ pokemons[0].getHeight() + ' | '}} <span
-                  class="font-weight-bold">Weight:</span> {{ pokemons[0].getWeight() }} </p>
-              <p><span class="font-weight-bold">Abilities:</span> {{ pokemons[0].getAbilities() }}</p>
-              <p><span class="font-weight-bold">Base experience:</span> {{ pokemons[0].getBaseExperience() }}</p>
+              <p class="mt-2">
+                <span class="font-weight-bold">Height: </span> {{ pokemonsAPI.pokemon.getHeight() + ' |
+                '}} <span class="font-weight-bold">Weight:</span> {{ pokemonsAPI.pokemon.getWeight() }}
+              </p>
+              <p><span class="font-weight-bold">Abilities:</span> {{ pokemonsAPI.pokemon.getAbilities() }}</p>
+              <p><span class="font-weight-bold">Base experience:</span> {{ pokemonsAPI.pokemon.getBaseExperience() }}
+              </p>
             </div>
           </div>
         </div>
 
         <div class="row pt-4">
           <h2>Stats</h2>
-          <div class="progress mt-3" style="height: 25px;" *ngFor="let stat of pokemons[0].getStats()">
+          <div class="progress mt-3" style="height: 25px;" *ngFor="let stat of pokemonsAPI.pokemon.getStats()">
             <div class="progress-bar" role="progressbar"
-              style="width: {{ stat.getBaseStat() }}%; background-color: {{ pokemons[0].getColor() }};"
+              style="width: {{ stat.getBaseStat() }}%; background-color: {{ pokemonsAPI.pokemon.getColor() }};"
               aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
               <span class="text-uppercase">{{stat.getName() + ' : ' }} <span class="font-weight-bold">{{
                   stat.getBaseStat() }}</span></span>
@@ -100,8 +132,8 @@
 
       <div class="row pt-4 justify-content-center">
         <h2>Moves</h2>
-        <span *ngFor="let move of pokemons[0].getMoves()" class="color-white info_move me-2 mt-2"
-          style="background-color: {{ pokemons[0].getColor() }};">{{ move
+        <span *ngFor="let move of pokemonsAPI.pokemon.getMoves()" class="color-white info_move me-2 mt-2"
+          style="background-color: {{ pokemonsAPI.pokemon.getColor() }};">{{ move
           }}</span>
       </div>
     </div>

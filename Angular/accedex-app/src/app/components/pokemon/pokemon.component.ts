@@ -12,7 +12,6 @@ export class PokemonComponent implements OnInit {
 
   private id: number;
   private name: string;
-  pokemons: Pokemon[] = [];
   disabledPrevious: boolean = false;
   alert: boolean = false;
   alertMessage: string;
@@ -28,22 +27,22 @@ export class PokemonComponent implements OnInit {
   }
 
   previous() {
-    if (this.pokemons[0].getId() <= 1) {
+    if (this.pokemonsAPI.pokemon.getId() <= 1) {
       this.alertMessage = 'This is the first pokemon';
       this.alertColor = 'alert-warning';
       this.alert = true;
       return;
     }
 
-    this.router.navigateByUrl(`/pokemon/${this.pokemons[0].getId() - 1}`);
+    this.router.navigateByUrl(`/pokemon/${this.pokemonsAPI.pokemon.getId() - 1}`);
 
-    this.getData(this.pokemons[0].getId() - 1);
+    this.getData(this.pokemonsAPI.pokemon.getId() - 1);
   }
 
   next() {
-    this.router.navigateByUrl(`/pokemon/${this.pokemons[0].getId() + 1}`);
+    this.router.navigateByUrl(`/pokemon/${this.pokemonsAPI.pokemon.getId() + 1}`);
 
-    this.getData(this.pokemons[0].getId() + 1);
+    this.getData(this.pokemonsAPI.pokemon.getId() + 1);
   }
 
   private getData(change: number) {
@@ -63,7 +62,5 @@ export class PokemonComponent implements OnInit {
         this.pokemonsAPI.getMoreDataPokemonById(this.id);
       }
     }
-
-    this.pokemons = this.pokemonsAPI.getListPokemons();
   }
 }
