@@ -11,12 +11,13 @@ import { PokedexComponent } from './components/pokedex/pokedex.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AlertComponent } from './components/alert/alert.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { PokemonIdGuard } from './guards/pokemon/pokemon-id.guard';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
   { path: '', component: PokedexComponent },
   { path: 'pokedex', component: PokedexComponent },
-  { path: 'pokemon/:id', component: PokemonComponent },
+  { path: 'pokemon/:id', component: PokemonComponent, canActivate: [PokemonIdGuard] },
   { path: '**', component: NotFoundComponent }
 ];
 
