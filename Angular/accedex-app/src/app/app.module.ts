@@ -12,11 +12,13 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AlertComponent } from './components/alert/alert.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { PokemonIdGuard } from './guards/pokemon/pokemon-id.guard';
+import { EvolutionsComponent } from './components/evolutions/evolutions.component';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
   { path: '', component: PokedexComponent },
   { path: 'pokedex', component: PokedexComponent },
+  { path: 'evolutions', component: EvolutionsComponent },
   { path: 'pokemon/:id', component: PokemonComponent, canActivate: [PokemonIdGuard] },
   { path: '**', component: NotFoundComponent }
 ];
@@ -28,7 +30,8 @@ const routes: Routes = [
     PokemonComponent,
     NotFoundComponent,
     PokedexComponent,
-    AlertComponent
+    AlertComponent,
+    EvolutionsComponent
   ],
   imports: [
     BrowserModule,
