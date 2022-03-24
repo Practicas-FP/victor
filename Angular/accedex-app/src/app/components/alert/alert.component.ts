@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-alert',
@@ -9,10 +9,16 @@ export class AlertComponent implements OnInit {
 
   @Input() color!: string;
   @Input() mensaje!: string;
+  @Output() alertVisibility = new EventEmitter<boolean>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  setAlertVisibility() {
+    this.alertVisibility.emit(false);
+    console.log('dentro del hijo')
   }
 
 }

@@ -45,6 +45,10 @@ export class PokemonComponent implements OnInit {
     this.getData(this.pokemonsAPI.pokemon.getId() + 1);
   }
 
+  getAlertVisibility(visible: boolean) {
+    this.alert = visible;
+  }
+
   private getData(change: number) {
     this.alert = false;
     this.pokemonsAPI.clearPokemons();

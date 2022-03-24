@@ -13,7 +13,7 @@
   <ng-template #pokemon>
     <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="container my-5">
       <div *ngIf="alert" class="container">
-        <app-alert mensaje="{{ alertMessage }}" color="{{ alertColor }}"></app-alert>
+        <app-alert (alertVisibility)="getAlertVisibility($event)" mensaje="{{ alertMessage }}" color="{{ alertColor }}"></app-alert>
       </div>
 
       <div class="row">
