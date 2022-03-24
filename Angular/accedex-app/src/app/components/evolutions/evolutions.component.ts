@@ -9,16 +9,27 @@ import { PokemonsService } from 'src/app/services/pokemons.service';
 })
 export class EvolutionsComponent implements OnInit {
 
+  config: any;
   evolutionsAPI: EvolutionsService;
   pokemonsAPI: PokemonsService;
 
   constructor(evolutionsAPI: EvolutionsService, pokemonsAPI: PokemonsService) {
     this.evolutionsAPI = evolutionsAPI;
     this.pokemonsAPI = pokemonsAPI;
+
+    this.config = {
+      itemsPerPage: 4,
+      currentPage: 1,
+      totalItems: this.evolutionsAPI.evolutions.length
+    };
   }
 
   ngOnInit() {
     this.evolutionsAPI.getEvolutions(0);
+  }
+
+  pageChanged(event: any){
+    this.config.currentPage = event;
   }
 
 }

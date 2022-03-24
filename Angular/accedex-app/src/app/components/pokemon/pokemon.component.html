@@ -13,7 +13,8 @@
   <ng-template #pokemon>
     <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="container my-5">
       <div *ngIf="alert" class="container">
-        <app-alert (alertVisibility)="getAlertVisibility($event)" mensaje="{{ alertMessage }}" color="{{ alertColor }}"></app-alert>
+        <app-alert (alertVisibility)="getAlertVisibility($event)" mensaje="{{ alertMessage }}" color="{{ alertColor }}">
+        </app-alert>
       </div>
 
       <div class="row">
@@ -35,7 +36,7 @@
         <div class="row py-4">
           <div class="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center">
             <span class="mr-3 text-center">
-              <mdb-carousel [class]="'alert-dark'" [isControls]="true" [animation]="'slide'" width="300" height="300">
+              <mdb-carousel [class]="'alert-dark rounded'" [isControls]="true" [animation]="'slide'" width="300" height="300">
                 <mdb-carousel-item>
                   <img class="d-block w-100" src="{{ pokemonsAPI.pokemon.getUrl() }}" alt="First slide">
                 </mdb-carousel-item>

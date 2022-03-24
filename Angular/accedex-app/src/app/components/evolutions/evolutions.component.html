@@ -13,15 +13,17 @@
   <ng-template #evolutions>
     <div *ngIf="!evolutionsAPI.noDataFound; else noEvolutionData" class="container my-5">
       <div class="row">
-        <h1><span class="font-weight-bold">Evolutions</span></h1>
+        <h1><span>Evolutions</span></h1>
       </div>
 
       <div class="row mt-4">
-        <mdb-carousel *ngFor="let evolution of evolutionsAPI.evolutions" [class]="'alert-dark'" [isControls]="true"
-          [animation]="'slide'" width="300" height="300">
-          <mdb-carousel-item *ngFor="let pokemon of evolution.getSimplePokemons()" [class]="'hand_above'">
+        <mdb-carousel *ngFor="let evolution of evolutionsAPI.evolutions | paginate: config"
+          [class]="'alert-dark pt-3 rounded'" [isControls]="true" [animation]="'slide'" width="300" height="300">
+          <mdb-carousel-item *ngFor="let pokemon of evolution.getSimplePokemons()"
+            [class]="'hand_above justify-content-center'">
 
-            <div class="card mb-3" style="min-width: 80%;" [routerLink]="['/pokemon', pokemon.getId()]">
+            <div class="card mb-5" style="min-width: 80%; border-radius: 40px; cursor: pointer;"
+              [routerLink]="['/pokemon', pokemon.getId()]">
               <div class="row g-0">
                 <div class="col-md-4">
                   <img
@@ -32,7 +34,7 @@
                   <div class="card-body">
                     <h5 class="card-title text-capitalize fw-bold">{{pokemon.getName()}}</h5>
                     <p class="card-text text-capitalize">
-                      Mostrar aqui getEvolutionDetails
+                      Mostrar aqui getEvolutionDetails {{ pokemon.getEvolutionDetails() }}
                     </p>
                     <p class="card-text">
                       <small class="text-muted">
@@ -48,6 +50,10 @@
         </mdb-carousel>
       </div>
 
+      <div class="d-flex justify-content-center pt-3">
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChanged($event)"
+          [responsive]="true"></pagination-controls>
+      </div>
     </div>
   </ng-template>
 

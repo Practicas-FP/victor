@@ -25,7 +25,7 @@
     <div class="container">
       <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="row">
         <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemonsAPI.pokemons"
-          class="col-12 col-md-6 col-lg-4 mb-2 hand_above">
+          class="col-12 col-md-6 col-lg-4 mb-2 hand_above hover-shadow">
           <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
             <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
             <div>

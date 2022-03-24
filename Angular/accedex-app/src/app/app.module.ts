@@ -13,6 +13,7 @@ import { AlertComponent } from './components/alert/alert.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { PokemonIdGuard } from './guards/pokemon/pokemon-id.guard';
 import { EvolutionsComponent } from './components/evolutions/evolutions.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    NgxPaginationModule,
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     MDBBootstrapModule.forRoot(),
     NgCircleProgressModule.forRoot({
