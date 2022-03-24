@@ -12,7 +12,7 @@ export class PokemonsService {
   pokemons: Pokemon[] = [];
   private nextOffset: number = 0;
   private previousOffset: number = 0;
-  private limit: number = 12
+  private limit: number = 12;
   loadingData: boolean = true;
   noDataFound: boolean = false;
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EvolutionsService } from 'src/app/services/evolutions.service';
+import { PokemonsService } from 'src/app/services/pokemons.service';
 
 @Component({
   selector: 'app-evolutions',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EvolutionsComponent implements OnInit {
 
-  constructor() { }
+  evolutionsAPI: EvolutionsService;
+  pokemonsAPI: PokemonsService;
+
+  constructor(evolutionsAPI: EvolutionsService, pokemonsAPI: PokemonsService) {
+    this.evolutionsAPI = evolutionsAPI;
+    this.pokemonsAPI = pokemonsAPI;
+  }
 
   ngOnInit() {
+    this.evolutionsAPI.getEvolutions(0);
   }
 
 }
