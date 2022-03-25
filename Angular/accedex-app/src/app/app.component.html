@@ -23,6 +23,8 @@
         <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
           [(ngModel)]="pokemonSearch">
         <a class="btn btn-outline-success" [routerLink]="['/pokemon', pokemonSearch]">Search</a>
+
+        <a *ngIf="authService.isLoggedIn === true" class="btn btn-outline-danger ms-5" href="" (click)="authService.SignOut()">SignOut</a>
       </div>
     </div>
   </div>

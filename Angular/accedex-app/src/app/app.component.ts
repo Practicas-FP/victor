@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 import { PokemonsService } from './services/pokemons.service';
 
 @Component({
@@ -11,6 +12,6 @@ export class AppComponent {
   title = 'Accedex';
   pokemonSearch: string;
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
 }

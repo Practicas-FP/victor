@@ -18,7 +18,6 @@ export class AlertComponent implements OnInit {
 
   setAlertVisibility() {
     this.alertVisibility.emit(false);
-    console.log('dentro del hijo')
   }
 
 }

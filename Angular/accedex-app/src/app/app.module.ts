@@ -18,13 +18,27 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { PokemonsService } from './services/pokemons.service';
 import { EvolutionsService } from './services/evolutions.service';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { LoginRegisterComponent } from './components/auth/login-register/login-register.component';
+import { AuthService } from './services/auth.service';
+import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
+import { AuthGuard } from './interceptors/auth.guard';
+import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
-  { path: '', component: PokedexComponent },
-  { path: 'pokedex', component: PokedexComponent },
-  { path: 'evolutions', component: EvolutionsComponent },
-  { path: 'pokemon/:id', component: PokemonComponent, canActivate: [PokemonIdGuard] },
+  { path: '', redirectTo: '/pokedex', pathMatch: 'full' },
+  { path: 'pokedex', component: PokedexComponent, canActivate: [AuthGuard] },
+  { path: 'evolutions', component: EvolutionsComponent, canActivate: [AuthGuard] },
+  { path: 'pokemon/:id', component: PokemonComponent, canActivate: [AuthGuard, PokemonIdGuard] },
+  { path: 'login-register', component: LoginRegisterComponent },
+  { path: 'verify-email', component: VerifyEmailComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', component: NotFoundComponent }
 ];
 
@@ -36,13 +50,16 @@ const routes: Routes = [
     NotFoundComponent,
     PokedexComponent,
     AlertComponent,
-    EvolutionsComponent
+    EvolutionsComponent,
+    LoginRegisterComponent,
+    VerifyEmailComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     NgxPaginationModule,
-    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
     MDBBootstrapModule.forRoot(),
     NgCircleProgressModule.forRoot({
       radius: 100,
@@ -51,11 +68,18 @@ const routes: Routes = [
       outerStrokeColor: "#78C000",
       innerStrokeColor: "#C7E596",
       animationDuration: 300
-    })
+    }),
+
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
   ],
   providers: [
     PokemonsService,
     EvolutionsService,
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
