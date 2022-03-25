@@ -16,6 +16,16 @@ export class PokemonsService {
   loadingData: boolean = true;
   noDataFound: boolean = false;
 
+  private loaderServiceActive: boolean = false;
+
+  show() {
+    this.loadingData = true;
+  }
+
+  hide() {
+    this.loadingData = false;
+  }
+
   findPokemonById(index: number) {
     return this.pokemons.find(pokemon => pokemon.getId() === index);
   }
@@ -40,7 +50,7 @@ export class PokemonsService {
     (async () => {
       const api = new PokemonClient();
 
-      this.loadingData = true;
+      if (!this.loaderServiceActive) this.loadingData = true;
 
       await api
         .listPokemons(offset, this.limit)
@@ -59,7 +69,7 @@ export class PokemonsService {
           console.error(error);
         })
         .finally(() => {
-          this.loadingData = false;
+          if (!this.loaderServiceActive) this.loadingData = false;
 
           this.pokemons.sort(function (a, b) {
             return a.getId() - b.getId();
@@ -93,7 +103,7 @@ export class PokemonsService {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => this.loadingData = false);
+        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false});
     })();
   }
 
@@ -108,7 +118,7 @@ export class PokemonsService {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => this.loadingData = false)
+        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false})
     })();
   }
 
@@ -123,7 +133,7 @@ export class PokemonsService {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => this.loadingData = false);
+        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false});
     })();
   }
 

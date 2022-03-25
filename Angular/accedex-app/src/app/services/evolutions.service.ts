@@ -14,6 +14,14 @@ export class EvolutionsService {
   noDataFound: boolean = false;
   evolutions: Evolution[] = [];
 
+  show() {
+    this.loadingData = true;
+  }
+
+  hide() {
+    this.loadingData = false;
+  }
+
   getEvolutions(offset: number) {
     this.clearPokemons();
 
