@@ -1,4 +1,4 @@
-import { ChainLink } from "pokenode-ts";
+import { ChainLink, NamedAPIResource } from "pokenode-ts";
 
 class SimplePokemon {
 
@@ -35,10 +35,15 @@ export class Evolution {
 
   private id: number;
   private simplePokemons: SimplePokemon[] = [];
+  private babyTriggerItem: string;
 
-  constructor(id: number, chain: ChainLink) {
+  constructor(id: number, chain: ChainLink, babyTriggerItem: NamedAPIResource | null) {
 
     this.id = id;
+
+    if (babyTriggerItem) {
+      this.babyTriggerItem = babyTriggerItem.name;
+    }
 
     // Primera evolución
     this.simplePokemons.push(new SimplePokemon(
@@ -68,7 +73,7 @@ export class Evolution {
       });
     });
 
-    console.log(this)
+   /*  console.log(this) */
   }
 
   public getId() {
@@ -77,5 +82,9 @@ export class Evolution {
 
   public getSimplePokemons() {
     return this.simplePokemons;
+  }
+
+  public getBabyTriggerItem() {
+    return this.babyTriggerItem;
   }
 }

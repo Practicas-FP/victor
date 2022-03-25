@@ -34,7 +34,12 @@
                   <div class="card-body">
                     <h5 class="card-title text-capitalize fw-bold">{{pokemon.getName()}}</h5>
                     <p class="card-text text-capitalize">
-                      Mostrar aqui getEvolutionDetails {{ pokemon.getEvolutionDetails() }}
+                      <span *ngIf="pokemon.getEvolutionNumber() === 1 && evolution.getBabyTriggerItem()">
+                        Trigger Item: {{ evolution.getBabyTriggerItem() }}
+                      </span>
+                    </p>
+                    <p class="card-text text-capitalize">
+                      (Mostrar aqui getEvolutionDetails) {{ pokemon.getEvolutionDetails() }}
                     </p>
                     <p class="card-text">
                       <small class="text-muted">

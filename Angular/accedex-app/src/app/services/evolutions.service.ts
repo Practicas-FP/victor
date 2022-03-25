@@ -47,12 +47,12 @@ export class EvolutionsService {
 
       await
         api.getEvolutionChainById(id)
-          .then(data => this.evolutions.push(new Evolution(data.id, data.chain)))
+          .then(data => this.evolutions.push(new Evolution(data.id, data.chain, data.baby_trigger_item)))
           .catch(error => {
             this.noDataFound = true;
             console.error(error);
           })
-          .then(() => this.loadingData = false);
+          .finally(() => this.loadingData = false);
     })();
   }
 
