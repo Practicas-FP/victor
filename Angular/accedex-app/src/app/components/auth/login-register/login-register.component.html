@@ -62,8 +62,22 @@
               </div>
 
               <p class="text-inverse text-center">
-                <a *ngIf="login" [routerLink]="['/forgot-password']" class="text-primary">Forgot Password?</a>
+                <a *ngIf="login" (click)="resetEmail = !resetEmail" class="text-primary">Forgot Password?</a>
               </p>
+
+              <div *ngIf="resetEmail" class="row mt-5">
+                <div class="col-7">
+                  <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" #passwordResetEmail>
+                    <small class="form-text text-muted">Please enter your email address to request a password
+                      reset</small>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input type="submit" class="btn btn-primary" value="Reset Password"
+                    (click)="resetPassword(passwordResetEmail.value)">
+                </div>
+              </div>
             </div>
           </div>
         </form>

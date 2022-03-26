@@ -12,6 +12,7 @@ export class LoginRegisterComponent implements OnInit {
   alert: boolean = false;
   alertMessage: string | Promise<any> = 'Test message';
   alertColor: string = 'alert-warning';
+  resetEmail: boolean = false;
 
   constructor(public authService: AuthService) { }
 
@@ -20,5 +21,10 @@ export class LoginRegisterComponent implements OnInit {
 
   getAlertVisibility(visible: boolean) {
     this.alert = visible;
+  }
+
+  resetPassword(passwordResetEmail: string) {
+    this.authService.ForgotPassword(passwordResetEmail); 
+    this.resetEmail === false;
   }
 }

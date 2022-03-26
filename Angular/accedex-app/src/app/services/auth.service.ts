@@ -106,6 +106,8 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      name: user.displayName.split(' ')[0],
+      surnames: user.displayName.split(' ')[1] + ' ' + user.displayName.split(' ')[2]
     };
     return userRef.set(userData, {
       merge: true,

@@ -28,7 +28,7 @@ import { LoginRegisterComponent } from './components/auth/login-register/login-r
 import { AuthService } from './services/auth.service';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { AuthGuard } from './interceptors/auth.guard';
-import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
+import { UserComponent } from './components/auth/user/user.component';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
@@ -38,7 +38,7 @@ const routes: Routes = [
   { path: 'pokemon/:id', component: PokemonComponent, canActivate: [AuthGuard, PokemonIdGuard] },
   { path: 'login-register', component: LoginRegisterComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent }
 ];
 
@@ -53,7 +53,7 @@ const routes: Routes = [
     EvolutionsComponent,
     LoginRegisterComponent,
     VerifyEmailComponent,
-    ForgotPasswordComponent
+    UserComponent
   ],
   imports: [
     BrowserModule,
