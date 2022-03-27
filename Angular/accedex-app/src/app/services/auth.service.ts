@@ -35,10 +35,9 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['pokedex']);
-        });
         this.SetUserData(result.user);
+        //this.router.navigate(['pokedex']);
+        this.router.navigateByUrl('/pokedex');
       })
       .catch((error) => {
         window.alert(error.message); // TODO cambiar los alerts por mensajes en la pantalla
@@ -63,7 +62,7 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-        this.router.navigate(['verify-email']);
+        this.router.navigateByUrl('/verify-email');
       });
   }
 
@@ -71,10 +70,7 @@ export class AuthService {
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider())
       .then((res: any) => {
-        this.router.navigate(['pokedex']);
-        if (res) {
-          this.router.navigate(['pokedex']);
-        }
+        this.router.navigateByUrl('/pokedex');
       })
       .catch((error) => {
         window.alert(error);
@@ -87,7 +83,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['pokedex']);
+          this.router.navigateByUrl('/pokedex');
         });
         this.SetUserData(result.user);
       })
@@ -105,9 +101,7 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-      name: user.displayName.split(' ')[0],
-      surnames: user.displayName.split(' ')[1] + ' ' + user.displayName.split(' ')[2]
+      emailVerified: user.emailVerified
     };
     return userRef.set(userData, {
       merge: true,
@@ -118,7 +112,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['login-register']);
+      this.router.navigateByUrl('/login-register');
     });
   }
 
@@ -139,5 +133,4 @@ export class AuthService {
         window.alert(error);
       });
   }
-
 }
