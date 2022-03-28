@@ -14,7 +14,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { PokemonIdGuard } from './guards/pokemon/pokemon-id.guard';
 import { EvolutionsComponent } from './components/evolutions/evolutions.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { PokemonsService } from './services/pokemons.service';
 import { EvolutionsService } from './services/evolutions.service';
@@ -29,6 +29,7 @@ import { AuthService } from './services/auth.service';
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { AuthGuard } from './interceptors/auth.guard';
 import { UserComponent } from './components/auth/user/user.component';
+import { DataService } from './services/data.service';
 
 const routes: Routes = [
   //{ path: '', component: HomeComponent },
@@ -58,6 +59,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     NgxPaginationModule,
     RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
     MDBBootstrapModule.forRoot(),
@@ -80,7 +82,8 @@ const routes: Routes = [
     PokemonsService,
     EvolutionsService,
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    DataService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PokemonClient } from 'pokenode-ts';
+import { map } from 'rxjs';
+import { FavoritePokemon } from '../models/pokemon-favorite.model';
 import { PokemonType } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,7 @@ export class PokemonsService {
   private limit: number = 12;
   loadingData: boolean = true;
   noDataFound: boolean = false;
+  pokemonesFavorites: FavoritePokemon[] = [];
 
   private loaderServiceActive: boolean = false;
 
@@ -42,7 +46,7 @@ export class PokemonsService {
     this.pokemons = [];
   }
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   getPokemons(offset: number) {
     this.clearPokemons();
@@ -97,13 +101,15 @@ export class PokemonsService {
             [],
             [],
             null,
-            0
+            0,
+            false,
+            ''
           )))
         .catch((error) => {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false});
+        .finally(() => { if (!this.loaderServiceActive) this.loadingData = false });
     })();
   }
 
@@ -118,7 +124,7 @@ export class PokemonsService {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false})
+        .finally(() => { if (!this.loaderServiceActive) this.loadingData = false })
     })();
   }
 
@@ -133,7 +139,7 @@ export class PokemonsService {
           this.noDataFound = true;
           console.error(error);
         })
-        .finally(() => {if (!this.loaderServiceActive) this.loadingData = false});
+        .finally(() => { if (!this.loaderServiceActive) this.loadingData = false });
     })();
   }
 
@@ -157,23 +163,51 @@ export class PokemonsService {
   }
 
   private getJSONDataPokemo(data: any) {
-    this.pokemon = new Pokemon(
-      data.id,
-      data.name,
-      data.sprites.front_default,
-      data.types,
-      true,
-      data.abilities,
-      data.height,
-      data.weight,
-      data.stats,
-      data.moves,
-      data.sprites,
-      data.base_experience
-    );
+    // comprobra aqui si es favorito o no
+    this.dataService.getListFavoritePokemons().snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const pokeFav: FavoritePokemon = {
+            $key: a.key,
+            pokemonId: a.payload.val()?.pokemonId
+          };
 
-    data.types.forEach((type: any) => {
-      this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
+          return pokeFav;
+        })
+      )
+    ).subscribe(pokesFavs => {
+
+      pokesFavs.forEach(pokeFav => {
+        if (pokeFav.pokemonId) {
+          this.pokemonesFavorites.push({
+            $key: pokeFav.$key,
+            pokemonId: pokeFav.pokemonId
+          });
+        }
+      });
+
+      const found = this.pokemonesFavorites.find(pokeFav => pokeFav.pokemonId === data.id);
+
+      this.pokemon = new Pokemon(
+        data.id,
+        data.name,
+        data.sprites.front_default,
+        data.types,
+        true,
+        data.abilities,
+        data.height,
+        data.weight,
+        data.stats,
+        data.moves,
+        data.sprites,
+        data.base_experience,
+        found ? true : false,
+        found ? found.$key : ''
+      );
+
+      data.types.forEach((type: any) => {
+        this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
+      });
     });
   }
 }

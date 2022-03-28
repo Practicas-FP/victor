@@ -17,13 +17,18 @@ export class Pokemon {
   private sprintes: string[] = [];
   private baseExperience: number;
   private typesDamage: PokemonType[] = [];
+  private favorite: boolean;
+  private favoriteKey: string;
 
-  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null, baseExperience: number) {
+  constructor(id: number, name: string, url: string | null, types: any[], moreData: boolean, abilities: any[], height: number, weight: number, stats: any[], moves: any[], sprites: PokemonSprites | null, baseExperience: number, favorite: boolean, favoriteKey: string | undefined | null) {
     this.id = id;
     this.name = name;
     this.url = url;
     types.forEach(type => this.types.push(type.type.name));
     this.color = this.setColor(this.types[0]);
+    this.favorite = favorite;
+
+    if (favoriteKey) this.favoriteKey = favoriteKey;
 
     // More data
     if (moreData) {
@@ -111,6 +116,22 @@ export class Pokemon {
 
   public getColorByType(type: string) {
     return this.setColor(type);
+  }
+
+  public getFavorite() {
+    return this.favorite;
+  }
+
+  public setFavorite(favorite: boolean) {
+    this.favorite = favorite;
+  }
+
+  public getFavoriteKey() {
+    return this.favoriteKey;
+  }
+
+  public setFavoriteKey(key: string) {
+    this.favoriteKey = key;
   }
 
   private setColor(color: string): string {

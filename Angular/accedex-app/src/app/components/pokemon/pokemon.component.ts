@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pokemon } from 'src/app/models/pokemon.model';
+import { DataService } from 'src/app/services/data.service';
 import { PokemonsService } from 'src/app/services/pokemons.service';
 
 @Component({
@@ -18,12 +18,14 @@ export class PokemonComponent implements OnInit {
   alertColor: string;
   pokemonsAPI: PokemonsService;
 
-  constructor(pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute) {
+  constructor(pokemonsAPI: PokemonsService, private router: Router, private route: ActivatedRoute, public dataService: DataService) {
     this.pokemonsAPI = pokemonsAPI;
   }
 
   ngOnInit() {
     this.getData(0);
+
+
   }
 
   previous() {
@@ -66,5 +68,16 @@ export class PokemonComponent implements OnInit {
         this.pokemonsAPI.getMoreDataPokemonById(this.id);
       }
     }
+  }
+
+  addFavorite() {
+    this.dataService.addFavoritePokemon(this.pokemonsAPI.pokemon.getId());
+    this.pokemonsAPI.pokemon.setFavorite(true);
+  }
+
+  removeFavorite() {
+    this.dataService.deleteFavoritePokemon(this.pokemonsAPI.pokemon.getFavoriteKey());
+    this.pokemonsAPI.pokemon.setFavorite(false);
+    this.pokemonsAPI.pokemon.setFavoriteKey('');
   }
 }
