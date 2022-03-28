@@ -49,7 +49,7 @@
       <div *ngIf="pokemonsAPI.pokemons.length" class="p-4 mb-3 bg-white rounded box-shadow w-100">
         <div class="container">
           <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="row">
-            <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemonsAPI.pokemons"
+            <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemonsAPI.pokemons | paginate: config"
               class="col-12 col-md-6 col-lg-4 mb-2 hand_above hover-shadow">
               <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
                 <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
@@ -69,6 +69,11 @@
               <div class="alert alert-danger w-100" role="alert">There are no pokemon</div>
             </div>
           </ng-template>
+        </div>
+
+        <div class="d-flex justify-content-center pt-3">
+          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChanged($event)"
+            [responsive]="true"></pagination-controls>
         </div>
       </div>
     </div>

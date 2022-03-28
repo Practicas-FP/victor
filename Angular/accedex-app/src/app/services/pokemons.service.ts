@@ -46,7 +46,9 @@ export class PokemonsService {
     this.pokemons = [];
   }
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {
+    this.getFavorites();
+  }
 
   getPokemons(offset: number) {
     this.clearPokemons();
@@ -163,6 +165,33 @@ export class PokemonsService {
   }
 
   private getJSONDataPokemo(data: any) {
+
+    const found = this.pokemonesFavorites.find(pokeFav => pokeFav.pokemonId === String(data.id));
+
+    this.pokemon = new Pokemon(
+      data.id,
+      data.name,
+      data.sprites.front_default,
+      data.types,
+      true,
+      data.abilities,
+      data.height,
+      data.weight,
+      data.stats,
+      data.moves,
+      data.sprites,
+      data.base_experience,
+      found ? true : false,
+      found ? found.$key : ''
+    );
+
+    data.types.forEach((type: any) => {
+      this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
+    });
+
+  }
+
+  getFavorites() {
     // comprobra aqui si es favorito o no
     this.dataService.getListFavoritePokemons().snapshotChanges().pipe(
       map(actions =>
@@ -171,6 +200,8 @@ export class PokemonsService {
             $key: a.key,
             pokemonId: a.payload.val()?.pokemonId
           };
+
+          //console.log(pokeFav)
 
           return pokeFav;
         })
@@ -184,29 +215,6 @@ export class PokemonsService {
             pokemonId: pokeFav.pokemonId
           });
         }
-      });
-
-      const found = this.pokemonesFavorites.find(pokeFav => pokeFav.pokemonId === data.id);
-
-      this.pokemon = new Pokemon(
-        data.id,
-        data.name,
-        data.sprites.front_default,
-        data.types,
-        true,
-        data.abilities,
-        data.height,
-        data.weight,
-        data.stats,
-        data.moves,
-        data.sprites,
-        data.base_experience,
-        found ? true : false,
-        found ? found.$key : ''
-      );
-
-      data.types.forEach((type: any) => {
-        this.getTypeDamageFromAndTo(parseInt(type.type.url.split('/')[6]));
       });
     });
   }
