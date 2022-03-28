@@ -77,6 +77,17 @@ export class AuthService {
       });
   }
 
+  // Sign in with Google
+  FacebookAuth() {
+    return this.AuthLogin(new auth.FacebookAuthProvider())
+      .then((res: any) => {
+        this.router.navigateByUrl('/pokedex');
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+
   // Auth logic to run auth providers
   AuthLogin(provider: any) {
     return this.afAuth
