@@ -1,0 +1,159 @@
+<div class="page-pokemon">
+
+  <div *ngIf="pokemonsAPI.loadingData; else pokemon" class="container">
+    <div class="my-5 row pt-5">
+      <div style="display: flex; justify-content: center;" class="col">
+        <circle-progress [percent]="95" [radius]="100" [outerStrokeWidth]="16" [innerStrokeWidth]="8"
+          [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'" [animation]="true" [animationDuration]="3000">
+        </circle-progress>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #pokemon>
+    <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="container my-5">
+      <div *ngIf="alert" class="container">
+        <app-alert (alertVisibility)="getAlertVisibility($event)" mensaje="{{ alertMessage }}" color="{{ alertColor }}">
+        </app-alert>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h1 class="font-weight-bold">#{{ pokemonsAPI.pokemon.getId() }}</h1>
+        </div>
+
+        <div class="col d-flex flex-row-reverse">
+          <button *ngIf="!pokemonsAPI.pokemon.getFavorite()" class="btn btn-outline-primary" (click)="addFavorite()"><i class="bi bi-heart-fill"></i></button>
+
+          <button *ngIf="pokemonsAPI.pokemon.getFavorite()" class="btn btn-outline-danger" (click)="removeFavorite()"><i class="bi bi-heart-fill"></i></button>
+        </div>
+      </div>
+
+      <div class="d-flex py-3">
+        <div class="p-2">
+          <button (click)="previous()" class="btn btn-primary" [disabled]="disabledPrevious"><i
+              class="bi bi-arrow-left"></i> Back</button>
+        </div>
+
+        <div class="p-2">
+          <button (click)="next()" class="btn btn-primary">Next <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row py-4">
+          <div class="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center">
+            <span class="mr-3 text-center">
+              <mdb-carousel [class]="'alert-dark rounded'" [isControls]="true" [animation]="'slide'" width="300"
+                height="300">
+                <mdb-carousel-item>
+                  <img class="d-block w-100" src="{{ pokemonsAPI.pokemon.getUrl() }}" alt="First slide">
+                </mdb-carousel-item>
+                <mdb-carousel-item *ngFor="let image of pokemonsAPI.pokemon.getSprintes()">
+                  <img class="d-block w-100" src="{{ image }}" alt="First slide">
+                </mdb-carousel-item>
+              </mdb-carousel>
+              <h2 class="mt-4 pb-3 text-capitalize"><span class="font-weight-bold">{{ pokemonsAPI.pokemon.getName()
+                  }}</span>
+              </h2>
+            </span>
+          </div>
+
+          <div class="col-12 col-lg-8" style="height: 100%">
+            <div class="pl-4 bg-white rounded box-shadow p-5">
+              <p class="font-weight-bold">Types: </p>
+
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item" *ngFor="let type of pokemonsAPI.pokemon.getTypesDamage()">
+                  <h2 class="accordion-header" id="flush-heading{{type.getName()}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      [attr.data-bs-target]="'#flush-collapse'+type.getName()" aria-expanded="false"
+                      aria-controls="flush-collapse{{type.getName()}">
+                      <span style="background-color: {{ pokemonsAPI.pokemon.getColorByType(type.getName()) }} ;"
+                        class="color-white info_span p-1 px-5">
+                        {{type.getName()}}
+                      </span>
+                    </button>
+                  </h2>
+                  <div id="flush-collapse{{type.getName()}}" class="accordion-collapse collapse"
+                    [attr.aria-labelledby]="'flush-heading'+type.getName()" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                      <p>
+                        <span class="font-weight-bold">Double Damage From </span>
+                        <span *ngFor="let damage of type.getDoubleDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Double Damage To </span>
+                        <span *ngFor="let damage of type.getDoubleDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Half Damage From </span>
+                        <span *ngFor="let damage of type.getHalfDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">Half Damage To </span>
+                        <span *ngFor="let damage of type.getHalfDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">No Damage From </span>
+                        <span *ngFor="let damage of type.getNoDamageFrom()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+
+                      <p>
+                        <span class="font-weight-bold">No Damage To </span>
+                        <span *ngFor="let damage of type.getNoDamageTo()"
+                          style="color: {{ pokemonsAPI.pokemon.getColorByType(damage) }} ;">- {{damage}} </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="mt-2">
+                <span class="font-weight-bold">Height: </span> {{ pokemonsAPI.pokemon.getHeight() + ' |
+                '}} <span class="font-weight-bold">Weight:</span> {{ pokemonsAPI.pokemon.getWeight() }}
+              </p>
+              <p><span class="font-weight-bold">Abilities:</span> {{ pokemonsAPI.pokemon.getAbilities() }}</p>
+              <p><span class="font-weight-bold">Base experience:</span> {{ pokemonsAPI.pokemon.getBaseExperience() }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row pt-4">
+          <h2>Stats</h2>
+          <div class="progress mt-3" style="height: 25px;" *ngFor="let stat of pokemonsAPI.pokemon.getStats()">
+            <div class="progress-bar" role="progressbar"
+              style="width: {{ stat.getBaseStat() }}%; background-color: {{ pokemonsAPI.pokemon.getColor() }};"
+              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+              <span class="text-uppercase">{{stat.getName() + ' : ' }} <span class="font-weight-bold">{{
+                  stat.getBaseStat() }}</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pt-4 justify-content-center">
+        <h2>Moves</h2>
+        <span *ngFor="let move of pokemonsAPI.pokemon.getMoves()" class="color-white info_move me-2 mt-2"
+          style="background-color: {{ pokemonsAPI.pokemon.getColor() }};">{{ move
+          }}</span>
+      </div>
+    </div>
+
+    <ng-template #noPokemonData>
+      <div class="container my-5">
+        <div class="alert alert-danger w-100" role="alert">No se ha encontrado el Pokémon</div>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

@@ -1,0 +1,23 @@
+<div class="page-verify-email">
+  <div class="container my-5">
+
+    <h3>Registration completed</h3>
+
+    <div class="form-group mt-5" *ngIf="authService.userData as user">
+      <p>- We have sent a confirmation email to <span class="fw-bold">{{user.email}}</span>.</p>
+      <p>- Please check your email and click on the link to verfiy your email address.</p>
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" (click)="authService.SendVerificationMail()">
+        <i class="fas fa-redo-alt"></i> Resend verification email
+      </button>
+
+      <button type="button" class="btn btn-success ms-3" [routerLink]="['/login-register']">
+        Log In Now
+      </button>
+    </div>
+
+
+  </div>
+</div>

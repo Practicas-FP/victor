@@ -1,0 +1,81 @@
+<div class="page-users">
+  <div class="container my-5">
+    <div class="row pt-5">
+      <h1>Profile</h1>
+    </div>
+
+    <!--         <div class="row py-4">
+            <a href="" class="btn btn-lg btn-primary">Back</a>
+        </div> -->
+
+    <div class="row py-4" *ngIf="authService.userData as user; else noUserData">
+      <div class="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center">
+        <span class="mr-3 text-center">
+          <img src="{{user.photoURL ? user.photoURL : 'https://via.placeholder.com/300x300.png?text=No+image'}}"
+            alt="Image profile" width="300" height="300" style="object-fit: cover">
+          <h2 class="mt-4 pb-3">Hello, <span class="fw-bold">{{ user.displayName ? user.displayName.split(' ')[0] :
+              'Null' }}</span></h2>
+        </span>
+      </div>
+
+      <div class="col-12 col-lg-8" style="height: 100%">
+        <div class="pl-4 bg-white rounded box-shadow p-5">
+          <p><span class="fw-bold">Name:</span> {{ user.displayName ? user.displayName.split(' ')[0] : 'Null' }}</p>
+          <p><span class="fw-bold">Surnames:</span> {{ user.displayName ? user.displayName.split(' ')[1] + ' ' +
+            user.displayName.split(' ')[2] : 'Null' }}</p>
+          <p><span class="fw-bold">Email:</span> {{user.email }}</p>
+          <p><span class="fw-bold">User ID:</span> {{user.uid }}</p>
+          <p><span class="fw-bold">Email Verified:</span> {{ user.emailVerified ? 'Yes' : 'No' }}</p>
+
+          <button class="btn btn-lg btn-danger" (click)="authService.SignOut()">SignOut</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noUserData>
+      <div class="row py-4">
+        <div class="alert alert-danger" role="alert">
+          No user information found
+        </div>
+      </div>
+    </ng-template>
+
+
+    <div class="row pt-5">
+      <h3>Favorite Pokemon</h3>
+    </div>
+
+    <div class="row">
+      <div *ngIf="pokemonsAPI.pokemons.length" class="p-4 mb-3 bg-white rounded box-shadow w-100">
+        <div class="container">
+          <div *ngIf="!pokemonsAPI.noDataFound; else noPokemonData" class="row">
+            <div [routerLink]="['/pokemon', pokemon.getId()]" *ngFor="let pokemon of pokemonsAPI.pokemons | paginate: config"
+              class="col-12 col-md-6 col-lg-4 mb-2 hand_above hover-shadow">
+              <div class="card" style="background-color: {{ pokemon.getColor() }} ;">
+                <img class="card_bg" src="../../../assets/images/pokeball-background.png" alt="pokeball-card" />
+                <div>
+                  <h2 class="color-white card_info_h2 mt-3">#{{ pokemon.getId() + ' ' + pokemon.getName() }}</h2>
+                  <span class="color-white card_info_span">{{ pokemon.getTypes()[0] }}</span>
+                </div>
+                <div class="card_img">
+                  <img src="{{ pokemon.getUrl() }}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noPokemonData>
+            <div class="row">
+              <div class="alert alert-danger w-100" role="alert">There are no pokemon</div>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="d-flex justify-content-center pt-3">
+          <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="pageChanged($event)"
+            [responsive]="true"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

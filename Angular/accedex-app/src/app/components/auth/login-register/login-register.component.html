@@ -1,0 +1,93 @@
+<section class="login-block">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div *ngIf="alert" class="container">
+          <app-alert (alertVisibility)="getAlertVisibility($event)" mensaje="{{ alertMessage }}"
+            color="{{ alertColor }}">
+          </app-alert>
+        </div>
+
+        <form class="md-float-material form-material" action="#" method="POST">
+          <div class="auth-box card">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="text-center heading">{{ login ? 'Log In' : 'Register' }}</h3>
+                </div>
+              </div>
+
+              <div class="form-group form-primary">
+                <input type="email" class="form-control" value="" placeholder="Email" #email>
+              </div>
+              <div class="form-group form-primary">
+                <input type="password" class="form-control" value="" placeholder="Password" #password>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button *ngIf="login" type="submit" class="btn btn-primary btn-md btn-block m-b-20"
+                    (click)="authService.LogIn(email.value, password.value)">Log In</button>
+                  <button *ngIf="!login" type="submit" class="btn btn-primary btn-md btn-block m-b-20"
+                    (click)="authService.Register(email.value, password.value)">Register</button>
+                </div>
+              </div>
+
+              <div class="or-container">
+                <div class="line-separator"></div>
+                <div class="or-label">or</div>
+                <div class="line-separator"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <a class="btn btn-lg btn-google btn-block btn-outline" (click)="authService.GoogleAuth()">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png"> Sign in with Google
+                  </a>
+                </div>
+
+                <!--div class="col-md-12 mt-2">
+                  <a class="btn btn-lg btn-google btn-block btn-outline" (click)="authService.FacebookAuth()">
+                    <img src="https://img.icons8.com/color/16/000000/facebook.png"> Sign in with Facebook
+                  </a>
+                </div-->
+              </div>
+
+              <br>
+
+              <p class="text-inverse text-center">
+                {{ login ? 'You still do not have an account?' : 'Already have an account?' }}
+
+                <a *ngIf="login" (click)="login = false" class="text-primary">Register</a>
+                <a *ngIf="!login" (click)="login = true" class="text-primary">Log In</a>
+              </p>
+
+              <div class="or-container">
+                <div class="line-separator"></div>
+              </div>
+
+              <p class="text-inverse text-center">
+                <a *ngIf="login" (click)="resetEmail = !resetEmail" class="text-primary">Forgot Password?</a>
+              </p>
+
+              <div *ngIf="resetEmail" class="row mt-5">
+                <div class="col-7">
+                  <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" #passwordResetEmail>
+                    <small class="form-text text-muted">Please enter your email address to request a password
+                      reset</small>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <input type="submit" class="btn btn-primary" value="Reset Password"
+                    (click)="resetPassword(passwordResetEmail.value)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
