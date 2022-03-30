@@ -9,17 +9,17 @@
     <ion-title class="ion-text-capitalize" *ngIf="pokeAPI.pokemon"><b>#{{ pokeAPI.pokemon.id }}</b> {{ pokeAPI.pokemon.name }}</ion-title>
 
     <!-- Btns Next & Prev -->
-    <ion-button slot="end" color="light" (click)="nextPoke()">
+    <ion-button slot="end" color="light" (click)="pokeAPI.prevPoke()" [disabled]="pokeAPI.pokemon ? pokeAPI.pokemon.id > 1 ? false : true : false">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="prevPoke()">
+    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.nextPoke()">
       <ion-icon name="arrow-forward-outline"></ion-icon>
     </ion-button>
 
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content >
 
   <!-- Loading data -->
   <div id="container" *ngIf="pokeAPI.loadingData">
@@ -57,7 +57,7 @@
     <!-- Types -->
     <ion-grid class="ion-padding">
       <ion-row class="ion-align-items-center">
-        <ion-col *ngFor="let type of pokeAPI.pokemon.types" class="info-type {{type}}" size="{{ 12 / pokemon.types.length }}">
+        <ion-col *ngFor="let type of pokeAPI.pokemon.types" class="info-type {{type}}" size="{{ 12 / pokeAPI.pokemon.types.length }}">
           <ion-text>{{ type }} <ion-icon name="arrow-down-circle-outline"></ion-icon></ion-text>
         </ion-col>
       </ion-row>

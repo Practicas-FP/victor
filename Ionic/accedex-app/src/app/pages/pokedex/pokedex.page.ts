@@ -11,7 +11,7 @@ export class PokedexPage implements OnInit {
   constructor(public pokeAPI: PokeapiService) { }
 
   ngOnInit() {
-
+    this.pokeAPI.getPokemons(0, 12);
   }
 
 }

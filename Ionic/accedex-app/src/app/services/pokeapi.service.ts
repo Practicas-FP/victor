@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { PokemonClient } from 'pokenode-ts';
+import { PokemonTypesDamage } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
 
 @Injectable({
@@ -7,7 +10,7 @@ import { Pokemon } from '../models/pokemon.model';
 })
 export class PokeapiService {
 
-  private limit = 12;
+  private limit: number;
 
   pokemon: Pokemon;
   pokemons: Pokemon[] = [];
@@ -19,13 +22,174 @@ export class PokeapiService {
 
   pokeFavs: any[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   nextPage() {
-
+    this.getPokemons(this.nextOffset, this.limit);
   }
 
   prevPage() {
+    this.getPokemons(this.prevOffset, this.limit);
+  }
 
+  nextPoke() {
+    this.router.navigateByUrl(`/pokemon/${this.pokemon.id + 1}`);
+  }
+
+  prevPoke() {
+    if (this.pokemon.id > 1) {
+      this.router.navigateByUrl(`/pokemon/${this.pokemon.id - 1}`);
+    }
+  }
+
+  clearPokemon() {
+    this.pokemon = null;
+  }
+
+  clearPokemons() {
+    this.pokemons = [];
+  }
+
+  getPokemons(offset: number, limit: number) {
+    this.limit = limit;
+    this.clearPokemons();
+    this.loadingData = true;
+
+    (async () => {
+      const api = new PokemonClient();
+
+      this.loadingData = true;
+
+      await api
+        .listPokemons(offset, limit)
+        .then((data) => {
+          if (data.next) {
+            this.nextOffset = Number(data.next.substring(data.next.search('=') + 1, data.next.search('&')));
+          }
+
+          if (data.previous) {
+            this.prevOffset = Number(data.previous.substring(data.previous.search('=') + 1, data.previous.search('&')));
+          }
+
+          if (data.results) {
+            data.results.forEach(pokemon => this.getPokemonForCardById(Number(pokemon.url.split('/')[6])));
+          }
+        })
+        .catch((error) => {
+          this.noDataFound = true;
+          this.loadingData = false;
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadingData = false;
+        });
+    })();
+  }
+
+  private getPokemonForCardById(id: number) {
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getPokemonById(id)
+        .then((data) =>
+          this.pokemons.push(new Pokemon(
+            data.id,
+            data.name,
+            data.sprites.front_default,
+            data.types,
+            false, [], 0, 0, [], [], null, 0, false, ''
+          )))
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        });
+    })();
+  }
+
+  getPokemonById(id: number) {
+    this.clearPokemon();
+    this.loadingData = true;
+
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getPokemonById(id)
+        .then((data) => this.getJSONDataPokemon(data))
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadingData = false;
+        });
+    })();
+  }
+
+  getPokemonByName(name: string) {
+    this.clearPokemon();
+    this.loadingData = true;
+
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getPokemonByName(name)
+        .then((data) => this.getJSONDataPokemon(data))
+        .catch((error) => {
+          this.noDataFound = true;
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadingData = false;
+        });
+    })();
+  }
+
+  private getJSONDataPokemon(data: any) {
+
+    //const found = this.pokemonesFavorites.find(pokeFav => pokeFav.pokemonId === String(data.id));
+    const found = null;
+
+    this.pokemon = new Pokemon(
+      data.id,
+      data.name,
+      data.sprites.front_default,
+      data.types,
+      true,
+      data.abilities,
+      data.height,
+      data.weight,
+      data.stats,
+      data.moves,
+      data.sprites,
+      data.base_experience,
+      found ? true : false,
+      found ? found.$key : ''
+    );
+
+    data.types.forEach((type: any) => {
+      this.getTypeDamageFromAndTo(Number(type.type.url.split('/')[6]));
+    });
+  }
+
+  private getTypeDamageFromAndTo(id: number) {
+    (async () => {
+      const api = new PokemonClient();
+
+      await api
+        .getTypeById(id)
+        .then((data) => this.pokemon.setTypeDamage(new PokemonTypesDamage(
+          data.name,
+          data.damage_relations.double_damage_from,
+          data.damage_relations.double_damage_to,
+          data.damage_relations.half_damage_from,
+          data.damage_relations.half_damage_to,
+          data.damage_relations.no_damage_from,
+          data.damage_relations.no_damage_to
+        )))
+        .catch((error) => console.log(error));
+    })();
   }
 }

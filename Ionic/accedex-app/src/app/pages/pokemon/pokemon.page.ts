@@ -11,43 +11,6 @@ import { PokeapiService } from 'src/app/services/pokeapi.service';
   styleUrls: ['./pokemon.page.scss'],
 })
 export class PokemonPage implements OnInit {
-  /**
-   * Datos de prueba
-   */
-  pokemon = {
-    id: 1,
-    name: 'bulbasaur',
-    urls: [
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png',
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png',
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png'
-    ],
-    favorite: false,
-    types: [
-      'grass',
-      'poison'
-    ],
-    height: 7,
-    weight: 69,
-    abilities: [
-      'overgrow',
-      'chlorophyll'
-    ],
-    baseExperience: 64,
-    typeDamage: {
-      doubleDamageFrom: [
-        'flying',
-        'poison' ,
-        'bug',
-        'fire',
-        'ice'
-      ]
-    },
-    moves: ['razor-Wind','swords-Dance','cut','bind','vine-Whip','headbutt','tackle','body-Slam','take-Down']
-  };
-
-
 
   private id: number;
 
@@ -61,6 +24,8 @@ export class PokemonPage implements OnInit {
 
   ngOnInit() {
     this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+    this.pokeAPI.getPokemonById(this.id);
   }
 
   addFav() {

@@ -9,10 +9,10 @@
     <ion-title>Pokedex</ion-title>
 
     <!-- Btns Next & Prev -->
-    <ion-button slot="end" color="light" (click)="pokeAPI.nextPage()">
+    <ion-button slot="end" color="light" (click)="pokeAPI.prevPage()">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.prevPage()">
+    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.nextPage()">
       <ion-icon name="arrow-forward-outline"></ion-icon>
     </ion-button>
 
@@ -37,7 +37,7 @@
     <!-- Bucle for -->
     <ion-item *ngFor="let pokemon of pokeAPI.pokemons">
       <!-- Pokemon card -->
-      <ion-card>
+      <ion-card style="width: 100%;">
         <ion-item>
           <ion-img  style="width: 96px;" [src]="pokemon.url" alt="Image pokemon"></ion-img>
           <ion-label class="ion-text-capitalize"><b>#{{ pokemon.id }}</b> {{ pokemon.name }}</ion-label>
