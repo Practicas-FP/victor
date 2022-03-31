@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
@@ -13,5 +14,9 @@ export class AppComponent {
     { title: 'Profile', url: 'profile', icon: 'person' }
   ];
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, public router: Router) { }
+
+  findPokemonByName(name: string) {
+    this.router.navigate([`pokemon/` + name]);
+  }
 }

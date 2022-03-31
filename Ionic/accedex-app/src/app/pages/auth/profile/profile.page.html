@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <!-- Name -->
+    <ion-title>Hi, <b>{{ authService.userData && authService.isLoggedIn ? authService.userData.displayName.split(' ')[0] : '' }}</b></ion-title>
+
+    <!-- Btn Sing Out -->
+    <ion-button color="danger" (click)="authService.SignOut()" slot="end" class="ion-padding-end">
+      <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
+      Sing Out
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- No user found -->
+  <div id="container" *ngIf="!authService.userData; else user">
+    <ion-chip disable="true" color="danger">
+      <ion-label>No user found</ion-label>
+    </ion-chip>
+  </div>
+
+  <!-- User data -->
+  <ng-template #user>
+    <ion-img [src]="authService.userData.image"></ion-img>
+  </ng-template>
+</ion-content>

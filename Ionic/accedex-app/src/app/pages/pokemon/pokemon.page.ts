@@ -23,9 +23,13 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
   constructor(private activatedRoute: ActivatedRoute, public toastController: ToastController, public pokeAPI: PokeapiService) { }
 
   ngOnInit() {
-    this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    const param = this.activatedRoute.snapshot.paramMap.get('id');
 
-    this.pokeAPI.getPokemonById(this.id);
+    if (Number(param)) {
+      this.pokeAPI.getPokemonById(Number(param));
+    } else {
+      this.pokeAPI.getPokemonByName(param);
+    }
   }
 
   addFav() {
