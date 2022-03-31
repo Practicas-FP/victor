@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { PokemonClient } from 'pokenode-ts';
+import { EvolutionClient, PokemonClient } from 'pokenode-ts';
+import { Evolution } from '../models/evolution.model';
 import { PokemonTypesDamage } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
 
@@ -19,6 +20,8 @@ export class PokeapiService {
 
   loadingData = true;
   noDataFound = false;
+
+  evolutions: Evolution[] = [];
 
   pokeFavs: any[] = [];
 
@@ -50,6 +53,13 @@ export class PokeapiService {
     this.pokemons = [];
   }
 
+  clearEvolutions() {
+    this.evolutions = [];
+  }
+
+  /**
+   * API Pokemones
+   */
   getPokemons(offset: number, limit: number) {
     this.limit = limit;
     this.clearPokemons();
@@ -190,6 +200,65 @@ export class PokeapiService {
           data.damage_relations.no_damage_to
         )))
         .catch((error) => console.log(error));
+    })();
+  }
+
+
+  /**
+   * API Evolutions
+   */
+  getEvolutions(offset: number, limit: number) {
+    this.limit = limit;
+    this.clearEvolutions();
+    this.loadingData = true;
+
+    (async () => {
+      const api = new EvolutionClient();
+
+      this.loadingData = true;
+
+      await
+        api.listEvolutionChains(offset, this.limit)
+          .then(data => {
+            if (data.next) {
+              this.nextOffset = Number(data.next.substring(data.next.search('=') + 1, data.next.search('&')));
+            }
+
+            if (data.previous) {
+              this.prevOffset = Number(data.previous.substring(data.previous.search('=') + 1, data.previous.search('&')));
+            }
+
+            if (data.results) {
+              data.results.forEach(evolutionChain => this.getEvolutionById(Number(evolutionChain.url.split('/')[6])));
+            }
+          })
+          .catch(error => {
+            this.noDataFound = true;
+            this.loadingData = false;
+            console.error(error);
+          })
+          .finally(() => {
+            this.loadingData = false;
+          });
+    })();
+  }
+
+  private getEvolutionById(id: number) {
+    (async () => {
+      const api = new EvolutionClient();
+
+      await
+        api.getEvolutionChainById(id)
+          .then(data => {
+            this.evolutions.push(new Evolution(data.id, data.chain, data.baby_trigger_item));
+          })
+          .catch(error => {
+            this.noDataFound = true;
+            console.error(error);
+          })
+          .finally(() => {
+            this.loadingData = false;
+          });
     })();
   }
 }

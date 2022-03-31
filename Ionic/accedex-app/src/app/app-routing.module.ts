@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pokemon/pokemon.module').then( m => m.PokemonPageModule)
   },
   {
+    path: 'evolutions',
+    loadChildren: () => import('./pages/evolutions/evolutions.module').then( m => m.EvolutionsPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   }
