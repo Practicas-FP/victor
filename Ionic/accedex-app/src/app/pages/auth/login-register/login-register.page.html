@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <!-- Title -->
+    <ion-title>{{ viewLogin ? 'Log In' : 'Register' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <!-- From Log In -->
+    <ion-list class="ion-padding">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" #email></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" #password></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <!-- Btn Log In -->
+    <ion-button *ngIf="viewLogin" color="primary" (click)="logIn(email.value, password.value)">Log In</ion-button>
+    <ion-button *ngIf="!viewLogin" color="primary" (click)="signUp(email.value, password.value)">Sing Up</ion-button>
+
+    <ion-item-divider></ion-item-divider>
+
+    <!-- Log In Google -->
+    <ion-list style="padding-top: 36px">
+      <ion-button (click)="authService.GoogleAuth()" color="danger">
+        <ion-img src="https://img.icons8.com/color/16/000000/google-logo.png"></ion-img>
+        Sign in with Google
+      </ion-button>
+    </ion-list>
+
+    <ion-item-divider></ion-item-divider>
+
+    <!-- Text change view -->
+    <ion-list style="padding-top: 36px">
+      <ion-text>{{ viewLogin ? 'You still do not have an account?' : 'Already have an account?' }} </ion-text>
+      <ion-text *ngIf="viewLogin" (click)="viewLogin = false" color="primary">Register</ion-text>
+      <ion-text *ngIf="!viewLogin" (click)="viewLogin = true" color="primary">Log In</ion-text>
+    </ion-list>
+
+    <ion-item-divider></ion-item-divider>
+
+    <!-- Forgot Password -->
+    <ion-list class="ion-padding-top">
+      <ion-text color="primary" (click)="viewRecoverPassword = !viewRecoverPassword">Forgot Password?</ion-text>
+    </ion-list>
+
+    <ion-list *ngIf="viewRecoverPassword" class="ion-padding">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" #recoverEmail></ion-input>
+
+        <ion-button color="primary" slot="end" (click)="recoverPassword(recoverEmail.value)">Recover</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

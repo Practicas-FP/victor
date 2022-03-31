@@ -20,6 +20,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/evolutions/evolutions.module').then( m => m.EvolutionsPageModule)
   },
   {
+    path: 'login-register',
+    loadChildren: () => import('./pages/auth/login-register/login-register.module').then( m => m.LoginRegisterPageModule)
+  },
+  {
+    path: 'verify-email',
+    loadChildren: () => import('./pages/auth/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   }
