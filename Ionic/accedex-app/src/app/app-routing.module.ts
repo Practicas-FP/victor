@@ -1,23 +1,28 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'pokedex',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    //canActivate: [AuthGuard]
   },
   {
     path: 'pokedex',
-    loadChildren: () => import('./pages/pokedex/pokedex.module').then( m => m.PokedexPageModule)
+    loadChildren: () => import('./pages/pokedex/pokedex.module').then( m => m.PokedexPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'pokemon/:id',
-    loadChildren: () => import('./pages/pokemon/pokemon.module').then( m => m.PokemonPageModule)
+    loadChildren: () => import('./pages/pokemon/pokemon.module').then( m => m.PokemonPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'evolutions',
-    loadChildren: () => import('./pages/evolutions/evolutions.module').then( m => m.EvolutionsPageModule)
+    loadChildren: () => import('./pages/evolutions/evolutions.module').then( m => m.EvolutionsPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login-register',
@@ -29,7 +34,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule),
+    canActivate: [AuthGuard]
   }
 ];
 

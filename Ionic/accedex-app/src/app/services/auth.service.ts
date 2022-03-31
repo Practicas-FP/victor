@@ -50,7 +50,7 @@ export class AuthService {
         return user.sendEmailVerification();
       })
       .then(() => {
-        this.router.navigate(['verify-email-address']);
+        this.router.navigate(['verify-email']);
       });
   }
 /*   SendVerificationMail() {
@@ -97,7 +97,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['pokedex']);
         });
         this.SetUserData(result.user);
       })
@@ -127,7 +127,7 @@ export class AuthService {
   SignOut() {
     return this.ngFireAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['login']);
+      this.router.navigate(['login-register']);
     });
   }
 }
