@@ -7,17 +7,43 @@
 
     <!-- Title -->
     <ion-title>Evolutions</ion-title>
-
-    <!-- Btns Next & Prev -->
-    <ion-button slot="end" color="light" (click)="pokeAPI.prevPage()">
-      <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button>
-    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.nextPage()">
-      <ion-icon name="arrow-forward-outline"></ion-icon>
-    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
+    <!-- Loading data -->
+    <div id="container" *ngIf="pokeAPI.loadingData">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <!-- No data found -->
+    <div id="container" *ngIf="pokeAPI.noDataFound">
+      <ion-chip disable="true" color="danger">
+        <ion-label>No evolutions found</ion-label>
+      </ion-chip>
+    </div>
+
+    <ion-list *ngIf="pokeAPI.evolutions.length">
+      <!-- Bucle for -->
+      <ion-virtual-scroll [items]="pokeAPI.evolutions" style="height: 1000px;">
+        <ion-slides *virtualItem="let evolution;" detail pager="true" [options]="slideOpts" style="height: 200px;">
+          <ion-slide *ngFor="let pokemon of evolution.simplePokemons">
+            <!-- Pokemon card -->
+            <ion-card style="width: 100%;">
+              <ion-item>
+                <ion-img  style="width: 96px;" [src]="pokemon.url" alt="Image pokemon"></ion-img>
+                <ion-label class="ion-text-capitalize ion-padding-start"><b>#{{ pokemon.id }}</b> {{ pokemon.name }}</ion-label>
+                <ion-button fill="outline" slot="end" [routerLink]="'/pokemon/' + pokemon.id">View</ion-button>
+              </ion-item>
+
+              <ion-card-content>
+                <ion-text>Evolution number: <b>{{ pokemon.evolutionNumber }}</b></ion-text>
+                <ion-img class="card-bg" src="../../../assets/images/pokeball-background.png" alt="Background image card"></ion-img>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-virtual-scroll>
+    </ion-list>
 </ion-content>

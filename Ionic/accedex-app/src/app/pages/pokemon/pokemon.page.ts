@@ -36,14 +36,6 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     this.presentToast('Pokemon removed to favorite');
   }
 
-  nextPoke() {
-
-  }
-
-  prevPoke() {
-
-  }
-
   async presentToast(msg: string) {
     const toast = await this.toastController.create({
       message: msg,

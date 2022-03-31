@@ -54,11 +54,13 @@ class SimplePokemon {
   name: string;
   evolutionDetails: {};
   evolutionNumber: number;
+  url: string;
 
   constructor(id: number, name: string, evolutionDetails: {}, evolutionNumber: number) {
     this.id = id;
     this.name = name;
     this.evolutionDetails = evolutionDetails;
     this.evolutionNumber = evolutionNumber;
+    this.url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
   }
 }

@@ -8,9 +8,15 @@ import { PokeapiService } from 'src/app/services/pokeapi.service';
 })
 export class EvolutionsPage implements OnInit {
 
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  };
+
   constructor(public pokeAPI: PokeapiService) { }
 
   ngOnInit() {
+    this.pokeAPI.getEvolutions(0, 500);
   }
 
 }
