@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
 @Component({
@@ -12,15 +13,16 @@ import { PokeapiService } from 'src/app/services/pokeapi.service';
 })
 export class PokemonPage implements OnInit/*, AfterViewInit*/ {
 
-  private id: number;
-
   slideOpts = {
     initialSlide: 0,
     speed: 400
   };
 
-  // eslint-disable-next-line max-len
-  constructor(private activatedRoute: ActivatedRoute, public toastController: ToastController, public pokeAPI: PokeapiService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    public toastController: ToastController,
+    public pokeAPI: PokeapiService,
+    public firebaseService: FirebaseService) { }
 
   ngOnInit() {
     const param = this.activatedRoute.snapshot.paramMap.get('id');
@@ -33,10 +35,15 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
   }
 
   addFav() {
+    this.firebaseService.addPokeFav(this.pokeAPI.pokemon.id);
+    this.pokeAPI.pokemon.favorite = true;
     this.presentToast('Pokemon added to favorite');
   }
 
   removeFav() {
+    this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
+    this.pokeAPI.pokemon.favorite = false;
+    this.pokeAPI.pokemon.favoriteKey = '';
     this.presentToast('Pokemon removed to favorite');
   }
 
