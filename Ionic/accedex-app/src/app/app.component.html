@@ -36,6 +36,14 @@
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
+
+        <!-- Dark mode -->
+        <ion-list id="inbox-list">
+          <ion-item>
+            <ion-label>Dark mode</ion-label>
+            <ion-toggle color="primary" (click)="changeMode(darkMode.value)" #darkMode></ion-toggle>
+          </ion-item>
+        </ion-list>
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
