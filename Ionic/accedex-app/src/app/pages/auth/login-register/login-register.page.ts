@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/quotes */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class LoginRegisterPage implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public router: Router
+    public router: Router,
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -27,11 +29,11 @@ export class LoginRegisterPage implements OnInit {
         if (this.authService.isEmailVerified) {
           this.router.navigate(['pokedex']);
         } else {
-          window.alert('Email is not verified');
+          this.presentToast('Email is not verified');
           return false;
         }
       }).catch((error) => {
-        window.alert(error.message);
+        this.presentToast(error.message);
       });
   }
 
@@ -41,7 +43,7 @@ export class LoginRegisterPage implements OnInit {
         this.authService.SendVerificationMail();
         this.router.navigate(['verify-email']);
       }).catch((error) => {
-        window.alert(error.message);
+        this.presentToast(error.message);
       });
   }
 
@@ -51,9 +53,17 @@ export class LoginRegisterPage implements OnInit {
 
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.presentToast(error.message);
       });
 
     this.viewRecoverPassword = false;
+  }
+
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }

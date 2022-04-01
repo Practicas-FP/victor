@@ -53,12 +53,6 @@ export class AuthService {
         this.router.navigate(['verify-email']);
       });
   }
-/*   SendVerificationMail() {
-    return this.ngFireAuth.auth.currentUser.sendEmailVerification()
-    .then(() => {
-      this.router.navigate(['verify-email']);
-    });
-  } */
 
   // Recover password
   PasswordRecover(passwordResetEmail) {
@@ -97,7 +91,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['pokedex']);
+          this.router.navigate(['profile']);
         });
         this.SetUserData(result.user);
       })
