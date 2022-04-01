@@ -2,9 +2,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { EvolutionClient, PokemonClient } from 'pokenode-ts';
+import { map } from 'rxjs/operators';
 import { Evolution } from '../models/evolution.model';
+import { PokemonFavorite } from '../models/interfaces/pokemon-favorite.interface';
 import { PokemonTypesDamage } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +26,14 @@ export class PokeapiService {
 
   evolutions: Evolution[] = [];
 
-  pokeFavs: any[] = [];
+  pokeFavs: PokemonFavorite[] = [];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    /* public firebaseService: FirebaseService */) {
+
+    //this.getFavorites();
+  }
 
   nextPage() {
     this.getPokemons(this.nextOffset, this.limit);
@@ -102,14 +110,20 @@ export class PokeapiService {
 
       await api
         .getPokemonById(id)
-        .then((data) =>
+        .then((data) => {
+
+          const found = this.pokeFavs.find(pokeFav => pokeFav.pokemonId === String(data.id));
+
           this.pokemons.push(new Pokemon(
             data.id,
             data.name,
             data.sprites.front_default,
             data.types,
-            false, [], 0, 0, [], [], null, 0, false, ''
-          )))
+            false, [], 0, 0, [], [], null, 0,
+            found ? true : false,
+            found ? found.$key : ''
+          ));
+        })
         .catch((error) => {
           this.noDataFound = true;
           console.error(error);
@@ -159,8 +173,7 @@ export class PokeapiService {
 
   private getJSONDataPokemon(data: any) {
 
-    //const found = this.pokemonesFavorites.find(pokeFav => pokeFav.pokemonId === String(data.id));
-    const found = null;
+    const found = this.pokeFavs.find(pokeFav => pokeFav.pokemonId === String(data.id));
 
     this.pokemon = new Pokemon(
       data.id,
@@ -190,18 +203,49 @@ export class PokeapiService {
 
       await api
         .getTypeById(id)
-        .then((data) => this.pokemon.setTypeDamage(new PokemonTypesDamage(
-          data.name,
-          data.damage_relations.double_damage_from,
-          data.damage_relations.double_damage_to,
-          data.damage_relations.half_damage_from,
-          data.damage_relations.half_damage_to,
-          data.damage_relations.no_damage_from,
-          data.damage_relations.no_damage_to
-        )))
+        .then((data) => {
+          this.pokemon.setTypeDamage(new PokemonTypesDamage(
+            data.name,
+            data.damage_relations.double_damage_from,
+            data.damage_relations.double_damage_to,
+            data.damage_relations.half_damage_from,
+            data.damage_relations.half_damage_to,
+            data.damage_relations.no_damage_from,
+            data.damage_relations.no_damage_to
+          ));
+
+          this.pokemons.push(this.pokemon);
+        })
         .catch((error) => console.log(error));
     })();
   }
+
+  // Get pokemones favorites
+/*   getFavorites() {
+    // comprobra aqui si es favorito o no
+    this.firebaseService.getListPokeFavs().snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const pokeFav: PokemonFavorite = {
+            $key: a.key,
+            pokemonId: a.payload.val()?.pokemonId
+          };
+
+          return pokeFav;
+        })
+      )
+    ).subscribe(pokesFavs => {
+
+      pokesFavs.forEach(pokeFav => {
+        if (pokeFav.pokemonId) {
+          this.pokeFavs.push({
+            $key: pokeFav.$key,
+            pokemonId: pokeFav.pokemonId
+          });
+        }
+      });
+    });
+  } */
 
 
   /**

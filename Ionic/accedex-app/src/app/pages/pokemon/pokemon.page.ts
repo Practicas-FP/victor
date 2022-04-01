@@ -22,7 +22,7 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     private activatedRoute: ActivatedRoute,
     public toastController: ToastController,
     public pokeAPI: PokeapiService,
-    public firebaseService: FirebaseService) { }
+    /* public firebaseService: FirebaseService */) { }
 
   ngOnInit() {
     const param = this.activatedRoute.snapshot.paramMap.get('id');
@@ -35,13 +35,13 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
   }
 
   addFav() {
-    this.firebaseService.addPokeFav(this.pokeAPI.pokemon.id);
+    //this.firebaseService.addPokeFav(this.pokeAPI.pokemon.id);
     this.pokeAPI.pokemon.favorite = true;
     this.presentToast('Pokemon added to favorite');
   }
 
   removeFav() {
-    this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
+    //this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
     this.pokeAPI.pokemon.favorite = false;
     this.pokeAPI.pokemon.favoriteKey = '';
     this.presentToast('Pokemon removed to favorite');
