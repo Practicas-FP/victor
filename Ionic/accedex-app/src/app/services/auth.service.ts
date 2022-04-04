@@ -7,6 +7,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { Router } from '@angular/router';
 import { User } from '../models/interfaces/user.interface';
 import * as auth from 'firebase/auth';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class AuthService {
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone) {
+    public ngZone: NgZone,
+    public toastController: ToastController) {
 
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -59,12 +61,10 @@ export class AuthService {
     return this.ngFireAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert(
-          'Password reset email has been sent, please check your inbox.'
-        );
+        this.presentToast('Password reset email has been sent, please check your inbox.');
       })
       .catch((error) => {
-        window.alert(error);
+        this.presentToast(error.message);
       });
   }
 
@@ -96,7 +96,7 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error);
+        this.presentToast(error.message);
       });
   }
 
@@ -123,5 +123,14 @@ export class AuthService {
       localStorage.removeItem('user');
       this.router.navigate(['login-register']);
     });
+  }
+
+  // Toast
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }
