@@ -12,6 +12,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { FavoritesPageModule } from './pages/favorites/favorites.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FbService } from './services/fb.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -23,9 +26,16 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+
+
+    FormsModule,
+    ReactiveFormsModule,
+
+
+    FavoritesPageModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FbService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

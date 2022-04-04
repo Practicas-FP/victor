@@ -7,7 +7,7 @@ import { Evolution } from '../models/evolution.model';
 import { PokemonFavorite } from '../models/interfaces/pokemon-favorite.interface';
 import { PokemonTypesDamage } from '../models/pokemon-type.model';
 import { Pokemon } from '../models/pokemon.model';
-import { FirebaseService } from './firebase.service';
+import { FbService } from './fb.service';
 
 @Injectable({
   providedIn: 'root'
@@ -104,7 +104,7 @@ export class PokeapiService {
     })();
   }
 
-  private getPokemonForCardById(id: number) {
+  getPokemonForCardById(id: number) {
     (async () => {
       const api = new PokemonClient();
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { PokemonFavorite } from 'src/app/models/interfaces/pokemon-favorite.interface';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FbService } from 'src/app/services/fb.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
 @Component({
@@ -13,9 +13,11 @@ export class FavoritesPage implements OnInit {
 
   constructor(
     public pokeAPI: PokeapiService,
-    public firebaseService: FirebaseService) { }
+    public firebaseService: FbService) { }
 
   ngOnInit() {
+    this.pokeAPI.clearPokemons();
+
     this.firebaseService.getListPokeFavs().snapshotChanges().pipe(
       map(actions =>
         actions.map(a => {
@@ -31,7 +33,7 @@ export class FavoritesPage implements OnInit {
 
       pokesFavs.forEach(pokeFav => {
         if (pokeFav.pokemonId) {
-          this.pokeAPI.getPokemonById(Number(pokeFav.pokemonId));
+          this.pokeAPI.getPokemonForCardById(Number(pokeFav.pokemonId));
         }
       });
 

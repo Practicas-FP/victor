@@ -3,7 +3,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FbService } from 'src/app/services/fb.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
 @Component({
@@ -20,9 +20,8 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    public toastController: ToastController,
     public pokeAPI: PokeapiService,
-    /* public firebaseService: FirebaseService */) { }
+    public firebaseService: FbService) { }
 
   ngOnInit() {
     const param = this.activatedRoute.snapshot.paramMap.get('id');
@@ -32,29 +31,20 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     } else {
       this.pokeAPI.getPokemonByName(param);
     }
+
+    console.log(this.pokeAPI.pokemon);
   }
 
   addFav() {
-    //this.firebaseService.addPokeFav(this.pokeAPI.pokemon.id);
+    this.firebaseService.addPokeFav(this.pokeAPI.pokemon.id);
     this.pokeAPI.pokemon.favorite = true;
-    this.presentToast('Pokemon added to favorite');
   }
 
   removeFav() {
-    //this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
+    this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
     this.pokeAPI.pokemon.favorite = false;
     this.pokeAPI.pokemon.favoriteKey = '';
-    this.presentToast('Pokemon removed to favorite');
   }
-
-  async presentToast(msg: string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000
-    });
-    toast.present();
-  }
-
 
   // Grafico stats
   /*@ViewChild('barCanvas') private barCanvas: ElementRef;

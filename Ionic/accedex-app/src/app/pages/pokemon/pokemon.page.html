@@ -40,6 +40,10 @@
         <ion-icon name="heart-outline"></ion-icon>
       </ion-fab-button>
 
+      <!--ion-fab-button *ngIf="pokeAPI.pokemon.favorite" color="danger" (click)="removeFav()">
+        <ion-icon name="heart-dislike-outline"></ion-icon>
+      </ion-fab-button-->
+
       <ng-template #noFavorite>
         <ion-fab-button color="danger" (click)="removeFav()">
           <ion-icon name="heart-dislike-outline"></ion-icon>
