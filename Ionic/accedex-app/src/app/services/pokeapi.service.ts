@@ -30,9 +30,9 @@ export class PokeapiService {
 
   constructor(
     private router: Router,
-    /* public firebaseService: FirebaseService */) {
+    public firebaseService: FbService) {
 
-    //this.getFavorites();
+    this.getFavorites();
   }
 
   nextPage() {
@@ -221,7 +221,7 @@ export class PokeapiService {
   }
 
   // Get pokemones favorites
-/*   getFavorites() {
+  getFavorites() {
     // comprobra aqui si es favorito o no
     this.firebaseService.getListPokeFavs().snapshotChanges().pipe(
       map(actions =>
@@ -245,7 +245,7 @@ export class PokeapiService {
         }
       });
     });
-  } */
+  }
 
 
   /**
