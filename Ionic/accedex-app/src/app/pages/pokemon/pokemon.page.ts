@@ -31,8 +31,6 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     } else {
       this.pokeAPI.getPokemonByName(param);
     }
-
-    console.log(this.pokeAPI.pokemon);
   }
 
   addFav() {
