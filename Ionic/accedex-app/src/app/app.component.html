@@ -11,7 +11,7 @@
             <ion-label position="floating">Pokemon name</ion-label>
             <ion-input #pokemonName></ion-input>
 
-            <ion-icon slot="end" ios="search-outline" md="search-sharp" (click)="findPokemonByName(pokemonName.value.toString())"></ion-icon>
+            <ion-icon slot="end" ios="search-outline" md="search-sharp" (click)="findPokemonByName(pokemonName.value.toString()); pokemonName.value = ''"></ion-icon>
           </ion-item>
 
           <!-- Menu -->

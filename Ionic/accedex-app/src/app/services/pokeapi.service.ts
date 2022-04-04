@@ -159,7 +159,7 @@ export class PokeapiService {
       const api = new PokemonClient();
 
       await api
-        .getPokemonByName(name)
+        .getPokemonByName(name.toLowerCase())
         .then((data) => this.getJSONDataPokemon(data))
         .catch((error) => {
           this.noDataFound = true;

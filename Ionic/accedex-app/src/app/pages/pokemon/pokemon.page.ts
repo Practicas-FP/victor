@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
-import { Chart } from 'chart.js';
 import { FbService } from 'src/app/services/fb.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
@@ -21,9 +19,14 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
   constructor(
     private activatedRoute: ActivatedRoute,
     public pokeAPI: PokeapiService,
-    public firebaseService: FbService) { }
+    public firebaseService: FbService) {
+
+    //console.log('CONSTRUCTOR');
+  }
 
   ngOnInit() {
+    //console.log('NG-ON-INIT');
+
     const param = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (Number(param)) {

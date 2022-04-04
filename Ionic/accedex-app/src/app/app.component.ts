@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
@@ -19,9 +20,9 @@ export class AppComponent implements OnInit {
 
   darkMode: boolean;
   prefersDark;
-  private darkModeSt = 'DarkMode';
+  //private darkModeSt = 'DarkMode';
 
-  constructor(public authService: AuthService, public router: Router) { }
+  constructor(public authService: AuthService, public router: Router, public toastController: ToastController) { }
 
   ngOnInit() {
     this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -39,7 +40,11 @@ export class AppComponent implements OnInit {
   }
 
   findPokemonByName(name: string) {
-    this.router.navigate([`pokemon/` + name]);
+    if (name) {
+      this.router.navigate([`pokemon/` + name]);
+    } else {
+      this.presentToast('The name field cannot be empty.');
+    }
   }
 
   checkDarkTheme() {
@@ -53,5 +58,14 @@ export class AppComponent implements OnInit {
     document.body.classList.toggle('dark');
 
     //localStorage.setItem(this.darkModeSt, String(this.darkMode));
+  }
+
+  // Toast
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }
