@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/member-ordering */
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 @Component({
@@ -6,7 +9,7 @@ import { AuthService } from './services/auth.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Pokedex', url: 'pokedex', icon: 'book' },
     { title: 'Evolutions', url: 'evolutions', icon: 'analytics' },
@@ -14,26 +17,41 @@ export class AppComponent {
     { title: 'Profile', url: 'profile', icon: 'person' }
   ];
 
-  public darkMode: boolean;
-  private darkModeSt = 'darkMode';
+  darkMode: boolean;
+  prefersDark;
+  private darkModeSt = 'DarkMode';
 
-  constructor(public authService: AuthService, public router: Router) {
-    if (localStorage.getItem(this.darkModeSt)) {
-      this.darkMode = Boolean(localStorage.getItem(this.darkModeSt));
+  constructor(public authService: AuthService, public router: Router) { }
 
-      console.log(`Al cargar: ${localStorage.getItem(this.darkModeSt)}`);
-    }
+  ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.darkMode = this.prefersDark.matches;
+
+    this.checkDarkTheme();
+
+
+    /*this.darkMode = Boolean(localStorage.getItem(this.darkModeSt));
+    console.log(this.darkMode);
+
+    if (this.darkMode) {
+      document.body.classList.toggle('dark');
+    }*/
   }
 
   findPokemonByName(name: string) {
     this.router.navigate([`pokemon/` + name]);
   }
 
-  changeMode(value: string) {
-    console.log(`Antes de guardar: ${value}`);
+  checkDarkTheme() {
+    if (this.prefersDark.matches) {
+      document.body.classList.toggle('dark');
+    }
+  }
 
-    localStorage.setItem(this.darkModeSt, this.darkMode ? '1' : '0');
+  changeDarkMode() {
+    this.darkMode = !this.darkMode;
+    document.body.classList.toggle('dark');
 
-    console.log(localStorage.getItem(this.darkModeSt));
+    //localStorage.setItem(this.darkModeSt, String(this.darkMode));
   }
 }

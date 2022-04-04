@@ -39,9 +39,10 @@
 
         <!-- Dark mode -->
         <ion-list id="inbox-list">
-          <ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" ios="moon-outline" md="moon-sharp"></ion-icon>
             <ion-label>Dark mode</ion-label>
-            <ion-toggle color="primary" (click)="changeMode(darkMode.value)" #darkMode></ion-toggle>
+            <ion-toggle slot="end" color="primary" [ngModel]="darkMode" (ionChange)="changeDarkMode()"></ion-toggle>
           </ion-item>
         </ion-list>
       </ion-content>
