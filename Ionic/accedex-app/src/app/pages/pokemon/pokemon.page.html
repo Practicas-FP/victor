@@ -19,7 +19,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
+
+  <!--ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button color="secondary" (click)="comeBack()">
+      <ion-icon name="arrow-undo-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-->
 
   <!-- Loading data -->
   <div id="container" *ngIf="pokeAPI.loadingData">

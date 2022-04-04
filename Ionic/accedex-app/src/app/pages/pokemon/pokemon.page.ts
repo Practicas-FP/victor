@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route } from '@angular/router';
 import { FbService } from 'src/app/services/fb.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
@@ -45,6 +45,10 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
     this.pokeAPI.pokemon.favorite = false;
     this.pokeAPI.pokemon.favoriteKey = '';
+  }
+
+  comeBack() {
+
   }
 
   // Grafico stats
