@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ActionSheetController, NavController, ToastController } from '@ionic/angular';
 import { FbService } from 'src/app/services/fb.service';
 import { PokeapiService } from 'src/app/services/pokeapi.service';
 
@@ -21,7 +21,9 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     private activatedRoute: ActivatedRoute,
     public pokeAPI: PokeapiService,
     public firebaseService: FbService,
-    public navCtrl: NavController) {
+    public navCtrl: NavController,
+    public actionSheetController: ActionSheetController,
+    public toastController: ToastController) {
 
     //console.log('CONSTRUCTOR');
   }
@@ -47,6 +49,32 @@ export class PokemonPage implements OnInit/*, AfterViewInit*/ {
     this.firebaseService.deletePokeFav(this.pokeAPI.pokemon.favoriteKey);
     this.pokeAPI.pokemon.favorite = false;
     this.pokeAPI.pokemon.favoriteKey = '';
+  }
+
+  async presentActionSheet(type: string, index: number) {
+    const typeDamages = this.pokeAPI.pokemon.typesDamage[index];
+
+    const actionSheet = await this.actionSheetController.create({
+      header: type.toUpperCase(),
+      buttons: [
+        { text: 'Double Damage From', handler: () => { this.presentToast(typeDamages.doubleDamageFrom); } },
+        { text: 'Double Damage To', handler: () => { this.presentToast(typeDamages.doubleDamageTo); } },
+        { text: 'Half Damage From', handler: () => { this.presentToast(typeDamages.halfDamageFrom); } },
+        { text: 'Half Damage To', handler: () => { this.presentToast(typeDamages.halfDamageTo); } },
+        { text: 'No Damage From', handler: () => { this.presentToast(typeDamages.noDamageFrom); } },
+        { text: 'No Damage To', handler: () => { this.presentToast(typeDamages.noDamageTo); } }
+      ],
+    });
+
+    await actionSheet.present();
+  }
+
+  async presentToast(msg: string[]) {
+    const toast = await this.toastController.create({
+      message: msg.length ? msg.toString() : 'No damage data',
+      duration: msg.length * 1000
+    });
+    toast.present();
   }
 
   // Grafico stats
