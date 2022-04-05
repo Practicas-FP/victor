@@ -64,8 +64,8 @@
     <!-- Types -->
     <ion-grid class="ion-padding">
       <ion-row class="ion-align-items-center">
-        <ion-col *ngFor="let type of pokeAPI.pokemon.types; let i = index" class="info-type {{type}}" size="{{ 12 / pokeAPI.pokemon.types.length }}">
-          <ion-text (click)="presentActionSheet(type, i)">{{ type }}</ion-text>
+        <ion-col (click)="presentActionSheet(type, i)" *ngFor="let type of pokeAPI.pokemon.types; let i = index" class="info-type {{type}}" size="{{ 12 / pokeAPI.pokemon.types.length }}">
+          <ion-text>{{ type }}</ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>
