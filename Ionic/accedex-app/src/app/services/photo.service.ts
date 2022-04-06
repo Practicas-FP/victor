@@ -2,51 +2,41 @@
 /* eslint-disable prefer-const */
 import { Injectable } from '@angular/core';
 import { Camera as CapacitorCamera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Plugins } from '@capacitor/core';
-
-
+import { UserPhoto } from '../models/interfaces/user-photo.interface';
+import { FbService } from './fb.service';
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
 
   public photos: UserPhoto[] = [];
+  public photo: UserPhoto;
+  public photoSenitazer: SafeResourceUrl;
 
-  constructor(private camera: Camera, private senitizer: DomSanitizer) { }
+  constructor(private senitizer: DomSanitizer, private fbService: FbService) { }
 
   public async addNewToGallery() {
     // Take a photo
-    const capturedPhoto = await CapacitorCamera.getPhoto({
+    const image = await CapacitorCamera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 100
     });
 
-    this.photos.unshift({
-      filepath: 'soon...',
-      webviewPath: capturedPhoto.webPath
-    });
+    this.photo = {
+      filepath: '',
+      webviewPath: image.webPath
+    };
+
+    this.photos.unshift(this.photo);
+
+    //this.fbService.addUserPhoto(this.photo);
+
+    this.photoSenitazer = this.senitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+
+    console.log(this.photoSenitazer);
+
+    //crear la foto como base 64
   }
-
-
-
-  photo: SafeResourceUrl;
-
-  async takePicture() {
-    const image = await Plugins.Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera
-    });
-
-    this.photo = this.senitizer.bypassSecurityTrustScript(image && (image.DataUrl));
-  }
-}
-
-export interface UserPhoto {
-  filepath: string;
-  webviewPath: string;
 }

@@ -56,5 +56,11 @@
     <ion-button [routerLink]="'/favorites'" expand="block" fill="clear" shape="round">
       View favorites
     </ion-button>
+
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="ion-padding">
+      <ion-fab-button (click)="photoService.addNewToGallery()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ng-template>
 </ion-content>
