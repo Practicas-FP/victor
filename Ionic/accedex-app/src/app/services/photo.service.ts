@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable prefer-const */
 import { Injectable } from '@angular/core';
 import { Camera as CapacitorCamera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Plugins } from '@capacitor/core';
 
 
 @Injectable({
@@ -11,26 +14,8 @@ export class PhotoService {
 
   public photos: UserPhoto[] = [];
 
-  opts: CameraOptions = {
-    quality: 100,
-    destinationType: this.camera.DestinationType.FILE_URI,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  };
+  constructor(private camera: Camera, private senitizer: DomSanitizer) { }
 
-  constructor(private camera: Camera) { }
-
-  public async addNewToGallery2() {
-    this.camera.getPicture(this.opts).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
-  }
-
-  // Open gallery
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await CapacitorCamera.getPhoto({
@@ -43,6 +28,21 @@ export class PhotoService {
       filepath: 'soon...',
       webviewPath: capturedPhoto.webPath
     });
+  }
+
+
+
+  photo: SafeResourceUrl;
+
+  async takePicture() {
+    const image = await Plugins.Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = this.senitizer.bypassSecurityTrustScript(image && (image.DataUrl));
   }
 }
 

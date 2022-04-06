@@ -14,7 +14,6 @@ export class TakePhotoPage implements OnInit {
   }
 
   addPhotoToGallery() {
-    this.photoService.addNewToGallery2();
+    this.photoService.addNewToGallery();
   }
-
 }
