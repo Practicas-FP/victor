@@ -16,6 +16,7 @@ import { FavoritesPageModule } from './pages/favorites/favorites.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FbService } from './services/fb.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -35,7 +36,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
       name: 'userdata'
     })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FbService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FbService, Camera],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
