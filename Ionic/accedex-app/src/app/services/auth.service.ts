@@ -90,10 +90,12 @@ export class AuthService {
     return this.ngFireAuth
       .signInWithPopup(provider)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['profile']);
-        });
+        //this.ngZone.run(() => {
+        //  this.router.navigate(['profile']);
+        //});
         this.SetUserData(result.user);
+
+        location.reload();
       })
       .catch((error) => {
         this.presentToast(error.message);

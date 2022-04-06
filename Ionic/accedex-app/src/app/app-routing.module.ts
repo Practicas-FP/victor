@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { LoggedInGuard } from './guards/logged-in.guard';
 
 const routes: Routes = [
   {
@@ -26,7 +27,8 @@ const routes: Routes = [
   },
   {
     path: 'login-register',
-    loadChildren: () => import('./pages/auth/login-register/login-register.module').then( m => m.LoginRegisterPageModule)
+    loadChildren: () => import('./pages/auth/login-register/login-register.module').then( m => m.LoginRegisterPageModule),
+    canActivate: [LoggedInGuard]
   },
   {
     path: 'verify-email',
