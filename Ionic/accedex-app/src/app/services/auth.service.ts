@@ -24,7 +24,7 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone,
     public toastController: ToastController,
-    private dataService: DataService) {
+    /* private dataService: DataService */) {
 
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -40,7 +40,7 @@ export class AuthService {
     //this.loadData();
   }
 
-  async loadData() {
+/*   async loadData() {
     this.userDataService = await this.dataService.getData();
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
   async removeUser(index) {
     this.dataService.removeItem(index);
     this.userDataService.splice(index, 1);
-  }
+  } */
 
   // Login in with email/password
   SignIn(email, password) {

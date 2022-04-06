@@ -44,6 +44,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/favorites/favorites.module').then( m => m.FavoritesPageModule)
   },
   {
+    path: 'take-photo',
+    loadChildren: () => import('./pages/take-photo/take-photo.module').then( m => m.TakePhotoPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule),
     canActivate: [AuthGuard]

@@ -45,6 +45,16 @@
             <ion-toggle slot="end" color="primary" [ngModel]="darkMode" (ionChange)="changeDarkMode()"></ion-toggle>
           </ion-item>
         </ion-list>
+
+        <!-- Test camera -->
+        <ion-list id="inbox-list">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerDirection="root" [routerLink]="'/take-photo'" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" ios="camera-sharp" md="camera-sharp"></ion-icon>
+              <ion-label>Camera</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
