@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/interfaces/user.interface';
 import * as auth from 'firebase/auth';
 import { ToastController } from '@ionic/angular';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,15 @@ import { ToastController } from '@ionic/angular';
 export class AuthService {
 
   userData: any;
+  userDataService = [];
 
   constructor(
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    public toastController: ToastController) {
+    public toastController: ToastController,
+    private dataService: DataService) {
 
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -33,6 +36,22 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
       }
     });
+
+    //this.loadData();
+  }
+
+  async loadData() {
+    this.userDataService = await this.dataService.getData();
+  }
+
+  async addData() {
+    await this.dataService.addData(`Simon ${Math.floor(Math.random() * 100)}`);
+    this.loadData();
+  }
+
+  async removeUser(index) {
+    this.dataService.removeItem(index);
+    this.userDataService.splice(index, 1);
   }
 
   // Login in with email/password

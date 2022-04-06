@@ -15,6 +15,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { FavoritesPageModule } from './pages/favorites/favorites.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FbService } from './services/fb.service';
+import { IonicStorageModule } from '@ionic/storage-angular';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -27,13 +28,12 @@ import { FbService } from './services/fb.service';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-
-
     FormsModule,
     ReactiveFormsModule,
-
-
-    FavoritesPageModule
+    FavoritesPageModule,
+    IonicStorageModule.forRoot({
+      name: 'userdata'
+    })
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FbService],
   bootstrap: [AppComponent],

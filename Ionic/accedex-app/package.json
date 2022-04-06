@@ -22,6 +22,8 @@
     "@angular/router": "~13.2.2",
     "@ionic/angular": "^6.0.0",
     "@ionic/cordova-builders": "^6.1.0",
+    "@ionic/storage": "^3.0.6",
+    "@ionic/storage-angular": "^3.0.6",
     "chart.js": "^3.7.1",
     "firebase": "^9.6.10",
     "pokenode-ts": "^1.13.0",
@@ -52,6 +54,7 @@
     "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-sqlite-storage": "^6.0.0",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -75,7 +78,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "android"
