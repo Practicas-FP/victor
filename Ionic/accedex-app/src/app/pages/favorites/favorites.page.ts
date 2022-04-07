@@ -36,8 +36,6 @@ export class FavoritesPage implements OnInit {
           this.pokeAPI.getPokemonForCardById(Number(pokeFav.pokemonId));
         }
       });
-
-      console.log(this.pokeAPI.pokemons);
     });
   }
 }
