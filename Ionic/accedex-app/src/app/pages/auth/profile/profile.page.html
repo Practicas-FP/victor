@@ -65,10 +65,9 @@
     </ion-fab>
 
     <!-- Remove photo profile -->
-    <ion-fab *ngIf="photoService.photo" vertical="bottom" horizontal="end" slot="fixed" (click)="photoService.deleteUserPhoto()">
-      <ion-fab-button color="danger">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+    <ion-button *ngIf="photoService.photo" (click)="photoService.deleteUserPhoto()" expand="block" shape="round" color="danger" class="ion-padding">
+      Delete profile picture
+    </ion-button>
+
   </ng-template>
 </ion-content>
