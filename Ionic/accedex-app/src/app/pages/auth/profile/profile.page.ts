@@ -12,6 +12,7 @@ export class ProfilePage implements OnInit {
   constructor(public authService: AuthService, public photoService: PhotoService) { }
 
   ngOnInit() {
+    this.photoService.getUserPhoto();
   }
 
 }

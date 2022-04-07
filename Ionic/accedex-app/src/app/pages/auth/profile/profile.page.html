@@ -30,7 +30,7 @@
 
     <ion-list class="ion-padding-top">
       <ion-item>
-        <ion-img slot="start" [src]="authService.userData.photoURL || 'https://via.placeholder.com/96x96.png?text=Profile+picture'" alt="Image profile"></ion-img>
+        <ion-img style="max-width: 96px;" slot="start" [src]="photoService.photo || authService.userData.photoURL || 'https://via.placeholder.com/96x96.png?text=Profile+picture'" alt="Image profile"></ion-img>
 
         <ion-item-group>
           <ion-item lines="none">
@@ -57,9 +57,17 @@
       View favorites
     </ion-button>
 
+    <!-- Take photo -->
     <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="ion-padding">
       <ion-fab-button (click)="photoService.addNewToGallery()">
         <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <!-- Remove photo profile -->
+    <ion-fab *ngIf="photoService.photo" vertical="bottom" horizontal="end" slot="fixed" (click)="photoService.deleteUserPhoto()">
+      <ion-fab-button color="danger">
+        <ion-icon name="close-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ng-template>

@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ToastController } from '@ionic/angular';
+import { map } from 'rxjs/operators';
 import { PokemonFavorite } from '../models/interfaces/pokemon-favorite.interface';
 import { UserPhoto } from '../models/interfaces/user-photo.interface';
 
@@ -54,19 +57,20 @@ export class FbService {
   }
 
   // USER IMAGE
-  private firebaseUserPhoto: AngularFireList<UserPhoto>;
+  private firebaseUserPhoto: AngularFireList<String>;
+  public userPhoto: UserPhoto;
 
-  getUserPhoto(): AngularFireList<UserPhoto> {
+  getUserPhoto(): AngularFireList<String> {
     this.firebaseUserPhoto = this.db.list(`users/${this.userId}/photo`);
     return this.firebaseUserPhoto;
   }
 
-  addUserPhoto(userPhoto: UserPhoto) {
+  addUserPhoto(photoBase64: String) {
     this.firebaseUserPhoto = this.getUserPhoto();
     this.firebaseUserPhoto.remove();
-    this.firebaseUserPhoto.push(userPhoto)
+    this.firebaseUserPhoto.push(photoBase64)
       .then(() => {
-        this.presentToast('Photo updated successfully');
+        this.presentToast('Photo updated successfully, refresh the screen to see the changes.');
       })
       .catch((error) => {
         this.presentToast(error.message);
@@ -76,7 +80,10 @@ export class FbService {
   deleteUserPhoto(key: string) {
     this.firebaseUserPhoto = this.getUserPhoto();
     this.firebaseUserPhoto.remove(key)
-      .then(() => { })
+      .then(() => {
+        this.presentToast('Deleted photo');
+        location.reload();
+       })
       .catch((error) => {
         this.presentToast(`Failed to delete photo: ${error.message}`);
       });
