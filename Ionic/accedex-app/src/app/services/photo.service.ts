@@ -67,8 +67,10 @@ export class PhotoService {
         })
       )
     ).subscribe(userPhoto => {
-      this.fbService.userPhoto = userPhoto[0];
-      this.photo = userPhoto[0].data;
+      if (userPhoto.length) {
+        this.fbService.userPhoto = userPhoto[0];
+        this.photo = userPhoto[0].data;
+      }
     });
   }
 
