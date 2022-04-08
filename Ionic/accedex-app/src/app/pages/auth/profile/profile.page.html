@@ -28,45 +28,40 @@
   <!-- User data -->
   <ng-template #user>
 
-    <ion-list class="ion-padding-top">
+    <ion-list class="ion-padding">
+      <ion-header>
+        <ion-toolbar>
+          <!-- Profile picture options -->
+          <ion-avatar (click)="showProfilePictureOptions()">
+            <img [src]="photoService.photo || authService.userData.photoURL || 'https://via.placeholder.com/96x96.png?text=Profile+picture'" alt="Image profile" />
+          </ion-avatar>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-item class="ion-padding-top">
+        <ion-note slot="start">NAME</ion-note>
+        <ion-label><b>{{ authService.userData.displayName }}</b></ion-label>
+      </ion-item>
+
       <ion-item>
-        <ion-img style="max-width: 96px;" slot="start" [src]="photoService.photo || authService.userData.photoURL || 'https://via.placeholder.com/96x96.png?text=Profile+picture'" alt="Image profile"></ion-img>
+        <ion-note slot="start">EMAIL</ion-note>
+        <ion-label><b>{{ authService.userData.email }}</b></ion-label>
+      </ion-item>
 
-        <ion-item-group>
-          <ion-item lines="none">
-            <ion-label>Name and email: </ion-label>
-          </ion-item>
-          <ion-label><b>{{ authService.userData.displayName }}</b></ion-label>
-          <ion-label><b>{{ authService.userData.email }}</b></ion-label>
+      <ion-item>
+        <ion-note slot="start">ID</ion-note>
+        <ion-label><b>{{ authService.userData.uid }}</b></ion-label>
+      </ion-item>
 
-          <ion-item lines="none">
-            <ion-label>User Id:</ion-label>
-          </ion-item>
-          <ion-label><b>{{ authService.userData.uid }}</b></ion-label>
-
-          <ion-item>
-            <ion-label>Email verified: <b>{{ authService.userData.emailVerified ? 'Yes' : 'No' }}</b></ion-label>
-          </ion-item>
-        </ion-item-group>
-
+      <ion-item>
+        <ion-note slot="start">EMAIL VERIFIED</ion-note>
+        <ion-label><b>{{ authService.userData.emailVerified ? 'Yes' : 'No' }}</b></ion-label>
       </ion-item>
     </ion-list>
 
     <!-- Favorites -->
     <ion-button [routerLink]="'/favorites'" expand="block" fill="clear" shape="round">
-      View favorites
-    </ion-button>
-
-    <!-- Take photo -->
-    <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="ion-padding">
-      <ion-fab-button (click)="photoService.addNewToGallery()">
-        <ion-icon name="camera"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-
-    <!-- Remove photo profile -->
-    <ion-button *ngIf="photoService.photo" (click)="photoService.deleteUserPhoto()" expand="block" shape="round" color="danger" class="ion-padding">
-      Delete profile picture
+      View pokemon favorites
     </ion-button>
 
   </ng-template>
