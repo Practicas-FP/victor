@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-labels */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { map } from 'rxjs/internal/operators/map';
 import { AuthService } from './services/auth.service';
+import { FbService } from './services/fb.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -22,21 +25,30 @@ export class AppComponent implements OnInit {
   prefersDark;
   //private darkModeSt = 'DarkMode';
 
-  constructor(public authService: AuthService, public router: Router, public toastController: ToastController) { }
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    public toastController: ToastController,
+    public fbService: FbService) { }
 
   ngOnInit() {
-    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.darkMode = this.prefersDark.matches;
+    if (this.authService.isLoggedIn) {
+      // Check the dark mode of the logged in user
+      this.fbService.getDarkMode();
 
-    this.checkDarkTheme();
+      // Set dark mode
+      this.checkDarkTheme();
+    } else {
+      // Check the dark mode of the operating system
+      this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      this.darkMode = this.prefersDark.matches;
 
+      // Set dark mode
+      if (this.prefersDark.matches) {
+        document.body.classList.toggle('dark');
+      }
 
-    /*this.darkMode = Boolean(localStorage.getItem(this.darkModeSt));
-    console.log(this.darkMode);
-
-    if (this.darkMode) {
-      document.body.classList.toggle('dark');
-    }*/
+    }
   }
 
   findPokemonByName(name: string) {
@@ -48,16 +60,34 @@ export class AppComponent implements OnInit {
   }
 
   checkDarkTheme() {
-    if (this.prefersDark.matches) {
-      document.body.classList.toggle('dark');
-    }
+    this.fbService.getDarkMode().snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const darkMode = a.payload.val();
+
+          return darkMode;
+        })
+      )
+    ).subscribe(darkMode => {
+      if (darkMode.length) {
+        console.log(darkMode[0]);
+        this.fbService.darkMode = Boolean(darkMode[0]);
+
+        if (darkMode[0]) {
+          document.body.classList.toggle('dark');
+          this.darkMode = Boolean(darkMode[0]);
+        }
+      }
+    });
   }
 
   changeDarkMode() {
+    if (this.authService.isLoggedIn) {
+      //this.fbService.addDarkMode(!this.darkMode);
+    }
+
     this.darkMode = !this.darkMode;
     document.body.classList.toggle('dark');
-
-    //localStorage.setItem(this.darkModeSt, String(this.darkMode));
   }
 
   // Toast

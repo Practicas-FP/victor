@@ -6,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ToastController } from '@ionic/angular';
-import { map } from 'rxjs/operators';
 import { PokemonFavorite } from '../models/interfaces/pokemon-favorite.interface';
 import { UserPhoto } from '../models/interfaces/user-photo.interface';
 
@@ -86,6 +85,27 @@ export class FbService {
        })
       .catch((error) => {
         this.presentToast(`Failed to delete photo: ${error.message}`);
+      });
+  }
+
+  // DarkMode
+  private firebaseDarkMode: AngularFireList<Boolean>;
+  public darkMode: boolean;
+
+  getDarkMode(): AngularFireList<Boolean> {
+    this.firebaseDarkMode = this.db.list(`users/${this.userId}/dark-mode`);
+    return this.firebaseDarkMode;
+  }
+
+  addDarkMode(type: boolean) {
+    this.firebaseDarkMode = this.getDarkMode();
+    this.firebaseDarkMode.remove();
+    this.firebaseDarkMode.push(type)
+      .then(() => {
+        this.presentToast('Dark mode has been updated.');
+      })
+      .catch((error) => {
+        this.presentToast(error.message);
       });
   }
 
