@@ -1,0 +1,8 @@
+{
+  "name": "accedex-app",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <!-- Menu -->
+  <ion-buttons slot="start">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+
+  <!-- Title -->
+  <ion-toolbar>
+    <ion-title>Registration completed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <ion-list class="ion-padding" *ngIf="authService.userData as user" lines="none">
+      <ion-item>
+        <ion-text>
+          <h3>Please verify your account</h3>
+        </ion-text>
+      </ion-item>
+
+      <!-- Msg Info -->
+      <ion-item>
+        <ion-text>- We have sent a confirmation email to <span class="fw-bold">{{user.email}}</span>.</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text>- Please check your email and click on the link to verfiy your email address.</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <!-- Btn resend email -->
+        <ion-button (click)="authService.SendVerificationMail()" color="primary" slot="end">
+          <ion-icon name="refresh-outline"></ion-icon>
+          Resend verification email
+        </ion-button>
+        <!-- Btn go to Log In -->
+        <ion-button [routerLink]="'/login-register'" slot="end" color="success">Log In Now</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

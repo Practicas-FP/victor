@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/quotes */
 export const environment = {
   production: true,
   firebase: {
@@ -7,7 +8,7 @@ export const environment = {
     projectId: "accedex-decb9",
     storageBucket: "accedex-decb9.appspot.com",
     messagingSenderId: "552211236830",
-    appId: "1:552211236830:web:c7ad8bf411bc007e603f4f",
-    measurementId: "G-P2G6WCSEST"
+    appId: "1:552211236830:web:5a2f9df3b666b11f603f4f",
+    measurementId: "G-MQZ07RLXEJ"
   }
 };

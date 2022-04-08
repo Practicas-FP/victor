@@ -1,0 +1,136 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <!-- Id & Name -->
+    <ion-title class="ion-text-capitalize" *ngIf="pokeAPI.pokemon"><b>#{{ pokeAPI.pokemon.id }}</b> {{ pokeAPI.pokemon.name }}</ion-title>
+
+    <!-- Btns Next & Prev -->
+    <ion-button slot="end" color="light" (click)="pokeAPI.prevPoke()" [disabled]="pokeAPI.pokemon ? pokeAPI.pokemon.id > 1 ? false : true : false">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.nextPoke()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Btn back -->
+  <ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button color="secondary" (click)="navCtrl.back()">
+      <ion-icon name="arrow-undo-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Loading data -->
+  <div id="container" *ngIf="pokeAPI.loadingData">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <!-- No data found -->
+  <div id="container" *ngIf="pokeAPI.noDataFound">
+    <ion-chip disable="true" color="danger">
+      <ion-label>No pokemon found</ion-label>
+    </ion-chip>
+  </div>
+
+  <div *ngIf="pokeAPI.pokemon">
+    <!-- Pokemon favorite -->
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button *ngIf="!pokeAPI.pokemon.favorite; else noFavorite" color="secondary" (click)="addFav()">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-fab-button>
+
+      <ng-template #noFavorite>
+        <ion-fab-button color="danger" (click)="removeFav()">
+          <ion-icon name="heart-dislike-outline"></ion-icon>
+        </ion-fab-button>
+      </ng-template>
+    </ion-fab>
+
+    <!-- Carousel Images -->
+    <ion-slides pager="true" [options]="slideOpts">
+      <ion-slide *ngFor="let src of pokeAPI.pokemon.sprintes">
+        <ion-img  style="width: 250px;" [src]="src" [alt]="'Images pokemon'"></ion-img>
+      </ion-slide>
+    </ion-slides>
+
+    <!-- Types -->
+    <ion-grid class="ion-padding">
+      <ion-row class="ion-align-items-center">
+        <ion-col (click)="presentActionSheet(type, i)" *ngFor="let type of pokeAPI.pokemon.types; let i = index" class="info-type {{type}}" size="{{ 12 / pokeAPI.pokemon.types.length }}">
+          <ion-text>{{ type }}</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-item-divider></ion-item-divider>
+
+    <!-- More details -->
+    <ion-list>
+      <ion-item>
+        <ion-note slot="start">{{ pokeAPI.pokemon.height }}</ion-note>
+        <ion-label>Height</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-note slot="start">{{ pokeAPI.pokemon.weight }}</ion-note>
+        <ion-label>Weight</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-note slot="start">{{ pokeAPI.pokemon.baseExperience }}</ion-note>
+        <ion-label>Base experience</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- Abilities -->
+    <ion-accordion-group>
+      <ion-accordion value="colors">
+        <ion-item slot="header">
+          <ion-label>Abilities</ion-label>
+        </ion-item>
+
+        <ion-list slot="content">
+          <ion-item *ngFor="let abilitie of pokeAPI.pokemon.abilities">
+            <ion-chip color="secondary">
+              <ion-label>{{ abilitie }}</ion-label>
+            </ion-chip>
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+    </ion-accordion-group>
+
+    <!-- Moves -->
+    <ion-accordion-group>
+      <ion-accordion value="colors">
+        <ion-item slot="header">
+          <ion-label>Moves</ion-label>
+        </ion-item>
+
+        <ion-list slot="content">
+          <ion-item *ngFor="let move of pokeAPI.pokemon.moves">
+            <ion-chip color="secondary">
+              <ion-label>{{ move }}</ion-label>
+            </ion-chip>
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+    </ion-accordion-group>
+
+    <!-- Stats -->
+    <!--ion-card>
+      <ion-card-header>Stats</ion-card-header>
+      <ion-card-content>
+        <canvas #barCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </ion-card-content>
+    </ion-card-->
+
+  </div>
+</ion-content>

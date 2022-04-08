@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!-- Menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <!-- Title -->
+    <ion-title>Pokedex</ion-title>
+
+    <!-- Btns Next & Prev -->
+    <ion-button slot="end" color="light" (click)="pokeAPI.prevPage()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" color="light" class="ion-padding-horizontal" (click)="pokeAPI.nextPage()">
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Loading data -->
+  <div id="container" *ngIf="pokeAPI.loadingData">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <!-- No data found -->
+  <div id="container" *ngIf="pokeAPI.noDataFound">
+    <ion-chip disable="true" color="danger">
+      <ion-label>No pokemon found</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-list *ngIf="pokeAPI.pokemons.length">
+    <!-- Bucle for -->
+    <ion-item *ngFor="let pokemon of pokeAPI.pokemons">
+      <!-- Pokemon card -->
+      <ion-card style="width: 100%;">
+        <ion-item>
+          <ion-img  style="width: 96px;" [src]="pokemon.url" alt="Image pokemon"></ion-img>
+          <ion-label class="ion-text-capitalize"><b>#{{ pokemon.id }}</b> {{ pokemon.name }}</ion-label>
+          <ion-button fill="outline" slot="end" [routerLink]="'/pokemon/' + pokemon.id">View</ion-button>
+        </ion-item>
+
+        <ion-card-content>
+          <ion-text class="info-type {{pokemon.types[0]}}">{{ pokemon.types[0] }}</ion-text>
+          <ion-img class="card-bg" src="../../../assets/images/pokeball-background.png" alt="Background image card"></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

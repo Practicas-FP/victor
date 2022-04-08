@@ -1,0 +1,53 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <ion-list-header>{{ authService.userData && authService.isLoggedIn ? authService.userData.displayName : '' }}</ion-list-header>
+          <ion-note>{{ authService.userData && authService.isLoggedIn ? authService.userData.email : '' }}</ion-note>
+
+          <!-- Seeker -->
+          <ion-item lines="none" detail="false">
+            <ion-label position="floating">Pokemon name</ion-label>
+            <ion-input #pokemonName></ion-input>
+
+            <ion-icon slot="end" ios="search-outline" md="search-sharp" (click)="findPokemonByName(pokemonName.value.toString()); pokemonName.value = ''"></ion-icon>
+          </ion-item>
+
+          <!-- Menu -->
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false" *ngIf="!authService.isLoggedIn">
+            <ion-item routerDirection="root" routerLink="login-register" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" ios="log-in-outline" md="log-in-sharp"></ion-icon>
+              <ion-label>Log In/Register</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false" *ngIf="authService.isLoggedIn">
+            <ion-item routerDirection="root" lines="none" detail="false" routerLinkActive="selected" (click)="authService.SignOut()">
+              <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
+              <ion-label>Log Out</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
+        <!-- Dark mode -->
+        <ion-list id="inbox-list">
+          <ion-item lines="none">
+            <ion-icon slot="start" ios="moon-outline" md="moon-sharp"></ion-icon>
+            <ion-label>Dark mode</ion-label>
+            <ion-toggle slot="end" color="primary" [ngModel]="darkMode" (ionChange)="changeDarkMode()"></ion-toggle>
+          </ion-item>
+        </ion-list>
+
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>
