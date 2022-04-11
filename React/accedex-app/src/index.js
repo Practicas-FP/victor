@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import Pokedex from './routes/pokedex';
 import Pokemon from './routes/pokemon';
+import NotFound from './routes/not-found';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const rootElement = document.getElementById("root");
@@ -22,14 +23,7 @@ render(
           <Route path=":pokemonId" element={<Pokemon />} />
         </Route>
 
-        <Route
-          path="*"
-          element={
-            <main style={{ padding: "1rem" }}>
-              <p>There's nothing here!</p>
-            </main>
-          }
-        />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   </BrowserRouter>,
