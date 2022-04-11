@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import Pokedex from './routes/pokedex';
 import Pokemon from './routes/pokemon';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const rootElement = document.getElementById("root");
 render(
