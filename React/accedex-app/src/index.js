@@ -7,7 +7,8 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import Pokedex from './routes/pokedex';
+/* import Pokedex from './routes/pokedex'; */
+import PokedexPage from './routes/PokedexPage';
 import Pokemon from './routes/pokemon';
 import NotFound from './routes/not-found';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +18,8 @@ render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        <Route path="pokedex" element={<Pokedex />} />
+        {/* <Route path="pokedex" element={<Pokedex />} /> */}
+        <Route path="pokedex" element={<PokedexPage />} />
 
         <Route path="pokemon" element={<Pokemon />}>
           <Route path=":pokemonId" element={<Pokemon />} />
