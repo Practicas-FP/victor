@@ -64,6 +64,18 @@ const App = () => {
  * URL Base
  */
 const urlBase = 'https://pokeapi.co/api/v2';
+const loadingComponent = (
+  <div className="container my-5">
+    <div className="progress mt-5">
+      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{width: '75%'}}></div>
+    </div>
+  </div>
+);
+const notDataFoundComponent = (message) => (
+  <div className="container my-5">
+    <div className="alert alert-danger w-100" role="alert">{message}</div>
+  </div>
+);
 
 /**
  * Pokedex Page
@@ -93,22 +105,17 @@ const PokedexPage = () => {
 
   return (
     <>
-      {noPokemonsFound && (
-        <div className="container my-5">
-          <div className="alert alert-danger w-100" role="alert">{`No pokemons found`}</div>
-        </div>
-      )}
+      {isLoading && !noPokemonsFound && loadingComponent}
 
-      {!isLoading && 
+      {noPokemonsFound && notDataFoundComponent(`No pokemons found`)}
+
+      {!isLoading && (
         <div className="page-pokedex">
           <div className="container my-5">
               <div className="row">
                 <h1>Accedex</h1>
               </div>
 
-              {/* *ngIf="pokemonsAPI.loadingData" */}
-
-              {/* *ngIf="pokemonsAPI.pokemons.length" */}
               <div className="d-flex py-3">
                 <div className="p-2">
                   <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
@@ -144,19 +151,10 @@ const PokedexPage = () => {
               </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };
-
-
-
-
-
-
-
-
-
 
 /**
  * Pokemon Page
@@ -213,19 +211,14 @@ const PokemonPage = () => {
 
   return (
     <>
-      {noPokemonFound && (
-        <div className="container my-5">
-          <div className="alert alert-danger w-100" role="alert">{`No pokemon found: ${param}`}</div>
-        </div>
-      )}
+      {isLoading && !noPokemonFound && loadingComponent}
+
+      {noPokemonFound && notDataFoundComponent(`No pokemon found: ${param}`)}
       
       {!isLoading && (
         <>
           <div key={data.id} className="page-pokemon">
             <div className="container my-5">
-              {/* *ngIf="pokemonsAPI.loadingData" */}
-
-              {/* comprobar si hay datos o no */}
 
               <div className="row">
                 <div className="col">
