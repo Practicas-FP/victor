@@ -171,7 +171,6 @@ const PokemonPage = () => {
         response.types.forEach(type => types.push(type.type.name));
 
         const statsColors = ['bg-success', 'bg-danger', 'bg-warning', 'bg-danger', 'bg-warning', 'bg-info'];
-
         const stats = new Array();
         response.stats.forEach((stat, index) => stats.push(
             { name: stat.stat.name, baseStat: stat.base_stat, color: statsColors[index]},
@@ -275,8 +274,8 @@ const PokemonPage = () => {
                     <h2>Stats</h2>
                     { 
                       data.stats.map((stat, index) => (
-                        <div key={`stat-${index}`} className={`data.types[0]`} style={{height: '35px'}}>
-                          <div className={`progress-bar ${stat.color}`} style={{width: stat.baseStat+'%'}} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                        <div key={`stat-${index}`} style={{height: '35px'}}>
+                          <div className={`progress-bar ${stat.color}`} style={{width: stat.baseStat+'%', maxWidth: '100%'}} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             <span className="text-uppercase">{stat.name + ' : ' } <span className="font-weight-bold"><b>{ stat.baseStat }</b></span></span>
                           </div>
                         </div>
