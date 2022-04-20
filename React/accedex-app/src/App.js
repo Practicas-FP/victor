@@ -74,8 +74,8 @@ const PokedexPage = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
-  const [nextOffset, setNextOffset] = useState();
-  const [prevOffset, setPrevOffset] = useState();
+  const [nextOffset, setNextOffset] = useState(null);
+  const [prevOffset, setPrevOffset] = useState(null);
   const limit = 12;
 
   useEffect(() => {
@@ -84,8 +84,8 @@ const PokedexPage = () => {
       .then((response) => {
         setData(response.results);
         setIsLoading(false);
-        if (response.next) setNextOffset(parseInt(response.next.substring(response.next.search('=') + 1, response.next.search('&'))));
-        if (response.previous) setPrevOffset(parseInt(response.previous.substring(response.previous.search('=') + 1, response.previous.search('&'))));
+        response.next ? setNextOffset(parseInt(response.next.substring(response.next.search('=') + 1, response.next.search('&')))) : setNextOffset(null);
+        response.previous ? setPrevOffset(parseInt(response.previous.substring(response.previous.search('=') + 1, response.previous.search('&')))) : setPrevOffset(null);
       })
       .catch((error) => console.log(error));
   }, [param]);
@@ -104,11 +104,11 @@ const PokedexPage = () => {
               {/* *ngIf="pokemonsAPI.pokemons.length" */}
               <div className="d-flex py-3">
                 <div className="p-2">
-                  <Link className="btn btn-primary" to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
+                  <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
                 </div>
 
                 <div className="p-2">
-                  <Link className="btn btn-primary" to={`/pokedex/${nextOffset}`}>Next <i className="bi bi-arrow-right"></i></Link>
+                  <Link className={`btn btn-primary ${nextOffset == null ? 'disabled' : ''}`} to={`/pokedex/${nextOffset}`}>Next <i className="bi bi-arrow-right"></i></Link>
                 </div>
               </div>              
 
@@ -141,6 +141,15 @@ const PokedexPage = () => {
     </>
   );
 };
+
+
+
+
+
+
+
+
+
 
 /**
  * Pokemon Page
@@ -217,7 +226,7 @@ const PokemonPage = () => {
 
               <div className="d-flex py-3">
                 <div className="p-2">
-                  <Link className={'btn btn-primary'} to={`/pokemon/${data.id - 1}`}><i className="bi bi-arrow-left"></i> Back</Link>
+                  <Link className={`btn btn-primary ${(data.id - 1) ? '' : 'disabled'}`} to={`/pokemon/${data.id - 1}`}><i className="bi bi-arrow-left"></i> Back</Link>
                 </div>
 
                 <div className="p-2">
