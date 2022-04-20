@@ -73,6 +73,7 @@ const PokedexPage = () => {
   useParams().offset ? param = useParams().offset : param = 0;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [noPokemonsFound, setNoPokemonsFound] = useState(false);
   const [data, setData] = useState();
   const [nextOffset, setNextOffset] = useState(null);
   const [prevOffset, setPrevOffset] = useState(null);
@@ -87,11 +88,17 @@ const PokedexPage = () => {
         response.next ? setNextOffset(parseInt(response.next.substring(response.next.search('=') + 1, response.next.search('&')))) : setNextOffset(null);
         response.previous ? setPrevOffset(parseInt(response.previous.substring(response.previous.search('=') + 1, response.previous.search('&')))) : setPrevOffset(null);
       })
-      .catch((error) => console.log(error));
+      .catch(() => setNoPokemonsFound(true));
   }, [param]);
 
   return (
     <>
+      {noPokemonsFound && (
+        <div className="container my-5">
+          <div className="alert alert-danger w-100" role="alert">{`No pokemons found`}</div>
+        </div>
+      )}
+
       {!isLoading && 
         <div className="page-pokedex">
           <div className="container my-5">
@@ -158,6 +165,7 @@ const PokemonPage = () => {
   const param = useParams().id;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [noPokemonFound, setNoPokemonFound] = useState(false);
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -200,11 +208,17 @@ const PokemonPage = () => {
         });
         setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch(() => setNoPokemonFound(true));
   }, [param]);
 
   return (
     <>
+      {noPokemonFound && (
+        <div className="container my-5">
+          <div className="alert alert-danger w-100" role="alert">{`No pokemon found: ${param}`}</div>
+        </div>
+      )}
+      
       {!isLoading && (
         <>
           <div key={data.id} className="page-pokemon">
@@ -302,7 +316,7 @@ const PokemonPage = () => {
 };
 
 /**
- * Not Found
+ * Page Not Found
  */
  const NotFound = () => {
    return (
