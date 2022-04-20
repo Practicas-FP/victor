@@ -168,11 +168,13 @@ const PokemonPage = () => {
         response.moves.forEach(move => moves.push(move.move.name));
 
         const types = new Array();
-        response.types.forEach(type => types.push(type.type.name))
+        response.types.forEach(type => types.push(type.type.name));
+
+        const statsColors = ['bg-success', 'bg-danger', 'bg-warning', 'bg-danger', 'bg-warning', 'bg-info'];
 
         const stats = new Array();
-        response.stats.forEach(stat => stats.push(
-            { name: stat.stat.name, baseStat: stat.base_stat},
+        response.stats.forEach((stat, index) => stats.push(
+            { name: stat.stat.name, baseStat: stat.base_stat, color: statsColors[index]},
         ));
 
         const sprites = new Array();
@@ -273,8 +275,8 @@ const PokemonPage = () => {
                     <h2>Stats</h2>
                     { 
                       data.stats.map((stat, index) => (
-                        <div key={`stat-${index}`} className="progress mt-3 h-25">
-                          <div className={data.types[0] + ' progress-bar'} style={{width: stat.baseStat+'%'}} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                        <div key={`stat-${index}`} className={`data.types[0]`} style={{height: '35px'}}>
+                          <div className={`progress-bar ${stat.color}`} style={{width: stat.baseStat+'%'}} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             <span className="text-uppercase">{stat.name + ' : ' } <span className="font-weight-bold"><b>{ stat.baseStat }</b></span></span>
                           </div>
                         </div>
@@ -282,11 +284,11 @@ const PokemonPage = () => {
                     }
                   </div>
 
-                  <div style={{marginTop: '275px'}}  className="row pt-4 justify-content-center">
+                  <div style={{marginTop: '30px'}}  className="row pt-4 justify-content-center">
                     <h2>Moves</h2>
                     {
                       data.moves.map((move, index) => (
-                        <span key={`move-${index}`} className={data.types[0] + ' color-white info-move me-2 mt-2'}>{ move }</span>
+                        <span key={`move-${index}`} className={data.types[0] + ' color-white info-move me-2 mt-2 col-2'}>{ move }</span>
                       ))
                     }
                   </div>
