@@ -23,7 +23,7 @@ function Profile() {
                             <h1>Profile</h1>
                         </div>
 
-                        <div class="row py-4">
+                        <div className="row py-4">
                             <div className="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center mt-3">
                                 <span className="mr-3 text-center">
                                     <img src={user.photoURL || 'https://via.placeholder.com/300x300.png?text=No+image'} alt="Image profile" width="300" height="300" style={{ objectFit: 'cover' }} />
@@ -45,7 +45,7 @@ function Profile() {
                             </div>
                         </div>
 
-                        <div class="row pt-5">
+                        <div className="row pt-5">
                             <h3>Favorite Pokemon</h3>
                         </div>
                         
