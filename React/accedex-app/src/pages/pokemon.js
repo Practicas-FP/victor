@@ -1,7 +1,7 @@
 /* eslint-disable no-array-constructor */
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { urlBase, loadingComponent, messageErrorComponent } from './consts';
+import { urlBase, loadingComponent, messageErrorComponent } from '../services/consts';
 
 function Pokemon() {
     const param = useParams().id;

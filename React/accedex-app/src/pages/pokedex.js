@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { urlBase, loadingComponent, messageErrorComponent } from './consts';
+import { urlBase, loadingComponent, messageErrorComponent } from '../services/consts';
 import pokeballbackground from '../assets/images/pokeballbackground.png';
 
 function Pokedex() {
