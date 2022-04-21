@@ -15,7 +15,7 @@ const messageErrorComponent = (message) => (
 );
 
 export {
-    urlBase,
-    loadingComponent,
-    messageErrorComponent
+  urlBase,
+  loadingComponent,
+  messageErrorComponent
 };
