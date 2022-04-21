@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logInWithEmailAndPassword, signInWithGoogle, sendPasswordReset } from "../services/firebase";
+import { auth, logInWithEmailAndPassword, signInWithGoogle, sendPasswordReset } from "../services/firebase-auth";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {

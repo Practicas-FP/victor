@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState } from "react";
 import { Link, BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./services/firebase";
+import { auth } from "./services/firebase-auth";
 import { Profile, Register, Login, NotFound, Pokemon, Pokedex, LogOut } from './pages/exports';
 
 /**

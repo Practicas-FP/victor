@@ -1,4 +1,4 @@
-import { logout } from "../services/firebase";
+import { logout } from "../services/firebase-auth";
 import { useNavigate } from "react-router-dom";
 
 function LogOut() {
