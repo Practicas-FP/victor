@@ -78,11 +78,11 @@ function Pokemon() {
 
                             <div className="d-flex py-3">
                                 <div className="p-2">
-                                    <Link className={`btn btn-primary ${(data.id - 1) ? '' : 'disabled'}`} to={`/pokemon/${data.id - 1}`}><i className="bi bi-arrow-left"></i> Back</Link>
+                                    <Link className={`btn btn-primary ${(data.id - 1) ? '' : 'disabled'}`} to={`/pokemon/${data.id - 1}`} onClick={() => { setIsLoading(true) }}><i className="bi bi-arrow-left"></i> Back</Link>
                                 </div>
 
                                 <div className="p-2">
-                                    <Link className="btn btn-primary" to={`/pokemon/${data.id + 1}`}>Next <i className="bi bi-arrow-right"></i></Link>
+                                    <Link className="btn btn-primary" to={`/pokemon/${data.id + 1}`}>Next <i className="bi bi-arrow-right" onClick={() => { setIsLoading(true) }}></i></Link>
                                 </div>
                             </div>
 

@@ -42,11 +42,11 @@ function Pokedex() {
 
                         <div className="d-flex py-3">
                             <div className="p-2">
-                                <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
+                                <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`} onClick={() => { setIsLoading(true) }}><i className="bi bi-arrow-left"></i> Back</Link>
                             </div>
 
                             <div className="p-2">
-                                <Link className={`btn btn-primary ${nextOffset == null ? 'disabled' : ''}`} to={`/pokedex/${nextOffset}`}>Next <i className="bi bi-arrow-right"></i></Link>
+                                <Link className={`btn btn-primary ${nextOffset == null ? 'disabled' : ''}`} to={`/pokedex/${nextOffset}`} onClick={() => { setIsLoading(true) }}>Next <i className="bi bi-arrow-right"></i></Link>
                             </div>
                         </div>
 
