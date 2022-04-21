@@ -1,6 +1,7 @@
 @import 'styles/types-colors.scss';
 @import 'styles/style.css';
 @import 'styles/type-colors.css';
+@import 'styles/login-register.css';
 
 .App {
   text-align: center;

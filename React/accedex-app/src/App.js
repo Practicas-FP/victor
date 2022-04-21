@@ -8,18 +8,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import './App.css';
 import React, { useState, useEffect } from "react";
-import { Link, BrowserRouter as Router, Route, Routes, useParams } from "react-router-dom";
-import  pokeballbackground  from './assets/images/pokeballbackground.png';
+import { Link, BrowserRouter as Router, Route, Routes, useParams, useNavigate } from "react-router-dom";
+import pokeballbackground from './assets/images/pokeballbackground.png';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, logInWithEmailAndPassword, signInWithGoogle, registerWithEmailAndPassword, logout, sendPasswordReset } from "./firebase";
+/**
+ * CONST
+ */
+const urlBase = 'https://pokeapi.co/api/v2';
 
+const loadingComponent = (
+  <div className="container my-5">
+    <div className="progress mt-5">
+      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: '75%' }}></div>
+    </div>
+  </div>
+);
+
+const messageErrorComponent = (message) => (
+  <div className="container my-5">
+    <div className="alert alert-danger w-100" role="alert">{message}</div>
+  </div>
+);
+
+/**
+ * APP
+ */
 const App = () => {
   const [pokemonSearch, setPokemonSearch] = useState('');
+  const [user, loading, error] = useAuthState(auth);
 
   return (
     <>
       <Router>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
-            <Link className="navbar-brand" to="/">Accedex</Link> 
+            <Link className="navbar-brand" to="/">Accedex</Link>
 
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,21 +52,29 @@ const App = () => {
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                
+
                 <li className="nav-item">
-                  <Link className="nav-link" to="/pokedex">Pokedex</Link> 
+                  <Link className="nav-link" to="/pokedex">Pokedex</Link>
                 </li>
-                {/* <li className="nav-item"> */}
-                  {/* <Link className="nav-link" to="/evolutions">Evolutions</Link> */}  
-                {/* </li> */}
               </ul>
               <div className="d-flex">
                 <input className="form-control me-2" type="text" placeholder="Search" aria-label="Search" onChange={event => setPokemonSearch(event.target.value)} />
-                <Link className="btn btn-outline-success" to={`/pokemon/${pokemonSearch.toLowerCase()}`}>Search</Link> 
+                <Link className="btn btn-outline-success" to={`/pokemon/${pokemonSearch.toLowerCase()}`}>Search</Link>
 
-                {/* Solo mostrar si esta logeado */}
-                <Link className="btn btn-outline-info ms-5" to="/profile">Profile</Link> 
-                <Link className="btn btn-outline-danger ms-1" to="/logout">SignOut</Link> 
+                {!user && (
+                  <>
+                    <Link className="btn btn-outline-info ms-5" to="/login">LogIn</Link>
+                    <Link className="btn btn-outline-info ms-1" to="/register">Register</Link>
+                  </>
+                )}
+
+                {user && (
+                  <>
+                    <Link className="btn btn-outline-info ms-5" to="/profile">Profile</Link>
+                    <Link className="btn btn-outline-danger ms-1" to="/singout">SignOut</Link>
+                  </>
+                )}
+
               </div>
             </div>
           </div>
@@ -53,29 +85,16 @@ const App = () => {
           <Route path="/pokedex" element={<PokedexPage />} />
           <Route path="/pokedex/:offset" element={<PokedexPage />} />
           <Route path="/pokemon/:id" element={<PokemonPage />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/singout" element={<SingOutPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </>
   );
 }
-
-/**
- * URL Base
- */
-const urlBase = 'https://pokeapi.co/api/v2';
-const loadingComponent = (
-  <div className="container my-5">
-    <div className="progress mt-5">
-      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{width: '75%'}}></div>
-    </div>
-  </div>
-);
-const notDataFoundComponent = (message) => (
-  <div className="container my-5">
-    <div className="alert alert-danger w-100" role="alert">{message}</div>
-  </div>
-);
 
 /**
  * Pokedex Page
@@ -107,48 +126,48 @@ const PokedexPage = () => {
     <>
       {isLoading && !noPokemonsFound && loadingComponent}
 
-      {noPokemonsFound && notDataFoundComponent(`No pokemons found`)}
+      {noPokemonsFound && messageErrorComponent(`No pokemons found`)}
 
       {!isLoading && (
         <div className="page-pokedex">
           <div className="container my-5">
+            <div className="row">
+              <h1>Accedex</h1>
+            </div>
+
+            <div className="d-flex py-3">
+              <div className="p-2">
+                <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
+              </div>
+
+              <div className="p-2">
+                <Link className={`btn btn-primary ${nextOffset == null ? 'disabled' : ''}`} to={`/pokedex/${nextOffset}`}>Next <i className="bi bi-arrow-right"></i></Link>
+              </div>
+            </div>
+
+            <div className="container">
               <div className="row">
-                <h1>Accedex</h1>
-              </div>
-
-              <div className="d-flex py-3">
-                <div className="p-2">
-                  <Link className={`btn btn-primary ${prevOffset == null ? 'disabled' : ''}`} to={`/pokedex/${prevOffset}`}><i className="bi bi-arrow-left"></i> Back</Link>
-                </div>
-
-                <div className="p-2">
-                  <Link className={`btn btn-primary ${nextOffset == null ? 'disabled' : ''}`} to={`/pokedex/${nextOffset}`}>Next <i className="bi bi-arrow-right"></i></Link>
-                </div>
-              </div>              
-
-              <div className="container">
-                  <div className="row">
-                      { 
-                        data.map((pokemon, index) => {
-                          return (
-                            <div key={index} className="col-12 col-md-6 col-lg-4 mb-2 hand-above hover-shadow">
-                              <Link to={`/pokemon/${parseInt(pokemon.url.split('/')[6])}`}>
-                                <div className="card shadow-lg p-3 mb-5 bg-white rounded">
-                                    <img className="card-bg" src={pokeballbackground} alt="pokeball-card" />
-                                    <div>
-                                      <h2 className="card-info-h2 mt-3 text-secondary">{`#${parseInt(pokemon.url.split('/')[6])} ${pokemon.name}`}</h2>
-                                    </div>
-                                    <div className="card-img">
-                                      <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${parseInt(pokemon.url.split('/')[6])}.png`} alt={`Imgae ${pokemon.name}`} />
-                                    </div>
-                                </div>
-                              </Link> 
+                {
+                  data.map((pokemon, index) => {
+                    return (
+                      <div key={index} className="col-12 col-md-6 col-lg-4 mb-2 hand-above hover-shadow">
+                        <Link to={`/pokemon/${parseInt(pokemon.url.split('/')[6])}`}>
+                          <div className="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <img className="card-bg" src={pokeballbackground} alt="pokeball-card" />
+                            <div>
+                              <h2 className="card-info-h2 mt-3 text-secondary">{`#${parseInt(pokemon.url.split('/')[6])} ${pokemon.name}`}</h2>
                             </div>
-                          );
-                        })
-                      }
-                  </div>
+                            <div className="card-img">
+                              <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${parseInt(pokemon.url.split('/')[6])}.png`} alt={`Imgae ${pokemon.name}`} />
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })
+                }
               </div>
+            </div>
           </div>
         </div>
       )}
@@ -179,20 +198,20 @@ const PokemonPage = () => {
         const statsColors = ['bg-success', 'bg-danger', 'bg-warning', 'bg-danger', 'bg-warning', 'bg-info'];
         const stats = new Array();
         response.stats.forEach((stat, index) => stats.push(
-            { name: stat.stat.name, baseStat: stat.base_stat, color: statsColors[index]},
+          { name: stat.stat.name, baseStat: stat.base_stat, color: statsColors[index] },
         ));
 
         const sprites = new Array();
-        if (response.sprites.front_default)         sprites.push({ name: 'front_default', sprite: response.sprites.front_default });
-        if (response.sprites.back_default)          sprites.push({ name: 'back_default', sprite: response.sprites.back_default });
-        if (response.sprites.front_female)          sprites.push({ name: 'front_female', sprite: response.sprites.front_female });
-        if (response.sprites.back_female)           sprites.push({ name: 'back_female', sprite: response.sprites.back_female });
-        if (response.sprites.front_shiny)           sprites.push({ name: 'front_shiny', sprite: response.sprites.front_shiny});
-        if (response.sprites.back_shiny)            sprites.push({ name: 'back_shiny', sprite: response.sprites.back_shiny});
-        if (response.sprites.front_shiny_female)    sprites.push({ name: 'front_shiny_female', sprite: response.sprites.front_shiny_female});
-        if (response.sprites.back_shiny_female)     sprites.push({ name: 'back_shiny_female', sprite: response.sprites.back_shiny_female});
+        if (response.sprites.front_default) sprites.push({ name: 'front_default', sprite: response.sprites.front_default });
+        if (response.sprites.back_default) sprites.push({ name: 'back_default', sprite: response.sprites.back_default });
+        if (response.sprites.front_female) sprites.push({ name: 'front_female', sprite: response.sprites.front_female });
+        if (response.sprites.back_female) sprites.push({ name: 'back_female', sprite: response.sprites.back_female });
+        if (response.sprites.front_shiny) sprites.push({ name: 'front_shiny', sprite: response.sprites.front_shiny });
+        if (response.sprites.back_shiny) sprites.push({ name: 'back_shiny', sprite: response.sprites.back_shiny });
+        if (response.sprites.front_shiny_female) sprites.push({ name: 'front_shiny_female', sprite: response.sprites.front_shiny_female });
+        if (response.sprites.back_shiny_female) sprites.push({ name: 'back_shiny_female', sprite: response.sprites.back_shiny_female });
 
-        
+
         setData({
           'id': response.id,
           'name': response.name,
@@ -213,8 +232,8 @@ const PokemonPage = () => {
     <>
       {isLoading && !noPokemonFound && loadingComponent}
 
-      {noPokemonFound && notDataFoundComponent(`No pokemon found: ${param}`)}
-      
+      {noPokemonFound && messageErrorComponent(`No pokemon found: ${param}`)}
+
       {!isLoading && (
         <>
           <div key={data.id} className="page-pokemon">
@@ -222,7 +241,7 @@ const PokemonPage = () => {
 
               <div className="row">
                 <div className="col">
-                  <h1 className="font-weight-bold"><b>#{ data.id }</b></h1>
+                  <h1 className="font-weight-bold"><b>#{data.id}</b></h1>
                 </div>
 
                 <div className="col d-flex flex-row-reverse">
@@ -248,9 +267,9 @@ const PokemonPage = () => {
                     <span className="mr-3 text-center">
                       {/* carousel imgs */}
                       <img className="d-block w-100" src={data.sprites[0].sprite} alt={data.sprites[0].name}></img>
-                      
+
                       <h2 className="mt-4 pb-3 text-capitalize">
-                        <span className="font-weight-bold"><b>{ data.name }</b></span>
+                        <span className="font-weight-bold"><b>{data.name}</b></span>
                       </h2>
                     </span>
                   </div>
@@ -258,43 +277,43 @@ const PokemonPage = () => {
                   <div className="col-12 col-lg-8 h-100">
                     <div className="pl-4 bg-white rounded box-shadow p-5">
                       <p className="font-weight-bold"><b>Types:</b> </p>
-                      { 
+                      {
                         data.types.map((type, index) => (
                           <span key={`type-${index}`} className={type + ' color-white info-span p-1 px-5'}>
-                            { type }
+                            {type}
                           </span>
                         ))
                       }
 
                       <p className="mt-2">
-                        <span className="font-weight-bold"><b>Height:</b> </span> { data.height + ' | '} 
-                        <span className="font-weight-bold"><b>Weight:</b> </span> { data.weight }
+                        <span className="font-weight-bold"><b>Height:</b> </span> {data.height + ' | '}
+                        <span className="font-weight-bold"><b>Weight:</b> </span> {data.weight}
                       </p>
 
                       <p>
-                        <span className="font-weight-bold"><b>Base experience:</b></span> { data.baseExperience }
+                        <span className="font-weight-bold"><b>Base experience:</b></span> {data.baseExperience}
                       </p>
                     </div>
                   </div>
 
                   <div className="row pt-4">
                     <h2>Stats</h2>
-                    { 
+                    {
                       data.stats.map((stat, index) => (
-                        <div key={`stat-${index}`} style={{height: '35px'}}>
-                          <div className={`progress-bar ${stat.color}`} style={{width: stat.baseStat+'%', maxWidth: '100%'}} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                            <span className="text-uppercase">{stat.name + ' : ' } <span className="font-weight-bold"><b>{ stat.baseStat }</b></span></span>
+                        <div key={`stat-${index}`} style={{ height: '35px' }}>
+                          <div className={`progress-bar ${stat.color}`} style={{ width: stat.baseStat + '%', maxWidth: '100%' }} role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            <span className="text-uppercase">{stat.name + ' : '} <span className="font-weight-bold"><b>{stat.baseStat}</b></span></span>
                           </div>
                         </div>
                       ))
                     }
                   </div>
 
-                  <div style={{marginTop: '30px'}}  className="row pt-4 justify-content-center">
+                  <div style={{ marginTop: '30px' }} className="row pt-4 justify-content-center">
                     <h2>Moves</h2>
                     {
                       data.moves.map((move, index) => (
-                        <span key={`move-${index}`} className={data.types[0] + ' color-white info-move me-2 mt-2 col-2'}>{ move }</span>
+                        <span key={`move-${index}`} className={data.types[0] + ' color-white info-move me-2 mt-2 col-2'}>{move}</span>
                       ))
                     }
                   </div>
@@ -311,17 +330,144 @@ const PokemonPage = () => {
 /**
  * Page Not Found
  */
- const NotFound = () => {
-   return (
-     <>
-     <div className="pt-5 d-flex justify-content-center align-items-center" id="main">
+const NotFoundPage = () => {
+  return (
+    <>
+      <div className="pt-5 d-flex justify-content-center align-items-center" id="main">
         <h1 className="mr-3 pr-3 align-top border-right inline-block align-content-center">404</h1>
         <div className="inline-block align-middle">
-            <h2 className="font-weight-normal lead" id="desc"> The page you requested was not found.</h2>
+          <h2 className="font-weight-normal lead" id="desc"> The page you requested was not found.</h2>
         </div>
       </div>
-     </>
-   );
- }
+    </>
+  );
+}
+
+/**
+ * Login Page
+ */
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+  const [emailForgotPassword, setEmailForgotPassword] = useState();
+  const [efpView, setEfpView] = useState(false);
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) navigate("/pokedex");
+  }, [user, loading]);
+
+  return (
+    <>
+      <div className="login">
+        <div className="login__container">
+          <h3 className="pb-3">Log In</h3>
+
+          <input type="email" className="form-control mb-2" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" required/>
+          <input type="password" className="form-control mb-2" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required/>
+
+          <button className="btn btn-primary btn-md btn-block m-2" onClick={() => logInWithEmailAndPassword(email, password)} >
+            Login
+          </button>
+
+          <a className="btn btn-lg btn-google btn-block btn-outline-danger m-2" onClick={signInWithGoogle}>
+            <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Login with Google
+          </a>
+
+          <div>
+            <a className='text-primary' onClick={() => setEfpView(!efpView)}>Forgot Password</a>
+          </div>
+
+          {efpView && (
+            <div class="input-group mb-3">
+              <input type="email" className="form-control mt-2" value={emailForgotPassword} onChange={(e) => setEmailForgotPassword(e.target.value)} placeholder="E-mail forgot password" required/>
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button" onClick={() => sendPasswordReset(emailForgotPassword)}>Send</button>
+              </div>
+            </div>
+          )}
+
+          <div>
+            Don't have an account? <Link to="/register">Register</Link> now.
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/**
+ * Register Page
+ */
+const RegisterPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  const register = () => {
+    //if (!name) alert("Please enter name");
+    registerWithEmailAndPassword(name, email, password);
+  };
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) navigate("/pokedex");
+  }, [user, loading]);
+
+  return (
+    <>
+      <div className="login">
+        <div className="login__container">
+          <h3 className="pb-3">Register</h3>
+
+          <input type="text" className="form-control mb-2" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required/>
+          <input type="text" className="form-control mb-2" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" required/>
+          <input type="password" className="form-control mb-2" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required/>
+
+          <button className="btn btn-primary btn-md btn-block m-2" onClick={register} >
+            Register
+          </button>
+
+          <a className="btn btn-lg btn-google btn-block btn-outline-danger m-2" onClick={signInWithGoogle}>
+            <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Login with Google
+          </a>
+
+          <div>
+            Already have an account? <Link to="/login">Login</Link> now.
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/**
+ * Sing Out Page
+ */
+const SingOutPage = () => {
+  const navigate = useNavigate();
+
+  logout();
+  navigate('/login');
+}
+
+/**
+ * Profile Page
+ */
+const ProfilePage = () => {
+  const [user, loading, error] = useAuthState(auth);
+
+  console.log(user);
+  
+  return (
+    <>
+      <h1>Profile page</h1>
+    </>
+  );
+}
 
 export default App;
