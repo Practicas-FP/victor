@@ -7,44 +7,21 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllFav } from "../services/firebase-favorite";
 import pokeballbackground from '../assets/images/pokeballbackground.png';
-import { loadingComponent, urlBase, messageErrorComponent } from "../services/consts";
+import { loadingComponent, messageErrorComponent } from "../services/consts";
 
 function Profile() {
     const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
-    const [pokemonsFavs, setPokemonsFavs] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [noPokemonsFound, setNoPokemonsFound] = useState(false);
     const [data, setData] = useState();
-    const pokemons = new Array();
 
     useEffect(() => {
         if (loading) return;
         if (!user) navigate("/login");
 
-        getAllFav(user.uid, setPokemonsFavs);
-
-        if (pokemonsFavs) {
-            pokemonsFavs.map(pokemonFav => {
-                fetch(`${urlBase}/pokemon/${pokemonFav.pokemonId}`)
-                    .then((res) => res.json())
-                    .then((response) => {
-                        pokemons.push({
-                            id: response.id,
-                            name: response.name
-                        });
-                    })
-                    .catch(() => setNoPokemonsFound(true))
-                    .finally(() => {
-                        setIsLoading(false);
-                        setData(pokemons);
-                    });
-            });
-        } else {
-            setIsLoading(false);
-            setNoPokemonsFound(true);
-        }
-    }, [user, loading, pokemonsFavs, pokemons]);
+        getAllFav(user.uid, setIsLoading, setData, setNoPokemonsFound);
+    }, [user, loading]);
 
     return (
         <>
@@ -87,7 +64,7 @@ function Profile() {
 
                         <div className="container">
                             <div className="row">
-                                {!isLoading && pokemonsFavs && (
+                                {!isLoading && data && (
                                     data.map((pokemon, index) => {
                                         return (
                                             <div key={index} className="col-12 col-md-6 col-lg-4 mb-2 hand-above hover-shadow">

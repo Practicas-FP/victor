@@ -85,7 +85,7 @@ function Pokemon() {
                                         )}
 
                                         {!isFavorite && (
-                                            <button className="btn btn-outline-primary" onClick={() => saveFav(user.uid, data.id, setFavorite)}><i className="bi bi-heart-fill"></i></button>
+                                            <button className="btn btn-outline-primary" onClick={() => saveFav(user.uid, data.id, data.name, setFavorite)}><i className="bi bi-heart-fill"></i></button>
                                         )}
                                     </div>
                                 )}
