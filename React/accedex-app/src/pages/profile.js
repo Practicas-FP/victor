@@ -1,18 +1,50 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../services/firebase-auth";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getAllFav } from "../services/firebase-favorite";
+import pokeballbackground from '../assets/images/pokeballbackground.png';
+import { loadingComponent, urlBase, messageErrorComponent } from "../services/consts";
 
 function Profile() {
     const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
+    const [pokemonsFavs, setPokemonsFavs] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+    const [noPokemonsFound, setNoPokemonsFound] = useState(false);
+    const [data, setData] = useState();
+    const pokemons = new Array();
 
     useEffect(() => {
         if (loading) return;
         if (!user) navigate("/login");
-    }, [user, loading]);
+
+        getAllFav(user.uid, setPokemonsFavs);
+
+        if (pokemonsFavs) {
+            pokemonsFavs.map(pokemonFav => {
+                fetch(`${urlBase}/pokemon/${pokemonFav.pokemonId}`)
+                    .then((res) => res.json())
+                    .then((response) => {
+                        pokemons.push({
+                            id: response.id,
+                            name: response.name
+                        });
+                    })
+                    .catch(() => setNoPokemonsFound(true))
+                    .finally(() => {
+                        setIsLoading(false);
+                        setData(pokemons);
+                    });
+            });
+        } else {
+            setIsLoading(false);
+            setNoPokemonsFound(true);
+        }
+    }, [user, loading, pokemonsFavs, pokemons]);
 
     return (
         <>
@@ -48,11 +80,37 @@ function Profile() {
                         <div className="row pt-5">
                             <h3>Favorite Pokemon</h3>
                         </div>
-                        
+
+                        {isLoading && !noPokemonsFound && loadingComponent}
+
+                        {noPokemonsFound && messageErrorComponent(`No pokemon favs`)}
+
+                        <div className="container">
+                            <div className="row">
+                                {!isLoading && pokemonsFavs && (
+                                    data.map((pokemon, index) => {
+                                        return (
+                                            <div key={index} className="col-12 col-md-6 col-lg-4 mb-2 hand-above hover-shadow">
+                                                <Link to={`/pokemon/${pokemon.id}`}>
+                                                    <div className="card shadow-lg p-3 mb-5 bg-white rounded">
+                                                        <img className="card-bg" src={pokeballbackground} alt="pokeball-card" />
+                                                        <div>
+                                                            <h2 className="card-info-h2 mt-3 text-secondary">{`#${pokemon.id} ${pokemon.name}`}</h2>
+                                                        </div>
+                                                        <div className="card-img">
+                                                            <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} alt={`Imgae ${pokemon.name}`} />
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
-
         </>
     );
 }

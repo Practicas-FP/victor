@@ -2,6 +2,9 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { urlBase, loadingComponent, messageErrorComponent } from '../services/consts';
+import { getFav, saveFav, deleteFav } from '../services/firebase-favorite';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../services/firebase-auth";
 
 function Pokemon() {
     const param = useParams().id;
@@ -9,6 +12,9 @@ function Pokemon() {
     const [isLoading, setIsLoading] = useState(true);
     const [noPokemonFound, setNoPokemonFound] = useState(false);
     const [data, setData] = useState();
+    const [isFavorite, setFavorite] = useState(false);
+
+    const [user, loading, error] = useAuthState(auth);
 
     useEffect(() => {
         fetch(`${urlBase}/pokemon/${param}`)
@@ -48,10 +54,13 @@ function Pokemon() {
                     'stats': stats,
                     'sprites': sprites
                 });
+
+                if (user) getFav(user.uid, data.id, setFavorite);
+
                 setIsLoading(false);
             })
             .catch(() => setNoPokemonFound(true));
-    }, [param]);
+    }, [param, user, isFavorite]);
 
     return (
         <>
@@ -69,11 +78,17 @@ function Pokemon() {
                                     <h1 className="font-weight-bold"><b>#{data.id}</b></h1>
                                 </div>
 
-                                <div className="col d-flex flex-row-reverse">
-                                    <button className="btn btn-outline-primary"><i className="bi bi-heart-fill"></i></button>
+                                {user && (
+                                    <div className="col d-flex flex-row-reverse">
+                                        {isFavorite && (
+                                            <button className="btn btn-outline-danger" onClick={() => deleteFav(user.uid, data.id, setFavorite)}><i className="bi bi-heart-fill"></i></button>
+                                        )}
 
-                                    <button className="btn btn-outline-danger"><i className="bi bi-heart-fill"></i></button>
-                                </div>
+                                        {!isFavorite && (
+                                            <button className="btn btn-outline-primary" onClick={() => saveFav(user.uid, data.id, setFavorite)}><i className="bi bi-heart-fill"></i></button>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="d-flex py-3">

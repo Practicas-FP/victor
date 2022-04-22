@@ -16,17 +16,7 @@ import {
     where,
     addDoc,
 } from "firebase/firestore";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBGeBCGwQIhCv1J-qjY329NbEE8Tl5B-2Q",
-    authDomain: "accedex-decb9.firebaseapp.com",
-    databaseURL: "https://accedex-decb9-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "accedex-decb9",
-    storageBucket: "accedex-decb9.appspot.com",
-    messagingSenderId: "552211236830",
-    appId: "1:552211236830:web:b74b0bfd26a22e58603f4f",
-    measurementId: "G-BL67HK4KF4"
-};
+import { firebaseConfig } from './consts';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
