@@ -76,6 +76,7 @@ function Profile() {
                                                         <img className="card-bg" src={pokeballbackground} alt="pokeball-card" />
                                                         <div>
                                                             <h2 className="card-info-h2 mt-3 text-secondary">{`#${pokemon.id} ${pokemon.name}`}</h2>
+                                                            {/* <p class="card-text text-muted">{pokemon.date}</p> */}
                                                         </div>
                                                         <div className="card-img">
                                                             <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} alt={`Imgae ${pokemon.name}`} />
