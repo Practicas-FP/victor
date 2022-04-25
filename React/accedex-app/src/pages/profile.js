@@ -9,6 +9,8 @@ import { getAllFav } from "../services/firebase-favorite";
 import pokeballbackground from '../assets/images/pokeballbackground.png';
 import { loadingComponent, messageErrorComponent } from "../services/consts";
 import ReactPaginate from 'react-paginate';
+import ImageUploading from 'react-images-uploading';
+import { getPhoto, savePhoto, deletePhoto } from "../services/firebase-user";
 
 function Profile() {
     const [user, loading, error] = useAuthState(auth);
@@ -19,11 +21,19 @@ function Profile() {
     const [paginate, setPaginate] = useState();
     const [pageCount, setPageCount] = useState(0);
 
+    const maxNumber = 69;
+    const [image, setImage] = useState();
+
+    const onChange = (imageList) => {
+        savePhoto(user.uid, imageList[0].data_url, setImage);
+    };
+
     useEffect(() => {
         if (loading) return;
         if (!user) navigate("/login");
 
         getAllFav(user.uid, setIsLoading, setData, setNoPokemonsFound, setPaginate, setPageCount);
+        getPhoto(user.uid, setImage);
     }, [user, loading]);
 
     return (
@@ -37,8 +47,31 @@ function Profile() {
 
                         <div className="row py-4">
                             <div className="col-12 col-lg-4 bg-white mb-3 rounded box-shadow d-flex flex-column justify-content-center mt-3">
-                                <span className="mr-3 text-center">
-                                    <img src={user.photoURL || 'https://via.placeholder.com/300x300.png?text=No+image'} alt="Image profile" width="300" height="300" style={{ objectFit: 'cover' }} />
+                                <span className="mr-3 text-center con">
+                                    <img src={image ? image : user.photoURL || 'https://via.placeholder.com/300x300.png?text=No+image'} alt="Image profile" width="300" height="300" style={{ objectFit: 'cover' }} />
+                                    <ImageUploading
+                                        multiple
+                                        value={image}
+                                        onChange={onChange}
+                                        maxNumber={maxNumber}
+                                        dataURLKey="data_url"
+                                    >
+                                        {({ onImageUpload, isDragging, dragProps }) => (
+                                            <div className="upload__image-wrapper">
+                                                {!image && (
+                                                    <button className="btn btn-outline-primary" style={isDragging ? { color: 'red' } : undefined} onClick={onImageUpload} {...dragProps}>
+                                                        <i className="bi bi-pen"></i>
+                                                    </button>
+                                                )}
+
+                                                {image && (
+                                                    <button onClick={() => deletePhoto(user.uid, setImage)} className="btn btn-outline-danger">
+                                                        <i className="bi bi-trash3"></i>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </ImageUploading>
 
                                     <h2 className="mt-4 pb-3">Hello, <span className="fw-bold">{user.displayName ? user.displayName.split(' ')[0] : 'Null'}</span></h2>
                                 </span>
@@ -76,7 +109,7 @@ function Profile() {
                                                         <img className="card-bg" src={pokeballbackground} alt="pokeball-card" />
                                                         <div>
                                                             <h2 className="card-info-h2 mt-3 text-secondary">{`#${pokemon.id} ${pokemon.name}`}</h2>
-                                                            {/* <p class="card-text text-muted">{pokemon.date}</p> */}
+                                                            {/* <p className="card-text text-muted">{pokemon.date}</p> */}
                                                         </div>
                                                         <div className="card-img">
                                                             <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`} alt={`Imgae ${pokemon.name}`} />
@@ -86,18 +119,18 @@ function Profile() {
                                             </div>
                                         );
                                     })
-                                    
-                                        /* { paginate.pokemons }
-                                        <ReactPaginate
-                                            breakLabel="..."
-                                            nextLabel="next >"
-                                            onPageChange={paginate.handlePageClick}
-                                            pageRangeDisplayed={5}
-                                            pageCount={pageCount}
-                                            previousLabel="< previous"
-                                            renderOnZeroPageCount={null}
-                                        /> */
-                                    
+
+                                    /* { paginate.pokemons }
+                                    <ReactPaginate
+                                        breakLabel="..."
+                                        nextLabel="next >"
+                                        onPageChange={paginate.handlePageClick}
+                                        pageRangeDisplayed={5}
+                                        pageCount={pageCount}
+                                        previousLabel="< previous"
+                                        renderOnZeroPageCount={null}
+                                    /> */
+
                                 )}
                             </div>
                         </div>
