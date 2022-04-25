@@ -17,6 +17,7 @@ import {
     addDoc,
 } from "firebase/firestore";
 import { firebaseConfig } from './consts';
+import { saveNameSurnames } from "./firebase-user";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -53,10 +54,13 @@ const logInWithEmailAndPassword = async (email, password, setErr, setMsgErr) => 
     }
 };
 
-const registerWithEmailAndPassword = async (name, email, password, setErr, setMsgErr) => {
+const registerWithEmailAndPassword = async (name, surnames, email, password, setErr, setMsgErr) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
+        
+        saveNameSurnames(user.uid, name, surnames);
+
         await addDoc(collection(db, "users"), {
             uid: user.uid,
             name,

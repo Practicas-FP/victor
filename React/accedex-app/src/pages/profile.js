@@ -10,7 +10,7 @@ import pokeballbackground from '../assets/images/pokeballbackground.png';
 import { loadingComponent, messageErrorComponent } from "../services/consts";
 import ReactPaginate from 'react-paginate';
 import ImageUploading from 'react-images-uploading';
-import { getPhoto, savePhoto, deletePhoto } from "../services/firebase-user";
+import { getPhoto, savePhoto, deletePhoto, getNameSurnames } from "../services/firebase-user";
 
 function Profile() {
     const [user, loading, error] = useAuthState(auth);
@@ -23,6 +23,7 @@ function Profile() {
 
     const maxNumber = 69;
     const [image, setImage] = useState();
+    const [nameSurnames, setNameSurnames] = useState();
 
     const onChange = (imageList) => {
         savePhoto(user.uid, imageList[0].data_url, setImage);
@@ -34,6 +35,7 @@ function Profile() {
 
         getAllFav(user.uid, setIsLoading, setData, setNoPokemonsFound, setPaginate, setPageCount);
         getPhoto(user.uid, setImage);
+        getNameSurnames(user.uid, setNameSurnames);
     }, [user, loading]);
 
     return (
@@ -73,14 +75,14 @@ function Profile() {
                                         )}
                                     </ImageUploading>
 
-                                    <h2 className="mt-4 pb-3">Hello, <span className="fw-bold">{user.displayName ? user.displayName.split(' ')[0] : 'Null'}</span></h2>
+                                    <h2 className="mt-4 pb-3">Hello, <span className="fw-bold">{user.displayName ? user.displayName.split(' ')[0] : nameSurnames ? nameSurnames.name : 'No name'}</span></h2>
                                 </span>
                             </div>
 
                             <div className="col-12 col-lg-8" style={{ height: '100%' }}>
                                 <div className="pl-4 bg-white rounded box-shadow p-5">
-                                    <p><span className="fw-bold">Name:</span> {user.displayName ? user.displayName.split(' ')[0] : 'Null'}</p>
-                                    <p><span className="fw-bold">Surnames:</span> {user.displayName ? `${user.displayName.split(' ')[1]} ${user.displayName.split(' ')[2]}` : 'Null'}</p>
+                                    <p><span className="fw-bold">Name:</span> {user.displayName ? user.displayName.split(' ')[0] : nameSurnames ? nameSurnames.name : 'No name'}</p>
+                                    <p><span className="fw-bold">Surnames:</span> {user.displayName ? `${user.displayName.split(' ')[1]} ${user.displayName.split(' ')[2]}` : nameSurnames ? nameSurnames.surnames : 'No surnames'}</p>
                                     <p><span className="fw-bold">Email:</span> {user.email}</p>
                                     <p><span className="fw-bold">User ID:</span> {user.uid}</p>
                                     <p><span className="fw-bold">Email Verified:</span> {user.emailVerified ? 'Yes' : 'No'}</p>

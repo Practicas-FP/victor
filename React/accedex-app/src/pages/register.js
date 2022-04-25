@@ -11,6 +11,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [surnames, setSurnames] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const [err, setErr] = useState(false);
   const [msgErr, setMsgErr] = useState();
@@ -35,7 +36,7 @@ function Register() {
       return;
     }
 
-    registerWithEmailAndPassword(name, email, password, setErr, setMsgErr);
+    registerWithEmailAndPassword(name, surnames, email, password, setErr, setMsgErr);
   };
 
   useEffect(() => {
@@ -49,7 +50,8 @@ function Register() {
         <div className="login__container">
           <h3 className="pb-3">Register</h3>
 
-          <input type="text" className="form-control mb-2" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required />
+          <input type="text" className="form-control mb-2" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
+          <input type="text" className="form-control mb-2" value={surnames} onChange={(e) => setSurnames(e.target.value)} placeholder="Surnames" required />
           <input type="email" className="form-control mb-2" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" required />
           <input type="password" className="form-control mb-2" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
 
