@@ -55,11 +55,14 @@ function Pokemon() {
                     'sprites': sprites
                 });
 
-                if (user) getFav(user.uid, data.id, setFavorite);
+                if (user) getFav(user.uid, response.id, setFavorite);
 
                 setIsLoading(false);
             })
-            .catch(() => setNoPokemonFound(true));
+            .catch((error) => {
+                setNoPokemonFound(true);
+                console.error(error);
+            });
     }, [param, user, isFavorite]);
 
     return (

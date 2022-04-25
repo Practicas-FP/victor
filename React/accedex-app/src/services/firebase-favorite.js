@@ -56,7 +56,7 @@ function getAllFav(uid, setIsLoading, setData, setNoPokemonsFound, setPaginate, 
         }); */
 
       } else {
-        console.log("getAllFavs(): No data available");
+        //console.log("getAllFavs(): No data available");
         setNoPokemonsFound(true);
       }
 
