@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logInWithEmailAndPassword, signInWithGoogle, sendPasswordReset } from "../services/firebase-auth";
 import { Link, useNavigate } from "react-router-dom";
+import { messageErrorComponent } from "../services/consts";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -13,6 +14,8 @@ function Login() {
     const navigate = useNavigate();
     const [emailForgotPassword, setEmailForgotPassword] = useState();
     const [efpView, setEfpView] = useState(false);
+    const [err, setErr] = useState(false);
+    const [msgErr, setMsgErr] = useState();
 
     useEffect(() => {
         if (loading) return;
@@ -28,11 +31,11 @@ function Login() {
                     <input type="email" className="form-control mb-2" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" required />
                     <input type="password" className="form-control mb-2" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
 
-                    <button className="btn btn-primary btn-md btn-block m-2" onClick={() => logInWithEmailAndPassword(email, password)} >
+                    <button className="btn btn-primary btn-md btn-block m-2" onClick={() => logInWithEmailAndPassword(email, password, setErr, setMsgErr)} >
                         Login
                     </button>
 
-                    <a className="btn btn-lg btn-google btn-block btn-outline-danger m-2" onClick={signInWithGoogle}>
+                    <a className="btn btn-lg btn-google btn-block btn-outline-danger m-2" onClick={() => signInWithGoogle(setErr, setMsgErr)}>
                         <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Login with Google
                     </a>
 
@@ -52,6 +55,9 @@ function Login() {
                     <div>
                         Don't have an account? <Link to="/register">Register</Link> now.
                     </div>
+
+                    {err && messageErrorComponent(msgErr, setErr)}
+
                 </div>
             </div>
         </>

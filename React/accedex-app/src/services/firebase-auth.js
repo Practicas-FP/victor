@@ -24,7 +24,7 @@ const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (setErr, setMsgErr) => {
     try {
         const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
@@ -39,21 +39,21 @@ const signInWithGoogle = async () => {
             });
         }
     } catch (err) {
-        console.error(err);
-        alert(err.message);
+        setErr(true);
+        setMsgErr(err.message);
     }
 };
 
-const logInWithEmailAndPassword = async (email, password) => {
+const logInWithEmailAndPassword = async (email, password, setErr, setMsgErr) => {
     try {
         await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-        console.error(err);
-        alert(err.message);
+        setErr(true);
+        setMsgErr(err.message);
     }
 };
 
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerWithEmailAndPassword = async (name, email, password, setErr, setMsgErr) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
@@ -64,8 +64,8 @@ const registerWithEmailAndPassword = async (name, email, password) => {
             email,
         });
     } catch (err) {
-        console.error(err);
-        alert(err.message);
+        setErr(true);
+        setMsgErr(err.message);
     }
 };
 
