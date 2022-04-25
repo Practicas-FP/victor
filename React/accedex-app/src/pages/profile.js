@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAllFav } from "../services/firebase-favorite";
 import pokeballbackground from '../assets/images/pokeballbackground.png';
 import { loadingComponent, messageErrorComponent } from "../services/consts";
+import ReactPaginate from 'react-paginate';
 
 function Profile() {
     const [user, loading, error] = useAuthState(auth);
@@ -15,12 +16,14 @@ function Profile() {
     const [isLoading, setIsLoading] = useState(true);
     const [noPokemonsFound, setNoPokemonsFound] = useState(false);
     const [data, setData] = useState();
+    const [paginate, setPaginate] = useState();
+    const [pageCount, setPageCount] = useState(0);
 
     useEffect(() => {
         if (loading) return;
         if (!user) navigate("/login");
 
-        getAllFav(user.uid, setIsLoading, setData, setNoPokemonsFound);
+        getAllFav(user.uid, setIsLoading, setData, setNoPokemonsFound, setPaginate, setPageCount);
     }, [user, loading]);
 
     return (
@@ -82,6 +85,18 @@ function Profile() {
                                             </div>
                                         );
                                     })
+                                    
+                                        /* { paginate.pokemons }
+                                        <ReactPaginate
+                                            breakLabel="..."
+                                            nextLabel="next >"
+                                            onPageChange={paginate.handlePageClick}
+                                            pageRangeDisplayed={5}
+                                            pageCount={pageCount}
+                                            previousLabel="< previous"
+                                            renderOnZeroPageCount={null}
+                                        /> */
+                                    
                                 )}
                             </div>
                         </div>
