@@ -47,7 +47,7 @@ function Login() {
                         <div class="input-group mb-3">
                             <input type="email" className="form-control mt-2" value={emailForgotPassword} onChange={(e) => setEmailForgotPassword(e.target.value)} placeholder="E-mail forgot password" required />
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" onClick={() => sendPasswordReset(emailForgotPassword)}>Send</button>
+                                <button class="btn btn-primary" type="button" onClick={() => sendPasswordReset(emailForgotPassword, setErr, setMsgErr)}>Send</button>
                             </div>
                         </div>
                     )}
