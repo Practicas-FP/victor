@@ -9,3 +9,6 @@ Todos los proyectos tienen como base "atacar" a una API pública (en mi caso una
 
 ## Ionic
 ![preview-web-ionic](Imgs/preview-web-ionic.png)
+
+## React
+![preview-web-react](Imgs/preview-react.png)
