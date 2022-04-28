@@ -16,7 +16,6 @@ const Pokedex = ({ navigation }) => {
   const [data, setData] = useState();
   const [nextOffset, setNextOffset] = useState(null);
   const [prevOffset, setPrevOffset] = useState(null);
-  //const nativete = useNavigate();
 
   const back = () => {
     setIsLoading(true);

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         height: '125px',
         overflow: 'hidden',
 
-        bordeRradius: '60px 20px',
+        borderRadius: '25px',
         elevation: 3,
         shadowOffset: { width: 1, height: 1 },
         shadowColor: '#333',
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     cardInfoH2: {
         fontWeight: 'bold',
         marginBottom: '16px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
     }
 });
