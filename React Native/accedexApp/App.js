@@ -30,7 +30,7 @@ export default function App({route}) {
           name="Pokemon"
           component={Pokemon}
           options={{
-            title: 'Pokemon',
+            title: `Pokemon`,
             drawerIcon: ({ focused }) => (
               <FontAwesome5 name='btc' size={focused ? '#0080FF' : '#999999'} />
             )
