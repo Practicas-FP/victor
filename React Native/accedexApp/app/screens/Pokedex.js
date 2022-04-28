@@ -1,15 +1,12 @@
-import { StyleSheet, View, Text, Button, Linking, ScrollView } from 'react-native'
+import { View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { loadingComponent, messageErrorComponent, urlBase } from '../constants/Consts'
 import { myStyles } from '../styles/myStyles'
-import { Link, useParams, useNavigate } from 'react-router-native'
 import { MyButton, MyCard } from '../components/components'
 
-const Pokedex = ({ navigation }) => {
-
-  let param = 0;
+const Pokedex = ({ route, navigation }) => {
+  const param = route.params.offset || 0;
   const limit = 12;
-  //useParams().offset ? param = useParams().offset : param = 0;
 
   const [isLoading, setIsLoading] = useState(true);
   const [noPokemonsFound, setNoPokemonsFound] = useState(false);
@@ -19,12 +16,16 @@ const Pokedex = ({ navigation }) => {
 
   const back = () => {
     setIsLoading(true);
-    navigation.navigate(`/pokemon/${prevOffset}`);
+    navigation.navigate('Pokedex', {
+      offset: prevOffset
+    });
   }
 
   const next = () => {
     setIsLoading(true);
-    navigation.navigate(`/pokemon/${nextOffset}`);
+    navigation.navigate('Pokedex', {
+      offset: nextOffset
+    });
   }
 
   useEffect(() => {
@@ -58,9 +59,9 @@ const Pokedex = ({ navigation }) => {
             {
               data.map((pokemon, index) => {
                 return (
-                  <View key={index}>
+                  <TouchableOpacity key={index} onPress={() => navigation.navigate('Pokemon', { id: pokemon.url.split('/')[6] })}>
                     <MyCard pokemon={pokemon} />
-                  </View>
+                  </TouchableOpacity>
                 );
               })
             }

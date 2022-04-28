@@ -9,11 +9,12 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 const Drawer = createDrawerNavigator();
 
-export default function App() {
+export default function App({route}) {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Pokedex">
         <Drawer.Screen
+          initialParams={{ params: route?.params }}
           name="Pokedex"
           component={Pokedex}
           options={{
@@ -25,6 +26,7 @@ export default function App() {
         />
 
         <Drawer.Screen
+          initialParams={{ params: route?.params }}
           name="Pokemon"
           component={Pokemon}
           options={{
