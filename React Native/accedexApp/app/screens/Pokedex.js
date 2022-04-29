@@ -1,8 +1,8 @@
 import { View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { loadingComponent, urlBase } from '../constants/Consts'
+import { urlBase } from '../constants/Consts'
 import { myStyles } from '../styles/myStyles'
-import { MyButton, MyCard, MySearchBar } from '../components/components'
+import { MyButton, MyCard, MySearchBar, MyLoading } from '../components/components'
 
 const Pokedex = ({ route, navigation }) => {
   const param = route.params.offset || 0;
@@ -54,7 +54,7 @@ const Pokedex = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-      {isLoading && !noPokemonsFound && loadingComponent}
+      {isLoading && !noPokemonsFound && <MyLoading />}
 
       {noPokemonsFound && <MyError message={`No pokemons found: ${id}`} setErr={false} goBack={false} />}
 

@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { loadingComponent, urlBase } from '../constants/Consts'
+import { urlBase } from '../constants/Consts'
 import { styles } from '../styles/pokemon'
 import MyButton from '../components/Button'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons'
 import Colors from '../constants/Colors'
-import { MyError } from '../components/components'
+import { MyError, MyLoading } from '../components/components'
 
 const Pokemon = ({ route, navigation }) => {
   const id = route.params.id || 1;
@@ -86,7 +86,7 @@ const Pokemon = ({ route, navigation }) => {
     <View>
       {!isLoading && console.log(data)}
 
-      {isLoading && !noPokemonFound && loadingComponent}
+      {isLoading && !noPokemonFound && <MyLoading />}
 
       {noPokemonFound && <MyError message={`No pokemon found: ${id}`} setErr={false} goBack={goBack} />}
 
