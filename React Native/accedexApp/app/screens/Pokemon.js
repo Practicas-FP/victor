@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { loadingComponent, messageErrorComponent, urlBase } from '../constants/Consts'
+import { loadingComponent, urlBase } from '../constants/Consts'
 import { styles } from '../styles/pokemon'
 import MyButton from '../components/Button'
 import { Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons'
 import Colors from '../constants/Colors'
+import { MyError } from '../components/components'
 
 const Pokemon = ({ route, navigation }) => {
   const id = route.params.id || 1;
@@ -13,6 +14,10 @@ const Pokemon = ({ route, navigation }) => {
   const [noPokemonFound, setNoPokemonFound] = useState(false);
   const [data, setData] = useState();
   const [isFavorite, setFavorite] = useState(false);
+
+  const goBack = () => {
+    navigation.goBack();
+  }
 
   const back = () => {
     setIsLoading(true);
@@ -83,13 +88,13 @@ const Pokemon = ({ route, navigation }) => {
 
       {isLoading && !noPokemonFound && loadingComponent}
 
-      {noPokemonFound && messageErrorComponent(`No pokemon found: ${id}`)}
+      {noPokemonFound && <MyError message={`No pokemon found: ${id}`} setErr={false} goBack={goBack} />}
 
       {!isLoading && (
         <SafeAreaView style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.titleBar}>
-              <Ionicons name="ios-arrow-back" size={24} color="#52575D" onPress={() => navigation.goBack()}></Ionicons>
+              <Ionicons name="ios-arrow-back" size={24} color="#52575D" onPress={() => goBack()}></Ionicons>
 
               <MyButton text='back' onPress={back} disabled={data.id - 1 ? true : false} />
               <MyButton text='next' onPress={next} disabled={true} />

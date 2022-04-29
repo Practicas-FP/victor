@@ -8,19 +8,7 @@ const loadingComponent = (
     </div>
   );
   
-  const messageErrorComponent = (message, setErr) => (
-    <div className="alert alert-danger w-100" role="alert">
-      {`${message}   `}
-      {setErr && (
-        <button onClick={() => setErr(false)} type="button" className="btn btn-outline-danger" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      )}
-    </div>
-  );
-
 export {
     urlBase,
     loadingComponent,
-    messageErrorComponent
 }

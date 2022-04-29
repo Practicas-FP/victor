@@ -1,6 +1,6 @@
 import { View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { loadingComponent, messageErrorComponent, urlBase } from '../constants/Consts'
+import { loadingComponent, urlBase } from '../constants/Consts'
 import { myStyles } from '../styles/myStyles'
 import { MyButton, MyCard, MySearchBar } from '../components/components'
 
@@ -33,6 +33,7 @@ const Pokedex = ({ route, navigation }) => {
   }
 
   const search = () => {
+    setClicked(false);
     setSearchPhrase('');
     navigation.navigate('Pokemon', {
       id: searchPhrase.toLowerCase()
@@ -55,7 +56,7 @@ const Pokedex = ({ route, navigation }) => {
     <ScrollView>
       {isLoading && !noPokemonsFound && loadingComponent}
 
-      {noPokemonsFound && messageErrorComponent(`No pokemons found`)}
+      {noPokemonsFound && <MyError message={`No pokemons found: ${id}`} setErr={false} goBack={false} />}
 
       {!isLoading && (
         <View>
@@ -79,7 +80,10 @@ const Pokedex = ({ route, navigation }) => {
             {
               data.map((pokemon, index) => {
                 return (
-                  <TouchableOpacity key={index} onPress={() => navigation.navigate('Pokemon', { id: pokemon.url.split('/')[6] })}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => navigation.navigate('Pokemon', { id: pokemon.url.split('/')[6] })}
+                  >
                     <MyCard pokemon={pokemon} />
                   </TouchableOpacity>
                 );
