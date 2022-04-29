@@ -21,7 +21,7 @@ export class FbService {
     public toastController: ToastController) {
 
     const user = JSON.parse(localStorage.getItem('user')!);
-    this.userId = user.uid;
+    if (user) this.userId = user.uid;
   }
 
   // POKEMONS
