@@ -21,7 +21,7 @@ export class FbService {
     public toastController: ToastController) {
 
     const user = JSON.parse(localStorage.getItem('user')!);
-    if (user) this.userId = user.uid;
+    if (user) { this.userId = user.uid };
   }
 
   // POKEMONS
@@ -82,7 +82,7 @@ export class FbService {
       .then(() => {
         this.presentToast('Deleted photo');
         location.reload();
-       })
+      })
       .catch((error) => {
         this.presentToast(`Failed to delete photo: ${error.message}`);
       });
