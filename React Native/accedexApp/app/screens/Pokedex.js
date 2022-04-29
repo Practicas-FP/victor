@@ -51,8 +51,8 @@ const Pokedex = ({ route, navigation }) => {
           <View style={[{ marginHorizontal: '32px', marginVertical: '16px' }, myStyles.container, myStyles.row]}>
             <h1 style={{ marginRight: '24px' }}>Accedex</h1>
 
-            <MyButton text='back' onPress={back} />
-            <MyButton text='next' onPress={next} />
+            <MyButton text='back' onPress={back} disabled={prevOffset || prevOffset === 0 ? true : false} />
+            <MyButton text='next' onPress={next} disabled={nextOffset ? true : false} />
           </View>
 
           <View >

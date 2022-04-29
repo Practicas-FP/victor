@@ -90,6 +90,10 @@ const Pokemon = ({ route, navigation }) => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.titleBar}>
               <Ionicons name="ios-arrow-back" size={24} color="#52575D" onPress={() => navigation.goBack()}></Ionicons>
+
+              <MyButton text='back' onPress={back} disabled={data.id - 1 ? true : false} />
+              <MyButton text='next' onPress={next} disabled={true} />
+
               <AntDesign name="heart" size={32} color={isFavorite ? '#dc3545' : '#0d6efd'} />
             </View>
 
