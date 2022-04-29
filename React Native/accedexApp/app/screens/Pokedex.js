@@ -2,7 +2,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { loadingComponent, messageErrorComponent, urlBase } from '../constants/Consts'
 import { myStyles } from '../styles/myStyles'
-import { MyButton, MyCard } from '../components/components'
+import { MyButton, MyCard, MySearchBar } from '../components/components'
 
 const Pokedex = ({ route, navigation }) => {
   const param = route.params.offset || 0;
@@ -13,6 +13,10 @@ const Pokedex = ({ route, navigation }) => {
   const [data, setData] = useState();
   const [nextOffset, setNextOffset] = useState(null);
   const [prevOffset, setPrevOffset] = useState(null);
+
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const [fakeData, setFakeData] = useState();
 
   const back = () => {
     setIsLoading(true);
@@ -25,6 +29,13 @@ const Pokedex = ({ route, navigation }) => {
     setIsLoading(true);
     navigation.navigate('Pokedex', {
       offset: nextOffset
+    });
+  }
+
+  const search = () => {
+    setSearchPhrase('');
+    navigation.navigate('Pokemon', {
+      id: searchPhrase.toLowerCase()
     });
   }
 
@@ -55,7 +66,16 @@ const Pokedex = ({ route, navigation }) => {
             <MyButton text='next' onPress={next} disabled={nextOffset ? true : false} />
           </View>
 
-          <View >
+          <View>
+
+            <MySearchBar
+              searchPhrase={searchPhrase}
+              setSearchPhrase={setSearchPhrase}
+              clicked={clicked}
+              setClicked={setClicked}
+              search={search}
+            />
+
             {
               data.map((pokemon, index) => {
                 return (

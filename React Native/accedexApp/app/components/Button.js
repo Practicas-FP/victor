@@ -11,7 +11,7 @@ export default function MyButton({ text, onPress, disabled }) {
     )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     button: {
         borderRadius: 8,
         paddingVertical: 14,
