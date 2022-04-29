@@ -12,3 +12,6 @@ Todos los proyectos tienen como base "atacar" a una API pública (en mi caso una
 
 ## React
 ![preview-web-react](Imgs/preview-react.png)
+
+## React Native
+![preview-web-react-native](Imgs/preview-react-native.png)
