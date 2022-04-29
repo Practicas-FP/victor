@@ -4,57 +4,86 @@ import pokeballbackground from '../../assets/myImages/pokeballbackground.png'
 
 export default function MyCard(pokemon) {
     return (
-        <View style={styles.card}>
+        <View style={styles.mainCardView}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={styles.subCardView}>
+                    <Image
+                        source={pokeballbackground}
+                        resizeMode="contain"
+                        style={{ height: 50, width: 50 }}
+                    />
+                </View>
+                <View style={{ marginLeft: 12 }}>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            color: 'black',
+                            fontWeight: 'bold',
+                            //fontFamily: 'nunitoBold',
+                            textTransform: 'capitalize',
+                        }}>
+                        {pokemon.pokemon.name}
+                    </Text>
+                    <View
+                        style={{
+                            marginTop: 4,
+                            borderWidth: 0,
+                            width: '85%',
+                        }}>
+                        <Text
+                            style={{
+                                color: 'gray',
+                                fontSize: 12,
+                            }}>
+                            {`#${pokemon.pokemon.url.split('/')[6]}`}
+                        </Text>
+                    </View>
+                </View>
+            </View>
             <View>
-                <Image source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon.url.split('/')[6]}.png` }} style={{ width: '100px', height: '100px' }} />
-
-                <Text style={styles.cardInfoH2}>{`#${pokemon.pokemon.url.split('/')[6]} ${pokemon.pokemon.name}`}</Text>
-                <Image source={pokeballbackground} style={styles.cardBg} />
+                <Image
+                    source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon.url.split('/')[6]}.png` }}
+                    style={{ width: '100px', height: '100px' }}
+                />
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    card: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        paddingLeft: '20px',
-        backgroundColor: '#FFF',
-        height: '125px',
-        overflow: 'hidden',
-
-        borderRadius: '25px',
-        elevation: 3,
-        shadowOffset: { width: 1, height: 1 },
-        shadowColor: '#333',
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        marginHorizontal: 16,
-        marginVertical: 6
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
     },
-    cardImage: {
-        display: 'flex',
-        justifyContent: 'center',
+    mainCardView: {
+        height: 90,
         alignItems: 'center',
-        paddingRight: '3rem',
-        paddingTop: '15px',
-        paddingBottom: '15px',
-        zIndex: 10
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        shadowColor: 'shadow',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 8,
+        elevation: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 16,
+        paddingRight: 14,
+        marginTop: 6,
+        marginBottom: 6,
+        marginLeft: 16,
+        marginRight: 16,
     },
-    cardBg: {
-        position: 'absolute',
-        bottom: '15%',
-        right: '10%',
-        color: 'white',
-        height: '130px',
-        zIndex: 1,
-        height: '50px',
-        width: '50px'
+    subCardView: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        //backgroundColor: Colors.history_back,
+        //borderColor: Colors.color_eeeeee,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    cardInfoH2: {
-        fontWeight: 'bold',
-        marginBottom: '16px',
-        textTransform: 'uppercase',
-    }
 });
