@@ -3,23 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_pokedex">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="accedex.app.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_pokedex"
+        android:name="accedex.app.ui.pokedex.PokedexFragment"
+        android:label="@string/menu_pokedex"
+        tools:layout="@layout/pokedex_fragment" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="accedex.app.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="accedex.app.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_pokemon"
+        android:name="accedex.app.ui.pokemon.PokemonFragment"
+        android:label="@string/menu_pokemon"
+        tools:layout="@layout/pokemon_fragment" />
 </navigation>
