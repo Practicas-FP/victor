@@ -12,4 +12,5 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_pokemon">Pokemon</string>
     <string name="menu_pokedex">Pokedex</string>
+    <string name="no_pokemons_found">No pokemons found</string>
 </resources>
