@@ -1,7 +1,7 @@
-package accedex.app.ui.pokemon
+package accedex.app.ui.auth
 
 import androidx.lifecycle.ViewModel
 
-class PokemonViewModel : ViewModel() {
+class AuthViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

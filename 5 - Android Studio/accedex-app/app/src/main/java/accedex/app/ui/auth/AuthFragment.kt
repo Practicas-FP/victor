@@ -1,4 +1,4 @@
-package accedex.app.ui.pokemon
+package accedex.app.ui.auth
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import accedex.app.R
 
-class PokemonFragment : Fragment() {
+class AuthFragment : Fragment() {
 
     companion object {
-        fun newInstance() = PokemonFragment()
+        fun newInstance() = AuthFragment()
     }
 
-    private lateinit var viewModel: PokemonViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.pokemon_fragment, container, false)
+        return inflater.inflate(R.layout.auth_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

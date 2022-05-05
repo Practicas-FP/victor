@@ -10,8 +10,8 @@
             android:title="@string/menu_pokedex" />
 
         <item
-            android:id="@+id/nav_pokemon"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_pokemon" />
+            android:id="@+id/nav_auth"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="@string/login_register" />
     </group>
 </menu>

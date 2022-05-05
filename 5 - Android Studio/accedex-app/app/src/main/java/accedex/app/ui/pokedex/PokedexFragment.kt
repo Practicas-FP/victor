@@ -1,5 +1,7 @@
 package accedex.app.ui.pokedex
 
+import accedex.app.Constants
+import accedex.app.PokemonActivity
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,19 +11,14 @@ import android.view.ViewGroup
 import accedex.app.R
 import accedex.app.databinding.PokedexFragmentBinding
 import accedex.app.services.MyApiService
-import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import accedex.app.jk.pokedex.Result
-import android.util.Log
+import android.content.Intent
 import androidx.recyclerview.widget.GridLayoutManager
 
 class PokedexFragment : Fragment() {
-
-    private val TAG = "TAAG"
 
     companion object {
         fun newInstance() = PokedexFragment()
@@ -29,6 +26,7 @@ class PokedexFragment : Fragment() {
 
     private lateinit var viewModel: PokedexViewModel
     private lateinit var adapter: PokemonAdapter
+    private lateinit var constants: Constants
     private val pokemonsList = mutableListOf<Result>()
 
     private var _binding: PokedexFragmentBinding? = null
@@ -41,6 +39,8 @@ class PokedexFragment : Fragment() {
     ): View {
 
         _binding = PokedexFragmentBinding.inflate(inflater, container, false)
+
+        constants = Constants()
 
         return binding.root
     }
@@ -57,23 +57,16 @@ class PokedexFragment : Fragment() {
         adapter = PokemonAdapter(pokemonsList)
         adapter.setOnItemClickListener(object : PokemonAdapter.onItemClickListener{
             override fun onItemClick(id: Int) {
-                Log.d(TAG, "onItemClick: Pokemon pulsado $id")
+                startActivity(Intent(requireContext(), PokemonActivity::class.java).putExtra("ID", id))
             }
         })
         binding.rvPokemons.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvPokemons.adapter = adapter
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(MyApiService.URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
     private fun getPokemons(limit: Number, offset: Number) {
         CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(MyApiService::class.java)
+            val call = constants.getRetrofit().create(MyApiService::class.java)
                 .getPokemons("pokemon?limit=$limit&offset=$offset")
             var response = call.body()
 
@@ -85,14 +78,9 @@ class PokedexFragment : Fragment() {
                     pokemonsList.addAll(pokemons)
                     adapter.notifyDataSetChanged()
                 } else {
-                    showError()
+                    constants.showError(requireContext(), getString(R.string.no_pokemons_found))
                 }
             }
         }
-    }
-
-    private fun showError() {
-        Toast.makeText(requireContext(), getString(R.string.no_pokemons_found), Toast.LENGTH_SHORT)
-            .show()
     }
 }

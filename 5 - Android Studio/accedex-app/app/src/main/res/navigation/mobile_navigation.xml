@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_pokemon"
-        android:name="accedex.app.ui.pokemon.PokemonFragment"
+        android:name="accedex.app.ui.auth.AuthFragment"
         android:label="@string/menu_pokemon"
-        tools:layout="@layout/pokemon_fragment" />
+        tools:layout="@layout/auth_fragment" />
 </navigation>
