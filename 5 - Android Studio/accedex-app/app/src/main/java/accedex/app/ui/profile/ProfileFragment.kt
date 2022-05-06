@@ -4,10 +4,13 @@ import accedex.app.AuthActivity
 import accedex.app.Constants
 import accedex.app.Constants.Companion.DISPLAY_NAME
 import accedex.app.Constants.Companion.EMAIL
+import accedex.app.Constants.Companion.ID
 import accedex.app.Constants.Companion.IS_EMAIL_VERIFIED
+import accedex.app.Constants.Companion.NAME
 import accedex.app.Constants.Companion.PHOTO_URL
 import accedex.app.Constants.Companion.PROVIDER
 import accedex.app.Constants.Companion.SHARED_PROFILE
+import accedex.app.Constants.Companion.TAG
 import accedex.app.Constants.Companion.UID
 import accedex.app.PokemonActivity
 import android.os.Bundle
@@ -19,14 +22,19 @@ import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.ProfileFragmentBinding
 import accedex.app.jk.ProviderType
 import accedex.app.jk.User
+import accedex.app.jk.pokedex.PokedexResponse
 import accedex.app.jk.pokedex.Result
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
+
+    private val db = FirebaseFirestore.getInstance()
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -54,25 +62,12 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         setUI()
-        session()
+        user = constants.getUser(requireContext())
+        if (user == null) {
+            startActivity(Intent(requireContext(), AuthActivity::class.java))
+        }
         setUserData()
         getPokeFavs()
-    }
-
-    private fun session() {
-        val prefs = requireContext().getSharedPreferences(
-            SHARED_PROFILE,
-            Context.MODE_PRIVATE
-        )
-
-        user = User(
-            prefs.getString(DISPLAY_NAME, null),
-            ProviderType.valueOf(prefs.getString(PROVIDER, "BASIC").toString()),
-            prefs.getString(UID, null),
-            prefs.getString(EMAIL, null),
-            prefs.getBoolean(IS_EMAIL_VERIFIED, false),
-            prefs.getString(PHOTO_URL, null)
-        )
     }
 
     private fun setUI() {
@@ -88,9 +83,14 @@ class ProfileFragment : Fragment() {
         }
 
         adapter = PokemonsAdapter(pokemonsFavsList)
-        adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener{
+        adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener {
             override fun onItemClick(id: Int) {
-                startActivity(Intent(requireContext(), PokemonActivity::class.java).putExtra("ID", id))
+                startActivity(
+                    Intent(requireContext(), PokemonActivity::class.java).putExtra(
+                        "ID",
+                        id
+                    )
+                )
             }
         })
         binding.rvPokeFavs.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -104,6 +104,18 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getPokeFavs() {
-
+        pokemonsFavsList.clear()
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+            .collection(Constants.DB_COL_FAVS).get().addOnSuccessListener {
+                it.documents.forEach { it ->
+                    pokemonsFavsList.add(
+                        Result(
+                            it.get(NAME).toString(),
+                            "https://pokeapi.co/api/v2/pokemon/${it.get(ID)}/"
+                        )
+                    )
+                }
+                adapter.notifyDataSetChanged()
+            }
     }
 }

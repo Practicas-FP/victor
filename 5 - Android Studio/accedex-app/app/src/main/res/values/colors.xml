@@ -33,6 +33,8 @@
     <color name="primary">#0d6efd</color>
     <color name="danger">#dc3545</color>
     <color name="yellow">#ffc107</color>
+    <color name="success">#198754</color>
+    <color name="info">#0dcaf0</color>
 
     <color name="darker_gray">#DCDBDB</color>
 

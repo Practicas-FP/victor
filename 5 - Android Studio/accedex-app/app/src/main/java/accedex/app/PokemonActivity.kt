@@ -3,21 +3,29 @@ package accedex.app
 import accedex.app.adapters.ImagesAdapter
 import accedex.app.adapters.StatsAdapter
 import accedex.app.databinding.ActivityPokemonBinding
+import accedex.app.jk.User
 import accedex.app.jk.pokemon.PokemonResponse
 import accedex.app.jk.pokemon.Stat
 import accedex.app.services.MyApiService
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PokemonActivity : AppCompatActivity() {
 
+    private val db = FirebaseFirestore.getInstance()
+
     private var id: Int = 0
+    private var name: String = ""
+    private lateinit var user: User
+    private var isFavorite = false
 
     private lateinit var binding: ActivityPokemonBinding
     private lateinit var constants: Constants
@@ -35,14 +43,17 @@ class PokemonActivity : AppCompatActivity() {
 
         constants = Constants()
 
+        user = constants.getUser(this)
         setUI()
         getPokemon()
+        getIsFavorite()
     }
 
     private fun setUI() {
         // Images Adapter
         imagesAdapter = ImagesAdapter(imagesList)
-        binding.rvImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvImages.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvImages.adapter = imagesAdapter
 
         // Stats Adapter
@@ -51,9 +62,41 @@ class PokemonActivity : AppCompatActivity() {
         binding.rvStats.adapter = statsAdapter
 
         // Favorite Btn
-        binding.fabFav.setOnClickListener {
+        changeFabFav()
 
+        binding.fabFav.setOnClickListener {
+            if (isFavorite) {
+                db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+                    .collection(Constants.DB_COL_FAVS).document("$id").delete().addOnCompleteListener {
+                        isFavorite = false
+                        changeFabFav()
+                    }
+            } else {
+                db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+                    .collection(Constants.DB_COL_FAVS).document("$id").set(
+                        hashMapOf(
+                            Constants.ID to id,
+                            Constants.NAME to name
+                        )
+                    ).addOnCompleteListener {
+                        isFavorite = true
+                        changeFabFav()
+                    }
+            }
         }
+    }
+
+    private fun changeFabFav() {
+        binding.fabFav.backgroundTintList =
+            if (isFavorite) resources.getColorStateList(R.color.danger) else resources.getColorStateList(
+                R.color.info
+            )
+        binding.fabFav.setImageDrawable(
+            if (isFavorite) resources.getDrawable(R.drawable.ic_favorite_24) else resources.getDrawable(
+                R.drawable.ic_no_favorite_24
+            )
+        )
+
     }
 
     private fun getPokemon() {
@@ -75,6 +118,8 @@ class PokemonActivity : AppCompatActivity() {
     }
 
     private fun setData(response: PokemonResponse) {
+        name = response.name
+
         title = "#${response.id} ${response.name.capitalize()}"
 
         // Set Images
@@ -91,20 +136,37 @@ class PokemonActivity : AppCompatActivity() {
 
         // Set types
         binding.tvNameType1.text = response.types[0].type.name.capitalize()
-        binding.cvType1.setCardBackgroundColor(constants.getColor(response.types[0].type.name, resources))
+        binding.cvType1.setCardBackgroundColor(
+            constants.getColor(
+                response.types[0].type.name,
+                resources
+            )
+        )
 
         if (response.types.size > 1) {
             binding.cvType2.visibility = View.VISIBLE
             binding.tvNameType2.text = response.types[1].type.name.capitalize()
-            binding.cvType2.setCardBackgroundColor(constants.getColor(response.types[1].type.name, resources))
+            binding.cvType2.setCardBackgroundColor(
+                constants.getColor(
+                    response.types[1].type.name,
+                    resources
+                )
+            )
         }
 
         // Set stats
         statsList.clear()
         statsList.addAll(response.stats)
         statsAdapter.notifyDataSetChanged()
+    }
 
-        // Set fav btn
-
+    private fun getIsFavorite() {
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+            .collection(Constants.DB_COL_FAVS).document("$id").get().addOnSuccessListener {
+                if (it.get(Constants.NAME) != null) {
+                    isFavorite = true
+                    changeFabFav()
+                }
+            }
     }
 }

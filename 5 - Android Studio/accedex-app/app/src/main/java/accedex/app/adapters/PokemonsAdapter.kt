@@ -17,7 +17,7 @@ class PokemonsAdapter(private val pokemons: List<Result>): RecyclerView.Adapter<
 
         private val binding = CardPokemonBinding.bind(view)
 
-        fun bind(pokemon: Result, listener: PokemonsAdapter.onItemClickListener) {
+        fun bind(pokemon: Result, listener: onItemClickListener) {
             val id = Integer.parseInt(pokemon.url.split("/")[6])
 
             Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png").into(binding.ivPokemon)

@@ -26,6 +26,11 @@ class Constants {
         const val EMAIL = "EMAIL"
         const val PROVIDER = "PROVIDER"
         const val SHARED_PROFILE = "SHARED_PROFILE"
+
+        const val DB_COL_USERS = "users"
+        const val DB_COL_FAVS = "favorites"
+        const val NAME = "name"
+        const val ID = "id"
     }
 
     fun getRetrofit(): Retrofit {
@@ -72,6 +77,22 @@ class Constants {
             it.result.user?.email.toString(),
             it.result.user?.isEmailVerified,
             photoUrl.toString() ?: it.result.user?.photoUrl.toString()
+        )
+    }
+
+    fun getUser(context: Context): User {
+        val prefs = context.getSharedPreferences(
+            SHARED_PROFILE,
+            Context.MODE_PRIVATE
+        )
+
+        return User(
+            prefs.getString(DISPLAY_NAME, null),
+            ProviderType.valueOf(prefs.getString(PROVIDER, "BASIC").toString()),
+            prefs.getString(UID, null),
+            prefs.getString(EMAIL, null),
+            prefs.getBoolean(IS_EMAIL_VERIFIED, false),
+            prefs.getString(PHOTO_URL, null)
         )
     }
 }
