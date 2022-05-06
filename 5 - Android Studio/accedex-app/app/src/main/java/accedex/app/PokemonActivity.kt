@@ -7,6 +7,7 @@ import accedex.app.jk.User
 import accedex.app.jk.pokemon.PokemonResponse
 import accedex.app.jk.pokemon.Stat
 import accedex.app.services.MyApiService
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -83,6 +84,15 @@ class PokemonActivity : AppCompatActivity() {
                         changeFabFav()
                     }
             }
+        }
+
+        // Next & Prev Btns
+        binding.btNext.setOnClickListener {
+            startActivity(Intent(this, PokemonActivity::class.java).putExtra("ID", id + 1))
+        }
+
+        binding.btPrev.setOnClickListener {
+            startActivity(Intent(this, PokemonActivity::class.java).putExtra("ID", id - 1))
         }
     }
 

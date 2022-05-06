@@ -8,6 +8,28 @@
     android:minWidth="400dp"
     tools:context=".PokemonActivity">
 
+    <ImageButton
+        android:id="@+id/btPrev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toTopOf="@+id/rvImages"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_prev_24" />
+
+    <ImageButton
+        android:id="@+id/btNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toTopOf="@+id/rvImages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_next_24" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvImages"
         android:layout_width="match_parent"
@@ -15,7 +37,7 @@
         app:layout_constraintBottom_toTopOf="@+id/cvType1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btPrev" />
 
     <!--  Types  -->
     <androidx.cardview.widget.CardView
@@ -47,23 +69,32 @@
             android:text="Grass" />
     </androidx.cardview.widget.CardView>
 
+    <View
+        android:id="@+id/lineDivider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvType1" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvStats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvType1" />
+        app:layout_constraintTop_toBottomOf="@+id/lineDivider2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/rvImages"
+        app:layout_constraintTop_toTopOf="@+id/rvImages"
         app:srcCompat="@drawable/ic_no_favorite_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
