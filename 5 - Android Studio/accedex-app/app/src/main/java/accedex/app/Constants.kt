@@ -1,15 +1,31 @@
 package accedex.app
 
+import accedex.app.jk.ProviderType
+import accedex.app.jk.User
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
+import android.net.Uri
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class Constants {
 
     companion object {
+        const val TAG = "TAAG"
+
         const val URL = "https://pokeapi.co/api/v2/"
+        const val GOOGLE_SIGN_IN = 100
+        const val DISPLAY_NAME = "DISPLAY_NAME"
+        const val UID = "UID"
+        const val IS_EMAIL_VERIFIED = "IS_EMIAL_VERIFIED"
+        const val PHOTO_URL = "PHOTO_URL"
+        const val EMAIL = "EMAIL"
+        const val PROVIDER = "PROVIDER"
+        const val SHARED_PROFILE = "SHARED_PROFILE"
     }
 
     fun getRetrofit(): Retrofit {
@@ -46,5 +62,16 @@ class Constants {
             "gray" -> resources.getColor(R.color.gray)
             else -> resources.getColor(R.color.no_color)
         }
+    }
+
+    fun createUser(it: Task<AuthResult>, basic: ProviderType, photoUrl: Uri?): User {
+        return User(
+            it.result.user?.displayName.toString(),
+            ProviderType.BASIC,
+            it.result.user?.uid,
+            it.result.user?.email.toString(),
+            it.result.user?.isEmailVerified,
+            photoUrl.toString() ?: it.result.user?.photoUrl.toString()
+        )
     }
 }

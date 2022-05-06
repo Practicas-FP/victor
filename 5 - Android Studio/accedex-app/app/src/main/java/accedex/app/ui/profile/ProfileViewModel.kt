@@ -1,7 +1,7 @@
-package accedex.app.ui.auth
+package accedex.app.ui.profile
 
 import androidx.lifecycle.ViewModel
 
-class AuthViewModel : ViewModel() {
+class ProfileViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

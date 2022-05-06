@@ -27,4 +27,29 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
+    <style name="button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="button_blue" parent="button">
+        <item name="android:background">@drawable/btn_shape_blue</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="button_yellow" parent="button">
+        <item name="android:background">@drawable/btn_shape_blue</item>
+        <item name="backgroundTint">@color/yellow</item>
+    </style>
+
+    <style name="button_danger" parent="button">
+        <item name="android:background">@drawable/btn_shape_blue</item>
+        <item name="backgroundTint">@color/danger</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:minHeight">48dp</item>
+    </style>
 </resources>

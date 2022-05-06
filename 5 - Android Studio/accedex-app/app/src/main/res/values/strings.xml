@@ -108,4 +108,15 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="login_register">Login/Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="bt_login">Log In</string>
+    <string name="have_you_forgotten_your_password">Have you forgotten your password?</string>
+    <string name="create_new_acount">Create new acount</string>
+    <string name="profile">Profile</string>
+    <string name="login_auth_error">Login auth error</string>
+    <string name="register_auth_error">Register auth error</string>
+    <string name="register">Register</string>
+    <string name="google">Google</string>
+    <string name="prefs_file">accedex.app.PREFERENCE_FILE_KEY</string>
 </resources>

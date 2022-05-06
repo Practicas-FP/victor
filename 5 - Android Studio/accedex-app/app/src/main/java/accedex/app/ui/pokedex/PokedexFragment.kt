@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import accedex.app.R
+import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.PokedexFragmentBinding
 import accedex.app.services.MyApiService
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +26,7 @@ class PokedexFragment : Fragment() {
     }
 
     private lateinit var viewModel: PokedexViewModel
-    private lateinit var adapter: PokemonAdapter
+    private lateinit var adapter: PokemonsAdapter
     private lateinit var constants: Constants
     private val pokemonsList = mutableListOf<Result>()
 
@@ -54,8 +55,8 @@ class PokedexFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = PokemonAdapter(pokemonsList)
-        adapter.setOnItemClickListener(object : PokemonAdapter.onItemClickListener{
+        adapter = PokemonsAdapter(pokemonsList)
+        adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener{
             override fun onItemClick(id: Int) {
                 startActivity(Intent(requireContext(), PokemonActivity::class.java).putExtra("ID", id))
             }
