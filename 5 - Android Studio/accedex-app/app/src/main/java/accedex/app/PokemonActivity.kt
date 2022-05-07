@@ -152,10 +152,18 @@ class PokemonActivity : AppCompatActivity() {
         imagesList.add(response.sprites.front_shiny)
         imagesList.add(response.sprites.back_default)
         imagesList.add(response.sprites.back_shiny)
-        imagesList.add(response.sprites.front_female as String)
-        imagesList.add(response.sprites.back_female as String)
-        imagesList.add(response.sprites.front_shiny_female as String)
-        imagesList.add(response.sprites.back_shiny_female as String)
+        if (response.sprites.front_female != null) {
+            imagesList.add(response.sprites.front_female as String)
+        }
+        if (response.sprites.back_female != null) {
+            imagesList.add(response.sprites.back_female as String)
+        }
+        if (response.sprites.front_shiny_female != null) {
+            imagesList.add(response.sprites.front_shiny_female as String)
+        }
+        if (response.sprites.back_shiny_female != null) {
+            imagesList.add(response.sprites.back_shiny_female as String)
+        }
         imagesAdapter.notifyDataSetChanged()
 
         // Set types
