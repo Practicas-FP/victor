@@ -31,6 +31,9 @@ class Constants {
         const val DB_COL_FAVS = "favorites"
         const val NAME = "name"
         const val ID = "id"
+
+        const val LIMIT = 1000
+        const val OFFSET = 0
     }
 
     fun getRetrofit(): Retrofit {

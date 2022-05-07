@@ -16,7 +16,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import accedex.app.jk.pokedex.Result
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.view.KeyEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.GridLayoutManager
 
 class PokedexFragment : Fragment() {
@@ -51,18 +55,52 @@ class PokedexFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PokedexViewModel::class.java)
         // TODO: Use the ViewModel
         initRecyclerView()
-        getPokemons(12, 0)
+        getPokemons(Constants.LIMIT, Constants.OFFSET)
     }
 
     private fun initRecyclerView() {
         adapter = PokemonsAdapter(pokemonsList)
-        adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener{
+        adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener {
             override fun onItemClick(id: Int) {
-                startActivity(Intent(requireContext(), PokemonActivity::class.java).putExtra("ID", id))
+                startActivity(
+                    Intent(requireContext(), PokemonActivity::class.java).putExtra(
+                        "ID",
+                        id
+                    )
+                )
             }
         })
         binding.rvPokemons.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvPokemons.adapter = adapter
+
+        binding.etSearchPokemon.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    // hide soft keyboard programmatically
+                    hideKeyboard()
+
+                    // clear focus and hide cursor from edit text
+                    binding.etSearchPokemon.clearFocus()
+
+                    if (!binding.etSearchPokemon.text.toString().isNullOrEmpty()) {
+                        startActivity(
+                            Intent(requireContext(), PokemonActivity::class.java).putExtra(
+                                "ID",
+                                binding.etSearchPokemon.text.toString().toLowerCase()
+                            )
+                        )
+                        binding.etSearchPokemon.text = null;
+                    } else {
+                        constants.showError(
+                            requireContext(),
+                            getString(R.string.the_field_cannot_be_empty)
+                        )
+                    }
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     private fun getPokemons(limit: Number, offset: Number) {
@@ -84,4 +122,17 @@ class PokedexFragment : Fragment() {
             }
         }
     }
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Activity.hideKeyboard() {
+    hideKeyboard(currentFocus ?: View(this))
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

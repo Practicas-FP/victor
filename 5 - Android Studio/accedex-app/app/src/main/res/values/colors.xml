@@ -36,7 +36,8 @@
     <color name="success">#198754</color>
     <color name="info">#0dcaf0</color>
 
-    <color name="darker_gray">#DCDBDB</color>
+    <color name="darker_gray">#EEECEC</color>
+    <color name="line_divider">#DCDBDB</color>
 
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>

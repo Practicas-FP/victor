@@ -52,4 +52,8 @@
     <style name="edit_text">
         <item name="android:minHeight">48dp</item>
     </style>
+
+    <style name="background_layout">
+        <item name="android:background">@color/darker_gray</item>
+    </style>
 </resources>

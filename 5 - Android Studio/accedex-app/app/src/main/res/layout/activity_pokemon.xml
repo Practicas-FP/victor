@@ -8,15 +8,26 @@
     android:minWidth="400dp"
     tools:context=".PokemonActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_no_favorite_24" />
+
     <ImageButton
         android:id="@+id/btPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="@+id/fabFav"
         app:layout_constraintBottom_toTopOf="@+id/rvImages"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fabFav"
         app:srcCompat="@drawable/ic_prev_24" />
 
     <ImageButton
@@ -25,9 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="@+id/fabFav"
         app:layout_constraintBottom_toTopOf="@+id/rvImages"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fabFav"
         app:srcCompat="@drawable/ic_next_24" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -87,14 +99,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lineDivider2" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabFav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/rvImages"
-        app:layout_constraintTop_toTopOf="@+id/rvImages"
-        app:srcCompat="@drawable/ic_no_favorite_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

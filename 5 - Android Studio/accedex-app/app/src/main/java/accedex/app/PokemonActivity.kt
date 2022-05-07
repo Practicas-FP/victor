@@ -111,10 +111,11 @@ class PokemonActivity : AppCompatActivity() {
 
     private fun getPokemon() {
         id = intent.getIntExtra("ID", 0)
+        name = intent.getStringExtra("ID").toString()
 
         CoroutineScope(Dispatchers.IO).launch {
             val call = constants.getRetrofit().create(MyApiService::class.java)
-                .getPokemonById("pokemon/$id")
+                .getPokemonById("pokemon/${if (id > 0) id else name}")
             var response = call.body()
 
             runOnUiThread {
@@ -128,6 +129,7 @@ class PokemonActivity : AppCompatActivity() {
     }
 
     private fun setData(response: PokemonResponse) {
+        id = response.id
         name = response.name
 
         title = "#${response.id} ${response.name.capitalize()}"

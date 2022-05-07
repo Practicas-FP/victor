@@ -2,9 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvPokemon"
-    android:layout_width="150dp"
+    android:layout_width="match_parent"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="12dp"
     android:layout_height="150dp"
-    android:layout_margin="16dp"
     app:cardCornerRadius="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +19,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Example name"
+            android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,13 +27,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0" />
 
+        <View
+            android:id="@+id/lineDivider4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
         <ImageView
             android:id="@+id/ivPokemon"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/side_nav_bar"
             android:layout_margin="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/side_nav_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
