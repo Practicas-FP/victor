@@ -68,9 +68,11 @@ class PokemonActivity : AppCompatActivity() {
         binding.fabFav.setOnClickListener {
             if (isFavorite) {
                 db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
-                    .collection(Constants.DB_COL_FAVS).document("$id").delete().addOnCompleteListener {
+                    .collection(Constants.DB_COL_FAVS).document("$id").delete()
+                    .addOnCompleteListener {
                         isFavorite = false
                         changeFabFav()
+                        constants.showError(this, getString(R.string.remove_fav))
                     }
             } else {
                 db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
@@ -82,6 +84,7 @@ class PokemonActivity : AppCompatActivity() {
                     ).addOnCompleteListener {
                         isFavorite = true
                         changeFabFav()
+                        constants.showError(this, getString(R.string.added_fav))
                     }
             }
         }
@@ -113,6 +116,8 @@ class PokemonActivity : AppCompatActivity() {
         id = intent.getIntExtra("ID", 0)
         name = intent.getStringExtra("ID").toString()
 
+        title = "Buscando pokemon ${if (id > 0) id else name}..."
+
         CoroutineScope(Dispatchers.IO).launch {
             val call = constants.getRetrofit().create(MyApiService::class.java)
                 .getPokemonById("pokemon/${if (id > 0) id else name}")
@@ -121,11 +126,18 @@ class PokemonActivity : AppCompatActivity() {
             runOnUiThread {
                 if (response != null) {
                     setData(response)
+                    changeView()
                 } else {
                     constants.showError(this@PokemonActivity, getString(R.string.no_pokemon_found))
+                    finish()
                 }
             }
         }
+    }
+
+    private fun changeView() {
+        binding.shimmerPokemon.visibility = View.INVISIBLE
+        binding.clPokemon.visibility = View.VISIBLE
     }
 
     private fun setData(response: PokemonResponse) {

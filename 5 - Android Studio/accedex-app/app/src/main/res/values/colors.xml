@@ -38,6 +38,7 @@
 
     <color name="darker_gray">#EEECEC</color>
     <color name="line_divider">#DCDBDB</color>
+    <color name="shimmer">#C8C8C9</color>
 
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
