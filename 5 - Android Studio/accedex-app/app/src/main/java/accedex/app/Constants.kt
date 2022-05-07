@@ -34,6 +34,8 @@ class Constants {
 
         const val LIMIT = 1000
         const val OFFSET = 0
+
+        const val REQUEST_CODE = 200
     }
 
     fun getRetrofit(): Retrofit {

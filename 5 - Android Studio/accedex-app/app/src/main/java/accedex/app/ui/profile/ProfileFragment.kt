@@ -2,16 +2,10 @@ package accedex.app.ui.profile
 
 import accedex.app.AuthActivity
 import accedex.app.Constants
-import accedex.app.Constants.Companion.DISPLAY_NAME
-import accedex.app.Constants.Companion.EMAIL
 import accedex.app.Constants.Companion.ID
-import accedex.app.Constants.Companion.IS_EMAIL_VERIFIED
 import accedex.app.Constants.Companion.NAME
-import accedex.app.Constants.Companion.PHOTO_URL
-import accedex.app.Constants.Companion.PROVIDER
+import accedex.app.Constants.Companion.REQUEST_CODE
 import accedex.app.Constants.Companion.SHARED_PROFILE
-import accedex.app.Constants.Companion.TAG
-import accedex.app.Constants.Companion.UID
 import accedex.app.PokemonActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,13 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.ProfileFragmentBinding
-import accedex.app.jk.ProviderType
 import accedex.app.jk.User
-import accedex.app.jk.pokedex.PokedexResponse
 import accedex.app.jk.pokedex.Result
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.graphics.Bitmap
+import android.provider.MediaStore
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -95,6 +89,10 @@ class ProfileFragment : Fragment() {
         })
         binding.rvPokeFavs.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvPokeFavs.adapter = adapter
+
+        binding.btnTakePhoto.setOnClickListener {
+            //capturePhoto()
+        }
     }
 
     private fun setUserData() {
@@ -117,5 +115,17 @@ class ProfileFragment : Fragment() {
                 }
                 adapter.notifyDataSetChanged()
             }
+    }
+
+    private fun capturePhoto() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null) {
+            binding.ivProfile.setImageBitmap(data.extras?.get("data") as Bitmap)
+        }
     }
 }
