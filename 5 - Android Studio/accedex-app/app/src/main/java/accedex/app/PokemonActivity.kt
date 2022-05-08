@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 class PokemonActivity : AppCompatActivity() {
 
@@ -33,6 +34,7 @@ class PokemonActivity : AppCompatActivity() {
 
     private val imagesList = mutableListOf<String>()
     private val statsList = mutableListOf<Stat>()
+    private val list = mutableListOf<CarouselItem>()
 
     private lateinit var imagesAdapter: ImagesAdapter
     private lateinit var statsAdapter: StatsAdapter
@@ -56,6 +58,8 @@ class PokemonActivity : AppCompatActivity() {
         binding.rvImages.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvImages.adapter = imagesAdapter
+//        binding.rvImages.registerLifecycle(lifecycle)
+//        binding.rvImages.setData(list)
 
         // Stats Adapter
         statsAdapter = StatsAdapter(statsList)
@@ -165,6 +169,23 @@ class PokemonActivity : AppCompatActivity() {
             imagesList.add(response.sprites.back_shiny_female as String)
         }
         imagesAdapter.notifyDataSetChanged()
+//        list.clear()
+//        list.add(CarouselItem(response.sprites.front_default))
+//        list.add(CarouselItem(response.sprites.front_shiny))
+//        list.add(CarouselItem(response.sprites.back_default))
+//        list.add(CarouselItem(response.sprites.back_shiny))
+//        if (response.sprites.front_female != null) {
+//            list.add(CarouselItem(response.sprites.front_female as String))
+//        }
+//        if (response.sprites.back_female != null) {
+//            list.add(CarouselItem(response.sprites.back_female as String))
+//        }
+//        if (response.sprites.front_shiny_female != null) {
+//            list.add(CarouselItem(response.sprites.front_shiny_female as String))
+//        }
+//        if (response.sprites.back_shiny_female != null) {
+//            list.add(CarouselItem(response.sprites.back_shiny_female as String))
+//        }
 
         // Set types
         binding.tvNameType1.text = response.types[0].type.name.capitalize()
