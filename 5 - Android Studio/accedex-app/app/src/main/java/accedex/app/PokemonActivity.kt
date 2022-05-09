@@ -7,6 +7,8 @@ import accedex.app.jk.User
 import accedex.app.jk.pokemon.PokemonResponse
 import accedex.app.jk.pokemon.Stat
 import accedex.app.services.MyApiService
+import accedex.app.services.database.PokeFavDataase
+import accedex.app.services.database.entities.PokeFavEntity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,7 @@ import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 class PokemonActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
+    //private lateinit var dbRoom: Room
 
     private var id: Int = 0
     private var name: String = ""
@@ -71,25 +75,9 @@ class PokemonActivity : AppCompatActivity() {
 
         binding.fabFav.setOnClickListener {
             if (isFavorite) {
-                db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
-                    .collection(Constants.DB_COL_FAVS).document("$id").delete()
-                    .addOnCompleteListener {
-                        isFavorite = false
-                        changeFabFav()
-                        constants.showError(this, getString(R.string.remove_fav))
-                    }
+                delFav()
             } else {
-                db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
-                    .collection(Constants.DB_COL_FAVS).document("$id").set(
-                        hashMapOf(
-                            Constants.ID to id,
-                            Constants.NAME to name
-                        )
-                    ).addOnCompleteListener {
-                        isFavorite = true
-                        changeFabFav()
-                        constants.showError(this, getString(R.string.added_fav))
-                    }
+                saveFav()
             }
         }
 
@@ -222,4 +210,53 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }
     }
+
+    private fun saveFav() {
+        // Firebase
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+            .collection(Constants.DB_COL_FAVS).document("$id").set(
+                hashMapOf(
+                    Constants.ID to id,
+                    Constants.NAME to name
+                )
+            ).addOnCompleteListener {
+                isFavorite = true
+                changeFabFav()
+                constants.showError(this, getString(R.string.added_fav))
+            }
+
+        // Room
+        CoroutineScope(Dispatchers.IO).launch {
+            val dbRoom = Room.databaseBuilder(
+                this@PokemonActivity,
+                PokeFavDataase::class.java,
+                "poke_favs_table"
+            ).build()
+            dbRoom.getPokeFavDao().insertPokeFav(PokeFavEntity(id, name))
+            dbRoom.close()
+        }
+    }
+
+    private fun delFav() {
+        // Firebase
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+            .collection(Constants.DB_COL_FAVS).document("$id").delete()
+            .addOnCompleteListener {
+                isFavorite = false
+                changeFabFav()
+                constants.showError(this, getString(R.string.remove_fav))
+            }
+
+        // Room
+        CoroutineScope(Dispatchers.IO).launch {
+            val dbRoom = Room.databaseBuilder(
+                this@PokemonActivity,
+                PokeFavDataase::class.java,
+                "poke_favs_table"
+            ).build()
+            dbRoom.getPokeFavDao().deletePokeFav(PokeFavEntity(id, name))
+            dbRoom.close()
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import accedex.app.Constants.Companion.ID
 import accedex.app.Constants.Companion.NAME
 import accedex.app.Constants.Companion.REQUEST_CODE
 import accedex.app.Constants.Companion.SHARED_PROFILE
+import accedex.app.Constants.Companion.TAG
 import accedex.app.PokemonActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,15 +17,22 @@ import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.ProfileFragmentBinding
 import accedex.app.jk.User
 import accedex.app.jk.pokedex.Result
+import accedex.app.services.database.PokeFavDataase
+import accedex.app.services.database.entities.PokeFavEntity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -41,6 +49,7 @@ class ProfileFragment : Fragment() {
     private lateinit var user: User
 
     private val pokemonsFavsList = mutableListOf<Result>()
+    private val pokemonsFavsListRoom = mutableListOf<PokeFavEntity>()
     private lateinit var adapter: PokemonsAdapter
 
     override fun onCreateView(
@@ -103,6 +112,8 @@ class ProfileFragment : Fragment() {
 
     private fun getPokeFavs() {
         pokemonsFavsList.clear()
+
+        // Firebase
         db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
             .collection(Constants.DB_COL_FAVS).get().addOnSuccessListener {
                 it.documents.forEach { it ->
@@ -115,6 +126,17 @@ class ProfileFragment : Fragment() {
                 }
                 adapter.notifyDataSetChanged()
             }
+
+        // Room
+        CoroutineScope(Dispatchers.IO).launch {
+            pokemonsFavsListRoom.clear()
+
+            val dbRoom = Room.databaseBuilder(requireContext(), PokeFavDataase::class.java, "poke_favs_table").build()
+
+            pokemonsFavsListRoom.addAll(dbRoom.getPokeFavDao().getAllFavs())
+
+            Log.d(TAG, "getPokeFavs: Room: $pokemonsFavsListRoom")
+        }
     }
 
     private fun capturePhoto() {

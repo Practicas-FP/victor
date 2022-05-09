@@ -2,7 +2,6 @@ package accedex.app
 
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,6 +11,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import accedex.app.databinding.ActivityMainBinding
+import android.content.Intent
+import android.widget.ImageView
+import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +43,23 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_pokedex, R.id.nav_profile
             ), drawerLayout
         )
+
+        // Comprobar si esta logged
+        val constants = Constants()
+        val user = constants.getUser(this)
+        if (user == null) {
+            startActivity(Intent(this, AuthActivity::class.java))
+        }
+
+        val header = navView.getHeaderView(0)
+        val tvName = header.findViewById<TextView>(R.id.tvNavName)
+        val tvEmail = header.findViewById<TextView>(R.id.tvNavEmail)
+        val ivProfile = header.findViewById<ImageView>(R.id.imageView)
+
+        tvName.text = user.displayName
+        tvEmail.text = user.email
+        Picasso.get().load(user.photoURL).into(ivProfile)
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
