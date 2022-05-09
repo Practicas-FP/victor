@@ -8,6 +8,7 @@ import accedex.app.Constants.Companion.REQUEST_CODE
 import accedex.app.Constants.Companion.SHARED_PROFILE
 import accedex.app.Constants.Companion.TAG
 import accedex.app.PokemonActivity
+import accedex.app.R
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -88,12 +89,16 @@ class ProfileFragment : Fragment() {
         adapter = PokemonsAdapter(pokemonsFavsList)
         adapter.setOnItemClickListener(object : PokemonsAdapter.onItemClickListener {
             override fun onItemClick(id: Int) {
-                startActivity(
-                    Intent(requireContext(), PokemonActivity::class.java).putExtra(
-                        "ID",
-                        id
+                if (constants.checkForInternet(requireContext())) {
+                    startActivity(
+                        Intent(requireContext(), PokemonActivity::class.java).putExtra(
+                            "ID",
+                            id
+                        )
                     )
-                )
+                } else {
+                    constants.showError(requireContext(), getString(R.string.no_internet_access))
+                }
             }
         })
         binding.rvPokeFavs.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -111,11 +116,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getPokeFavs() {
-        pokemonsFavsList.clear()
-
         // Firebase
         db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
             .collection(Constants.DB_COL_FAVS).get().addOnSuccessListener {
+                pokemonsFavsList.clear()
+
                 it.documents.forEach { it ->
                     pokemonsFavsList.add(
                         Result(
@@ -128,15 +133,26 @@ class ProfileFragment : Fragment() {
             }
 
         // Room
-        CoroutineScope(Dispatchers.IO).launch {
-            pokemonsFavsListRoom.clear()
+        /*CoroutineScope(Dispatchers.IO).launch {
+            pokemonsFavsList.clear()
 
-            val dbRoom = Room.databaseBuilder(requireContext(), PokeFavDataase::class.java, "poke_favs_table").build()
+            val dbRoom = Room.databaseBuilder(
+                requireContext(),
+                PokeFavDataase::class.java,
+                "poke_favs_table"
+            ).build()
 
-            pokemonsFavsListRoom.addAll(dbRoom.getPokeFavDao().getAllFavs())
+            dbRoom.getPokeFavDao().getAllFavs().forEach {
+                pokemonsFavsList.add(
+                    Result(
+                        it.name,
+                        "https://pokeapi.co/api/v2/pokemon/${it.id}/"
+                    )
+                )
+            }
 
-            Log.d(TAG, "getPokeFavs: Room: $pokemonsFavsListRoom")
-        }
+            adapter.notifyDataSetChanged()
+        }*/
     }
 
     private fun capturePhoto() {
@@ -149,5 +165,27 @@ class ProfileFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null) {
             binding.ivProfile.setImageBitmap(data.extras?.get("data") as Bitmap)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+            .collection(Constants.DB_COL_FAVS).get().addOnSuccessListener {
+
+                if (it.documents.size != adapter.itemCount) {
+                    pokemonsFavsList.clear()
+
+                    it.documents.forEach { it ->
+                        pokemonsFavsList.add(
+                            Result(
+                                it.get(NAME).toString(),
+                                "https://pokeapi.co/api/v2/pokemon/${it.get(ID)}/"
+                            )
+                        )
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+            }
     }
 }
