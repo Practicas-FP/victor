@@ -126,4 +126,8 @@
     <string name="permission_required">Camera access is required to display the camera preview.</string>
     <string name="ok">OK</string>
     <string name="permission_granted">Permission is granted. You can use the camera now.</string>
+    <string name="no_internet_access">You don\'t have internet access</string>
+    <string name="checking_connection">Checking connection...</string>
+    <string name="offline">You\'re still offline</string>
+    <string name="great">Great! you have internet again</string>
 </resources>

@@ -19,6 +19,8 @@ import accedex.app.jk.pokedex.Result
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -54,8 +56,42 @@ class PokedexFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PokedexViewModel::class.java)
         // TODO: Use the ViewModel
-        initRecyclerView()
-        getPokemons(Constants.LIMIT, Constants.OFFSET)
+        if (constants.checkForInternet(requireContext())) {
+            initRecyclerView()
+            getPokemons(Constants.LIMIT, Constants.OFFSET)
+        } else {
+            constants.showError(requireContext(), getString(R.string.no_internet_access))
+            binding.etSearchPokemon.visibility = View.GONE
+            binding.lineDivider6.visibility = View.GONE
+            binding.rvPokemons.visibility = View.GONE
+            binding.tvNoInternet.visibility = View.VISIBLE
+
+//            do {
+//                constants.showError(requireContext(), getString(R.string.no_internet_access))
+//                binding.etSearchPokemon.visibility = View.GONE
+//                binding.lineDivider6.visibility = View.GONE
+//                binding.rvPokemons.visibility = View.GONE
+//                binding.tvNoInternet.visibility = View.VISIBLE
+//
+//                constants.showError(requireContext(), getString(R.string.checking_connection))
+//
+//                Handler(Looper.getMainLooper()).postDelayed({
+//                    if (constants.checkForInternet(requireContext())) {
+//                        initRecyclerView()
+//                        getPokemons(Constants.LIMIT, Constants.OFFSET)
+//
+//                        binding.etSearchPokemon.visibility = View.VISIBLE
+//                        binding.lineDivider6.visibility = View.VISIBLE
+//                        binding.rvPokemons.visibility = View.VISIBLE
+//                        binding.tvNoInternet.visibility = View.GONE
+//
+//                        constants.showError(requireContext(), getString(R.string.great))
+//                    } else {
+//                        constants.showError(requireContext(), getString(R.string.offline))
+//                    }
+//                }, 10000)
+//            } while (!constants.checkForInternet(requireContext()))
+        }
     }
 
     private fun initRecyclerView() {
