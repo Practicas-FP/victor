@@ -1,29 +1,30 @@
 package accedex.app.ui.pokedex
 
 import accedex.app.Constants
+import accedex.app.Constants.Companion.TAG
 import accedex.app.PokemonActivity
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import accedex.app.R
 import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.PokedexFragmentBinding
-import accedex.app.services.MyApiService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import accedex.app.jk.pokedex.Result
+import accedex.app.services.MyApiService
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
+import android.content.res.Configuration
+import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PokedexFragment : Fragment() {
 
@@ -106,12 +107,17 @@ class PokedexFragment : Fragment() {
                 )
             }
         })
-        binding.rvPokemons.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) // In landscape
+            binding.rvPokemons.layoutManager = GridLayoutManager(requireContext(), 3)
+        else  // In portrait
+            binding.rvPokemons.layoutManager = GridLayoutManager(requireContext(), 2)
+
         binding.rvPokemons.adapter = adapter
 
         binding.etSearchPokemon.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                     // hide soft keyboard programmatically
                     hideKeyboard()
 
