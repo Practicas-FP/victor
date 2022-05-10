@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pokemonDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="400dp"
+    tools:context=".PokemonActivity">
+
+    <!--  Shimmer  -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerPokemon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        tools:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:shimmer_auto_start="true">
+
+        <include layout="@layout/shimmer_activity_pokemon" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!--  Pokemon  -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPokemon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_no_favorite_24" />
+
+        <ImageButton
+            android:id="@+id/btPrev"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/fabFav"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toTopOf="@+id/fabFav"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <ImageButton
+            android:id="@+id/btNext"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/fabFav"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintTop_toTopOf="@+id/fabFav"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/cvType1"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toBottomOf="@+id/fabFav" />
+
+        <!--<org.imaginativeworld.whynotimagecarousel.ImageCarousel
+            android:id="@+id/rvImages"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:layout_constraintBottom_toTopOf="@+id/cvType1"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toBottomOf="@+id/fabFav" />-->
+
+        <!--  Types  -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvType1"
+            style="@style/type"
+            app:cardBackgroundColor="@color/grass"
+            app:layout_constraintEnd_toStartOf="@+id/cvType2"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toBottomOf="@+id/rvImages">
+
+            <TextView
+                android:id="@+id/tvNameType1"
+                style="@style/type_text"
+                android:text="Grass" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvType2"
+            style="@style/type"
+            android:visibility="invisible"
+            app:cardBackgroundColor="@color/grass"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintStart_toEndOf="@+id/cvType1"
+            app:layout_constraintTop_toBottomOf="@+id/rvImages">
+
+            <TextView
+                android:id="@+id/tvNameType2"
+                style="@style/type_text"
+                android:text="Grass" />
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/lineDivider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toBottomOf="@+id/cvType1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/clPokemon"
+            app:layout_constraintEnd_toEndOf="@+id/clPokemon"
+            app:layout_constraintStart_toStartOf="@+id/clPokemon"
+            app:layout_constraintTop_toBottomOf="@+id/lineDivider2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+ </androidx.constraintlayout.widget.ConstraintLayout>

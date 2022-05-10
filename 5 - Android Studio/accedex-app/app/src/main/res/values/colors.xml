@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="grass">#7eb95b</color>
+    <color name="fire">#fd5d5c</color>
+    <color name="water">#5ba6d2</color>
+    <color name="normal">#dddbc6</color>
+    <color name="flying">#93d0cb</color>
+    <color name="bug">#bddd6e</color>
+    <color name="poison">#c565e4</color>
+    <color name="electric">#fffb6d</color>
+    <color name="ground">#ede293</color>
+    <color name="fighting">#ef6165</color>
+    <color name="psychic">#f55792</color>
+    <color name="rock">#94834f</color>
+    <color name="ice">#65b8c0</color>
+    <color name="ghost">#b38dc2</color>
+    <color name="dragon">#b18dfd</color>
+    <color name="dark">#916852</color>
+    <color name="steel">#bbc5c4</color>
+    <color name="fairy">#fdd1e0</color>
+    <color name="gray">#d8d8d8</color>
+    <color name="no_color">#fff</color>
+
+    <!--  Bootstrap   -->
+    <color name="primary">#0d6efd</color>
+    <color name="danger">#dc3545</color>
+    <color name="yellow">#ffc107</color>
+    <color name="success">#198754</color>
+    <color name="info">#0dcaf0</color>
+
+    <color name="darker_gray">#EEECEC</color>
+    <color name="line_divider">#DCDBDB</color>
+    <color name="shimmer">#C8C8C9</color>
+
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+</resources>
