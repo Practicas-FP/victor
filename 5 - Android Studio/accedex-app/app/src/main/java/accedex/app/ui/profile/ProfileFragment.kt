@@ -5,6 +5,7 @@ import accedex.app.Constants
 import accedex.app.Constants.Companion.ID
 import accedex.app.Constants.Companion.NAME
 import accedex.app.Constants.Companion.REQUEST_CODE
+import accedex.app.Constants.Companion.REQUEST_IMAGE_CAPTURE
 import accedex.app.Constants.Companion.SHARED_PROFILE
 import accedex.app.Constants.Companion.TAG
 import accedex.app.PokemonActivity
@@ -20,12 +21,18 @@ import accedex.app.jk.User
 import accedex.app.jk.pokedex.Result
 import accedex.app.services.database.PokeFavDataase
 import accedex.app.services.database.entities.PokeFavEntity
+import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
@@ -105,7 +112,7 @@ class ProfileFragment : Fragment() {
         binding.rvPokeFavs.adapter = adapter
 
         binding.btnTakePhoto.setOnClickListener {
-            //capturePhoto()
+            //dispatchTakePictureIntent()
         }
     }
 
@@ -155,15 +162,18 @@ class ProfileFragment : Fragment() {
         }*/
     }
 
-    private fun capturePhoto() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CODE)
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE && data != null) {
-            binding.ivProfile.setImageBitmap(data.extras?.get("data") as Bitmap)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            Log.d(TAG, "onActivityResult: $imageBitmap")
         }
     }
 

@@ -39,6 +39,7 @@ class Constants {
         const val OFFSET = 0
 
         const val REQUEST_CODE = 200
+        const val REQUEST_IMAGE_CAPTURE = 1
     }
 
     fun getRetrofit(): Retrofit {
