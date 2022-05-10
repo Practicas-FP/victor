@@ -5,42 +5,30 @@ import accedex.app.Constants
 import accedex.app.Constants.Companion.ID
 import accedex.app.Constants.Companion.NAME
 import accedex.app.Constants.Companion.REQUEST_CODE
-import accedex.app.Constants.Companion.REQUEST_IMAGE_CAPTURE
 import accedex.app.Constants.Companion.SHARED_PROFILE
-import accedex.app.Constants.Companion.TAG
 import accedex.app.PokemonActivity
 import accedex.app.R
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import accedex.app.adapters.PokemonsAdapter
 import accedex.app.databinding.ProfileFragmentBinding
 import accedex.app.jk.User
 import accedex.app.jk.pokedex.Result
-import accedex.app.services.database.PokeFavDataase
 import accedex.app.services.database.entities.PokeFavEntity
-import android.Manifest
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 class ProfileFragment : Fragment() {
 
@@ -79,6 +67,7 @@ class ProfileFragment : Fragment() {
         }
         setUserData()
         getPokeFavs()
+        getProfilePicture()
     }
 
     private fun setUI() {
@@ -112,13 +101,27 @@ class ProfileFragment : Fragment() {
         binding.rvPokeFavs.adapter = adapter
 
         binding.btnTakePhoto.setOnClickListener {
-            //dispatchTakePictureIntent()
+            dispatchTakePictureIntent()
+        }
+
+        binding.btnRemovePhoto?.setOnClickListener {
+            db.collection(Constants.DB_COL_USERS).document(user.uid.toString())
+                .update(
+                    hashMapOf<String, Any>(
+                        Constants.PHOTO to FieldValue.delete()
+                    )
+                )
+                .addOnCompleteListener {
+                    changeBtnsPhoto(true)
+                    Picasso.get().load(user.photoURL ?: "https://via.placeholder.com/300x300.png?text=No+image").into(binding.ivProfile)
+                    constants.showError(requireContext(), getString(R.string.image_deleted))
+                }
         }
     }
 
     private fun setUserData() {
-        Picasso.get().load(user.photoURL).into(binding.ivProfile)
-        binding.tvDisplayName.text = user.displayName
+        Picasso.get().load(user.photoURL ?: "https://via.placeholder.com/300x300.png?text=No+image").into(binding.ivProfile)
+        binding.tvDisplayName.text = user.displayName ?: getString(R.string.no_login_name)
         binding.tvEmail.text = user.email
     }
 
@@ -162,18 +165,56 @@ class ProfileFragment : Fragment() {
         }*/
     }
 
-    private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+    private fun getProfilePicture() {
+        db.collection(Constants.DB_COL_USERS).document(user.uid.toString()).get()
+            .addOnSuccessListener {
+                val photo = it.get(Constants.PHOTO)
+                if (photo != null) {
+                    binding.ivProfile.setImageBitmap(constants.decodeImage(photo as String))
+
+                    changeBtnsPhoto(false)
+                }
             }
+    }
+
+    private fun changeBtnsPhoto(edit: Boolean) {
+        if (edit) {
+            binding.btnTakePhoto.visibility = View.VISIBLE
+            binding.btnRemovePhoto?.visibility = View.GONE
+        } else {
+            binding.btnTakePhoto.visibility = View.GONE
+            binding.btnRemovePhoto?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_CODE)
+        } else {
+            constants.showError(requireContext(), getString(R.string.unable_open_camera))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            Log.d(TAG, "onActivityResult: $imageBitmap")
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val takenImage = data?.extras?.get("data") as Bitmap
+
+            db.collection(Constants.DB_COL_USERS).document(user.uid.toString()).set(
+                hashMapOf(
+                    Constants.PHOTO to constants.encodeImage(takenImage)
+                )
+            ).addOnCompleteListener {
+                binding.ivProfile.setImageBitmap(takenImage)
+                changeBtnsPhoto(false)
+                constants.showError(
+                    requireContext(),
+                    getString(R.string.image_successfully_modified)
+                )
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 

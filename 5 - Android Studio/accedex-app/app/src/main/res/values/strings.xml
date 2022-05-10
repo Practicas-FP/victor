@@ -130,4 +130,8 @@
     <string name="checking_connection">Checking connection...</string>
     <string name="offline">You\'re still offline</string>
     <string name="great">Great! you have internet again</string>
+    <string name="unable_open_camera">Unable to open camera</string>
+    <string name="image_successfully_modified">Image successfully modified</string>
+    <string name="image_deleted">Image deleted successfully</string>
+    <string name="no_login_name">No name There is no login name</string>
 </resources>

@@ -21,6 +21,17 @@
             app:layout_constraintStart_toEndOf="@+id/ivProfile"
             app:layout_constraintTop_toTopOf="@+id/ivProfile" />
 
+        <ImageButton
+            android:id="@+id/btnRemovePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_restore_from_trash_24"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="2dp"
+            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+            app:layout_constraintTop_toTopOf="@+id/ivProfile"
+            android:visibility="gone"/>
+
         <ImageView
             android:id="@+id/ivProfile"
             android:layout_width="150dp"

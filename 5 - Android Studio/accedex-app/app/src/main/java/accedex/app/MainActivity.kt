@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
         val tvEmail = header.findViewById<TextView>(R.id.tvNavEmail)
         val ivProfile = header.findViewById<ImageView>(R.id.imageView)
 
-        tvName.text = user.displayName
+        tvName.text = user.displayName ?: getString(R.string.no_login_name)
         tvEmail.text = user.email
-        Picasso.get().load(user.photoURL).into(ivProfile)
+        Picasso.get().load(user.photoURL ?: "https://via.placeholder.com/300x300.png?text=No+image").into(ivProfile)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

@@ -3,17 +3,20 @@ package accedex.app
 import accedex.app.jk.ProviderType
 import accedex.app.jk.User
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.util.Base64
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 
 class Constants {
 
@@ -34,11 +37,12 @@ class Constants {
         const val DB_COL_FAVS = "favorites"
         const val NAME = "name"
         const val ID = "id"
+        const val PHOTO = "photo"
 
         const val LIMIT = 1000
         const val OFFSET = 0
 
-        const val REQUEST_CODE = 200
+        const val REQUEST_CODE = 42
         const val REQUEST_IMAGE_CAPTURE = 1
     }
 
@@ -143,5 +147,17 @@ class Constants {
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
         }
+    }
+
+    fun encodeImage(bm: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+
+    fun decodeImage(string: String): Bitmap {
+        val imageBytes = Base64.decode(string, 0)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }
