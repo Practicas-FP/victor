@@ -17,7 +17,7 @@ Todos los proyectos tienen como base "atacar" a una API pública (en mi caso una
 ![preview-web-react-native](Imgs/preview-react-native.png)
 
 ## Android Kotlin
-![preview-android-kotlin](Imgs/preview-android-kotlin.png)
+![preview-android-kotlin](Imgs/preview-android-kotlin.jpg)
 
 ## Flutter
-![preview-flutter](Imgs/preview-flutter.png)
+![preview-flutter](Imgs/preview-flutter.jpg)
