@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870464730507",
+    "project_id": "batoidex-f6e6e",
+    "storage_bucket": "batoidex-f6e6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870464730507:android:35fda43a17723c60872b8e",
+        "android_client_info": {
+          "package_name": "dex.batoi.batoidex_bat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870464730507-h69pcbo8jkftmnt6vj5lq83pt9p4jnlh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-DL21fqbZRdQ5wIjWcSeM6--8L-g01Xw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870464730507-h69pcbo8jkftmnt6vj5lq83pt9p4jnlh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
