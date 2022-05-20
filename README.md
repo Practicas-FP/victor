@@ -1,4 +1,4 @@
-# Formación en Accenture - Víctor
+# Formación FP DAM - Víctor
 
 En este documento se podrá ver un *preview* de todos los proyectos que he ido realizando durante mis prácticas en Accenture. 
 
